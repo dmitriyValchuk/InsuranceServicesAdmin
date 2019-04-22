@@ -1,0 +1,425 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="Хранилище InsuranceServiceBDModelContainer" CdmEntityContainer="InsuranceServiceBD">
+    <EntitySetMapping Name="BonusMalus">
+      <EntityTypeMapping TypeName="InsuranceServiceBDModel.BonusMalus">
+        <MappingFragment StoreEntitySet="BonusMalus">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="IdCompanyMiddleman" ColumnName="IdCompanyMiddleman" />
+          <ScalarProperty Name="IdInsuranceZoneOfReg" ColumnName="IdInsuranceZoneOfReg" />
+          <ScalarProperty Name="IdContractFranchise" ColumnName="IdContractFranchise" />
+          <ScalarProperty Name="IsLegalEntity" ColumnName="IsLegalEntity" />
+          <ScalarProperty Name="Value" ColumnName="Value" />
+          <ScalarProperty Name="IdCarInsuranceType" ColumnName="IdCarInsuranceType" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Car">
+      <EntityTypeMapping TypeName="InsuranceServiceBDModel.Car">
+        <MappingFragment StoreEntitySet="Car">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Mark" ColumnName="Mark" />
+          <ScalarProperty Name="Model" ColumnName="Model" />
+          <ScalarProperty Name="CarKit" ColumnName="CarKit" />
+          <ScalarProperty Name="EngineCapacity" ColumnName="EngineCapacity" />
+          <ScalarProperty Name="RegistrationNumber" ColumnName="RegistrationNumber" />
+          <ScalarProperty Name="VIN_Code" ColumnName="VIN_Code" />
+          <ScalarProperty Name="GraduationYear" ColumnName="GraduationYear" />
+          <ScalarProperty Name="PlaceOfRegistration" ColumnName="PlaceOfRegistration" />
+          <ScalarProperty Name="LoadCapacity" ColumnName="LoadCapacity" />
+          <ScalarProperty Name="NumberOfSeats" ColumnName="NumberOfSeats" />
+          <ScalarProperty Name="IsForTruck" ColumnName="IsForTruck" />
+          <ScalarProperty Name="IdCarInsuranceType" ColumnName="IdCarInsuranceType" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CarGlobalToInsuranceType">
+      <EntityTypeMapping TypeName="InsuranceServiceBDModel.CarGlobalToInsuranceType">
+        <MappingFragment StoreEntitySet="CarGlobalToInsuranceType">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="IdGlobalType" ColumnName="IdGlobalType" />
+          <ScalarProperty Name="IdInsuraceType" ColumnName="IdInsuraceType" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CarGlobalType">
+      <EntityTypeMapping TypeName="InsuranceServiceBDModel.CarGlobalType">
+        <MappingFragment StoreEntitySet="CarGlobalType">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CarInsuranceType">
+      <EntityTypeMapping TypeName="InsuranceServiceBDModel.CarInsuranceType">
+        <MappingFragment StoreEntitySet="CarInsuranceType">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Type" ColumnName="Type" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Chart">
+      <EntityTypeMapping TypeName="InsuranceServiceBDModel.Chart">
+        <MappingFragment StoreEntitySet="Chart">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="IdCompany" ColumnName="IdCompany" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Year" ColumnName="Year" />
+          <ScalarProperty Name="QUARTER" ColumnName="QUARTER" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CityOfRegistration">
+      <EntityTypeMapping TypeName="InsuranceServiceBDModel.CityOfRegistration">
+        <MappingFragment StoreEntitySet="CityOfRegistration">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="IdRegioneOfRegistration" ColumnName="IdRegioneOfRegistration" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CityOrCountryOfRegToZone">
+      <EntityTypeMapping TypeName="InsuranceServiceBDModel.CityOrCountryOfRegToZone">
+        <MappingFragment StoreEntitySet="CityOrCountryOfRegToZone">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="IsUkraine" ColumnName="IsUkraine" />
+          <ScalarProperty Name="IdCompany" ColumnName="IdCompany" />
+          <ScalarProperty Name="IdTSC" ColumnName="IdTSC" />
+          <ScalarProperty Name="IdInsuranceZoneOfReg" ColumnName="IdInsuranceZoneOfReg" />
+          <ScalarProperty Name="IdCityOfRegistration" ColumnName="IdCityOfRegistration" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Client">
+      <EntityTypeMapping TypeName="InsuranceServiceBDModel.Client">
+        <MappingFragment StoreEntitySet="Client">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="IsLegalEntity" ColumnName="IsLegalEntity" />
+          <ScalarProperty Name="Surname" ColumnName="Surname" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="FatherName" ColumnName="FatherName" />
+          <ScalarProperty Name="EntityName" ColumnName="EntityName" />
+          <ScalarProperty Name="DateOfBirth" ColumnName="DateOfBirth" />
+          <ScalarProperty Name="PersonalCode" ColumnName="PersonalCode" />
+          <ScalarProperty Name="EDRPOU" ColumnName="EDRPOU" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="IdPrivileges" ColumnName="IdPrivileges" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ClientCar">
+      <EntityTypeMapping TypeName="InsuranceServiceBDModel.ClientCar">
+        <MappingFragment StoreEntitySet="ClientCar">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="IdClient" ColumnName="IdClient" />
+          <ScalarProperty Name="IdCar" ColumnName="IdCar" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Company">
+      <EntityTypeMapping TypeName="InsuranceServiceBDModel.Company">
+        <MappingFragment StoreEntitySet="Company">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Code" ColumnName="Code" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CompanyContractTypes">
+      <EntityTypeMapping TypeName="InsuranceServiceBDModel.CompanyContractTypes">
+        <MappingFragment StoreEntitySet="CompanyContractTypes">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="IdCompanyMiddleman" ColumnName="IdCompanyMiddleman" />
+          <ScalarProperty Name="IdContractType" ColumnName="IdContractType" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CompanyDetail">
+      <EntityTypeMapping TypeName="InsuranceServiceBDModel.CompanyDetail">
+        <MappingFragment StoreEntitySet="CompanyDetail">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="IdCompany" ColumnName="IdCompany" />
+          <ScalarProperty Name="Phone" ColumnName="Phone" />
+          <ScalarProperty Name="Phone2" ColumnName="Phone2" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="SummaryRait" ColumnName="SummaryRait" />
+          <ScalarProperty Name="MTSBU_SummaryRait" ColumnName="MTSBU_SummaryRait" />
+          <ScalarProperty Name="MTSBU_UregulationRait" ColumnName="MTSBU_UregulationRait" />
+          <ScalarProperty Name="MTSBU_ComplaintLevel" ColumnName="MTSBU_ComplaintLevel" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CompanyFeature">
+      <EntityTypeMapping TypeName="InsuranceServiceBDModel.CompanyFeature">
+        <MappingFragment StoreEntitySet="CompanyFeature">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Icon" ColumnName="Icon" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CompanyFeatureToCompany">
+      <EntityTypeMapping TypeName="InsuranceServiceBDModel.CompanyFeatureToCompany">
+        <MappingFragment StoreEntitySet="CompanyFeatureToCompany">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="IdCompany" ColumnName="IdCompany" />
+          <ScalarProperty Name="IdFeature" ColumnName="IdFeature" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CompanyIMG">
+      <EntityTypeMapping TypeName="InsuranceServiceBDModel.CompanyIMG">
+        <MappingFragment StoreEntitySet="CompanyIMG">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="IdImageType" ColumnName="IdImageType" />
+          <ScalarProperty Name="Path" ColumnName="Path" />
+          <ScalarProperty Name="IdCompany" ColumnName="IdCompany" />
+          <ScalarProperty Name="ReferensToCompanyPage" ColumnName="ReferensToCompanyPage" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CompanyMiddleman">
+      <EntityTypeMapping TypeName="InsuranceServiceBDModel.CompanyMiddleman">
+        <MappingFragment StoreEntitySet="CompanyMiddleman">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="IdCompany" ColumnName="IdCompany" />
+          <ScalarProperty Name="IdMiddleman" ColumnName="IdMiddleman" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Contract">
+      <EntityTypeMapping TypeName="InsuranceServiceBDModel.Contract">
+        <MappingFragment StoreEntitySet="Contract">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="IdCompanyMiddleman" ColumnName="IdCompanyMiddleman" />
+          <ScalarProperty Name="IdContractType" ColumnName="IdContractType" />
+          <ScalarProperty Name="DateBegin" ColumnName="DateBegin" />
+          <ScalarProperty Name="DateEnd" ColumnName="DateEnd" />
+          <ScalarProperty Name="SumLimitForHealthDamage" ColumnName="SumLimitForHealthDamage" />
+          <ScalarProperty Name="SumLimitForPropertyDamage" ColumnName="SumLimitForPropertyDamage" />
+          <ScalarProperty Name="IdContractFranchise" ColumnName="IdContractFranchise" />
+          <ScalarProperty Name="IdClient" ColumnName="IdClient" />
+          <ScalarProperty Name="IdClientCar" ColumnName="IdClientCar" />
+          <ScalarProperty Name="BaseCoef" ColumnName="BaseCoef" />
+          <ScalarProperty Name="IdK1" ColumnName="IdK1" />
+          <ScalarProperty Name="IdK2" ColumnName="IdK2" />
+          <ScalarProperty Name="IdK3" ColumnName="IdK3" />
+          <ScalarProperty Name="IdK4" ColumnName="IdK4" />
+          <ScalarProperty Name="IdK5" ColumnName="IdK5" />
+          <ScalarProperty Name="IdK6" ColumnName="IdK6" />
+          <ScalarProperty Name="IdK7" ColumnName="IdK7" />
+          <ScalarProperty Name="IdBonusMalus" ColumnName="IdBonusMalus" />
+          <ScalarProperty Name="IdDiscountByQuantity" ColumnName="IdDiscountByQuantity" />
+          <ScalarProperty Name="IdDiscountForClientWithPrivilegies" ColumnName="IdDiscountForClientWithPrivilegies" />
+          <ScalarProperty Name="ContractPrice" ColumnName="ContractPrice" />
+          <ScalarProperty Name="DateOfIssued" ColumnName="DateOfIssued" />
+          <ScalarProperty Name="DateOfPayment" ColumnName="DateOfPayment" />
+          <ScalarProperty Name="Note" ColumnName="Note" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ContractFranchise">
+      <EntityTypeMapping TypeName="InsuranceServiceBDModel.ContractFranchise">
+        <MappingFragment StoreEntitySet="ContractFranchise">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="IdCompanyContractType" ColumnName="IdCompanyContractType" />
+          <ScalarProperty Name="IdFranchise" ColumnName="IdFranchise" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ContractType">
+      <EntityTypeMapping TypeName="InsuranceServiceBDModel.ContractType">
+        <MappingFragment StoreEntitySet="ContractType">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CountryOfRegistration">
+      <EntityTypeMapping TypeName="InsuranceServiceBDModel.CountryOfRegistration">
+        <MappingFragment StoreEntitySet="CountryOfRegistration">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DiscountByQuantity">
+      <EntityTypeMapping TypeName="InsuranceServiceBDModel.DiscountByQuantity">
+        <MappingFragment StoreEntitySet="DiscountByQuantity">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="IsLegalEntity" ColumnName="IsLegalEntity" />
+          <ScalarProperty Name="TransportCountFrom" ColumnName="TransportCountFrom" />
+          <ScalarProperty Name="TransportCountTo" ColumnName="TransportCountTo" />
+          <ScalarProperty Name="Value" ColumnName="Value" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DiscountForClientWithPrivilegies">
+      <EntityTypeMapping TypeName="InsuranceServiceBDModel.DiscountForClientWithPrivilegies">
+        <MappingFragment StoreEntitySet="DiscountForClientWithPrivilegies">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="IdDocumentType" ColumnName="IdDocumentType" />
+          <ScalarProperty Name="Value" ColumnName="Value" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Document">
+      <EntityTypeMapping TypeName="InsuranceServiceBDModel.Document">
+        <MappingFragment StoreEntitySet="Document">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="IdDocumentType" ColumnName="IdDocumentType" />
+          <ScalarProperty Name="IdClient" ColumnName="IdClient" />
+          <ScalarProperty Name="Series" ColumnName="Series" />
+          <ScalarProperty Name="Number" ColumnName="Number" />
+          <ScalarProperty Name="DateOfIssue" ColumnName="DateOfIssue" />
+          <ScalarProperty Name="IssueBy" ColumnName="IssueBy" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DocumentType">
+      <EntityTypeMapping TypeName="InsuranceServiceBDModel.DocumentType">
+        <MappingFragment StoreEntitySet="DocumentType">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="IsRightToBenefits" ColumnName="IsRightToBenefits" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Franchise">
+      <EntityTypeMapping TypeName="InsuranceServiceBDModel.Franchise">
+        <MappingFragment StoreEntitySet="Franchise">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Sum" ColumnName="Sum" />
+          <ScalarProperty Name="Currency" ColumnName="Currency" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ImageType">
+      <EntityTypeMapping TypeName="InsuranceServiceBDModel.ImageType">
+        <MappingFragment StoreEntitySet="ImageType">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="InsuranceZoneOfRegistration">
+      <EntityTypeMapping TypeName="InsuranceServiceBDModel.InsuranceZoneOfRegistration">
+        <MappingFragment StoreEntitySet="InsuranceZoneOfRegistration">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="K1">
+      <EntityTypeMapping TypeName="InsuranceServiceBDModel.K1">
+        <MappingFragment StoreEntitySet="K1">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="IdCarInsuranceType" ColumnName="IdCarInsuranceType" />
+          <ScalarProperty Name="Value" ColumnName="Value" />
+          <ScalarProperty Name="IdCompanyMiddleman" ColumnName="IdCompanyMiddleman" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="K2">
+      <EntityTypeMapping TypeName="InsuranceServiceBDModel.K2">
+        <MappingFragment StoreEntitySet="K2">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="IdInsuranceZoneOfReg" ColumnName="IdInsuranceZoneOfReg" />
+          <ScalarProperty Name="IsLegalEntity" ColumnName="IsLegalEntity" />
+          <ScalarProperty Name="IdCarInsuranceType" ColumnName="IdCarInsuranceType" />
+          <ScalarProperty Name="IdContractFranchise" ColumnName="IdContractFranchise" />
+          <ScalarProperty Name="IdCompanyMiddleman" ColumnName="IdCompanyMiddleman" />
+          <ScalarProperty Name="Value" ColumnName="Value" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="K3">
+      <EntityTypeMapping TypeName="InsuranceServiceBDModel.K3">
+        <MappingFragment StoreEntitySet="K3">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="IdCompanyMiddleman" ColumnName="IdCompanyMiddleman" />
+          <ScalarProperty Name="IsLegalEntity" ColumnName="IsLegalEntity" />
+          <ScalarProperty Name="IdCarInsuranceType" ColumnName="IdCarInsuranceType" />
+          <ScalarProperty Name="Value" ColumnName="Value" />
+          <ScalarProperty Name="IdInsuranceZoneOfReg" ColumnName="IdInsuranceZoneOfReg" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="K4">
+      <EntityTypeMapping TypeName="InsuranceServiceBDModel.K4">
+        <MappingFragment StoreEntitySet="K4">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="IdCompanyMiddleman" ColumnName="IdCompanyMiddleman" />
+          <ScalarProperty Name="IdInsuranceZoneOfReg" ColumnName="IdInsuranceZoneOfReg" />
+          <ScalarProperty Name="IdContractFranchise" ColumnName="IdContractFranchise" />
+          <ScalarProperty Name="IsLegalEntity" ColumnName="IsLegalEntity" />
+          <ScalarProperty Name="Value" ColumnName="Value" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="K5">
+      <EntityTypeMapping TypeName="InsuranceServiceBDModel.K5">
+        <MappingFragment StoreEntitySet="K5">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Period" ColumnName="Period" />
+          <ScalarProperty Name="Value" ColumnName="Value" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="K6">
+      <EntityTypeMapping TypeName="InsuranceServiceBDModel.K6">
+        <MappingFragment StoreEntitySet="K6">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Value" ColumnName="Value" />
+          <ScalarProperty Name="IsCheater" ColumnName="IsCheater" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="K7">
+      <EntityTypeMapping TypeName="InsuranceServiceBDModel.K7">
+        <MappingFragment StoreEntitySet="K7">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Period" ColumnName="Period" />
+          <ScalarProperty Name="Value" ColumnName="Value" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Middleman">
+      <EntityTypeMapping TypeName="InsuranceServiceBDModel.Middleman">
+        <MappingFragment StoreEntitySet="Middleman">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="FullName" ColumnName="FullName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Privileges">
+      <EntityTypeMapping TypeName="InsuranceServiceBDModel.Privileges">
+        <MappingFragment StoreEntitySet="Privileges">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RegioneOfRegistration">
+      <EntityTypeMapping TypeName="InsuranceServiceBDModel.RegioneOfRegistration">
+        <MappingFragment StoreEntitySet="RegioneOfRegistration">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TSC">
+      <EntityTypeMapping TypeName="InsuranceServiceBDModel.TSC">
+        <MappingFragment StoreEntitySet="TSC">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="IdCityOfRegistration" ColumnName="IdCityOfRegistration" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Code" ColumnName="Code" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

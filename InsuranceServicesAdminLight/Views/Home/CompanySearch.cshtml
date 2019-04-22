@@ -1,0 +1,26 @@
+﻿@using InsuranceServicesAdminLight.Models
+@model IEnumerable<Company>
+@{
+    Layout = null;
+    ViewBag.Title = "Index";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>CompanySearch</title>
+
+</head>
+<body>
+    <div>
+        @using (Ajax.BeginForm("CompanySearch", new AjaxOptions { UpdateTargetId = "results" }))
+        {
+            <input type="text" name="companyName" />
+            <input type="submit" value="Поиск" />
+        }
+        <div id="results"></div>
+    </div>
+</body>
+</html>

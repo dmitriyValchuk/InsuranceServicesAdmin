@@ -1,0 +1,1469 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="InsuranceServiceBDModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="BonusMalus">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="IdCompanyMiddleman" Type="Int32" Nullable="false" />
+    <Property Name="IdInsuranceZoneOfReg" Type="Int32" Nullable="false" />
+    <Property Name="IdContractFranchise" Type="Int32" Nullable="false" />
+    <Property Name="IsLegalEntity" Type="Boolean" Nullable="false" />
+    <Property Name="Value" Type="Double" Nullable="false" />
+    <Property Name="IdCarInsuranceType" Type="Int32" />
+    <NavigationProperty Name="CarInsuranceType" Relationship="Self.FK__BonusMalu__IdCar__3DE82FB7" FromRole="BonusMalus" ToRole="CarInsuranceType" />
+    <NavigationProperty Name="CompanyMiddleman" Relationship="Self.FK__BonusMalu__IdCom__2057CCD0" FromRole="BonusMalus" ToRole="CompanyMiddleman" />
+    <NavigationProperty Name="ContractFranchise" Relationship="Self.FK__BonusMalu__IdCon__22401542" FromRole="BonusMalus" ToRole="ContractFranchise" />
+    <NavigationProperty Name="InsuranceZoneOfRegistration" Relationship="Self.FK__BonusMalu__IdIns__214BF109" FromRole="BonusMalus" ToRole="InsuranceZoneOfRegistration" />
+    <NavigationProperty Name="Contract" Relationship="Self.FK__Contract__IdBonu__36470DEF" FromRole="BonusMalus" ToRole="Contract" />
+  </EntityType>
+  <EntityType Name="Car">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Mark" Type="String" MaxLength="35" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Model" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="CarKit" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="EngineCapacity" Type="Double" />
+    <Property Name="RegistrationNumber" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="VIN_Code" Type="String" MaxLength="17" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="GraduationYear" Type="Int32" Nullable="false" />
+    <Property Name="PlaceOfRegistration" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
+    <Property Name="LoadCapacity" Type="Double" />
+    <Property Name="NumberOfSeats" Type="Int32" />
+    <Property Name="IsForTruck" Type="Boolean" />
+    <Property Name="IdCarInsuranceType" Type="Int32" />
+    <NavigationProperty Name="CarInsuranceType" Relationship="Self.FK__Car__IdCarInsura__3FD07829" FromRole="Car" ToRole="CarInsuranceType" />
+    <NavigationProperty Name="ClientCar" Relationship="Self.FK__ClientCar__IdCar__681373AD" FromRole="Car" ToRole="ClientCar" />
+  </EntityType>
+  <EntityType Name="CarGlobalToInsuranceType">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="IdGlobalType" Type="Int32" Nullable="false" />
+    <Property Name="IdInsuraceType" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="CarGlobalType" Relationship="Self.FK__CarGlobal__IdGlo__74794A92" FromRole="CarGlobalToInsuranceType" ToRole="CarGlobalType" />
+    <NavigationProperty Name="CarInsuranceType" Relationship="Self.FK__CarGlobal__IdIns__756D6ECB" FromRole="CarGlobalToInsuranceType" ToRole="CarInsuranceType" />
+  </EntityType>
+  <EntityType Name="CarGlobalType">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="35" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="CarGlobalToInsuranceType" Relationship="Self.FK__CarGlobal__IdGlo__74794A92" FromRole="CarGlobalType" ToRole="CarGlobalToInsuranceType" />
+  </EntityType>
+  <EntityType Name="CarInsuranceType">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Type" Type="String" MaxLength="3" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="BonusMalus" Relationship="Self.FK__BonusMalu__IdCar__3DE82FB7" FromRole="CarInsuranceType" ToRole="BonusMalus" />
+    <NavigationProperty Name="Car" Relationship="Self.FK__Car__IdCarInsura__3FD07829" FromRole="CarInsuranceType" ToRole="Car" />
+    <NavigationProperty Name="CarGlobalToInsuranceType" Relationship="Self.FK__CarGlobal__IdIns__756D6ECB" FromRole="CarInsuranceType" ToRole="CarGlobalToInsuranceType" />
+    <NavigationProperty Name="K1" Relationship="Self.FK__K1__IdCarInsuran__078C1F06" FromRole="CarInsuranceType" ToRole="K1" />
+    <NavigationProperty Name="K2" Relationship="Self.FK__K2__IdCarInsuran__0C50D423" FromRole="CarInsuranceType" ToRole="K2" />
+    <NavigationProperty Name="K3" Relationship="Self.FK__K3__IdCarInsuran__1209AD79" FromRole="CarInsuranceType" ToRole="K3" />
+  </EntityType>
+  <EntityType Name="Chart">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="IdCompany" Type="Int32" Nullable="false" />
+    <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Year" Type="Int32" Nullable="false" />
+    <Property Name="QUARTER" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Company" Relationship="Self.FK__Chart__IdCompany__5224328E" FromRole="Chart" ToRole="Company" />
+  </EntityType>
+  <EntityType Name="CityOfRegistration">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="IdRegioneOfRegistration" Type="Int32" />
+    <NavigationProperty Name="RegioneOfRegistration" Relationship="Self.FK__CityOfReg__IdReg__39237A9A" FromRole="CityOfRegistration" ToRole="RegioneOfRegistration" />
+    <NavigationProperty Name="CityOrCountryOfRegToZone" Relationship="Self.FK__CityOrCou__IdCit__3A179ED3" FromRole="CityOfRegistration" ToRole="CityOrCountryOfRegToZone" />
+    <NavigationProperty Name="TSC" Relationship="Self.FK__TSC__IdCityOfReg__7E02B4CC" FromRole="CityOfRegistration" ToRole="TSC" />
+  </EntityType>
+  <EntityType Name="CityOrCountryOfRegToZone">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="IsUkraine" Type="Boolean" Nullable="false" />
+    <Property Name="IdCompany" Type="Int32" Nullable="false" />
+    <Property Name="IdTSC" Type="Int32" />
+    <Property Name="IdInsuranceZoneOfReg" Type="Int32" />
+    <Property Name="IdCityOfRegistration" Type="Int32" />
+    <NavigationProperty Name="CityOfRegistration" Relationship="Self.FK__CityOrCou__IdCit__3A179ED3" FromRole="CityOrCountryOfRegToZone" ToRole="CityOfRegistration" />
+    <NavigationProperty Name="Company" Relationship="Self.FK__CityOrCou__IdCom__02C769E9" FromRole="CityOrCountryOfRegToZone" ToRole="Company" />
+    <NavigationProperty Name="InsuranceZoneOfRegistration" Relationship="Self.FK__CityOrCou__IdIns__04AFB25B" FromRole="CityOrCountryOfRegToZone" ToRole="InsuranceZoneOfRegistration" />
+    <NavigationProperty Name="TSC" Relationship="Self.FK__CityOrCou__IdTSC__03BB8E22" FromRole="CityOrCountryOfRegToZone" ToRole="TSC" />
+  </EntityType>
+  <EntityType Name="Client">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="IsLegalEntity" Type="Boolean" Nullable="false" />
+    <Property Name="Surname" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Name" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+    <Property Name="FatherName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="EntityName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="DateOfBirth" Type="DateTime" Precision="0" />
+    <Property Name="PersonalCode" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="EDRPOU" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="Address" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="IdPrivileges" Type="Int32" />
+    <NavigationProperty Name="Privileges" Relationship="Self.FK__Client__IdPrivil__625A9A57" FromRole="Client" ToRole="Privileges" />
+    <NavigationProperty Name="ClientCar" Relationship="Self.FK__ClientCar__IdCli__671F4F74" FromRole="Client" ToRole="ClientCar" />
+    <NavigationProperty Name="Contract" Relationship="Self.FK__Contract__IdClie__2DB1C7EE" FromRole="Client" ToRole="Contract" />
+    <NavigationProperty Name="Document" Relationship="Self.FK__Document__IdClie__6DCC4D03" FromRole="Client" ToRole="Document" />
+  </EntityType>
+  <EntityType Name="ClientCar">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="IdClient" Type="Int32" Nullable="false" />
+    <Property Name="IdCar" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Car" Relationship="Self.FK__ClientCar__IdCar__681373AD" FromRole="ClientCar" ToRole="Car" />
+    <NavigationProperty Name="Client" Relationship="Self.FK__ClientCar__IdCli__671F4F74" FromRole="ClientCar" ToRole="Client" />
+    <NavigationProperty Name="Contract" Relationship="Self.FK__Contract__IdClie__2EA5EC27" FromRole="ClientCar" ToRole="Contract" />
+  </EntityType>
+  <EntityType Name="Company">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Code" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Chart" Relationship="Self.FK__Chart__IdCompany__5224328E" FromRole="Company" ToRole="Chart" />
+    <NavigationProperty Name="CityOrCountryOfRegToZone" Relationship="Self.FK__CityOrCou__IdCom__02C769E9" FromRole="Company" ToRole="CityOrCountryOfRegToZone" />
+    <NavigationProperty Name="CompanyDetail" Relationship="Self.FK__CompanyDe__IdCom__3E1D39E1" FromRole="Company" ToRole="CompanyDetail" />
+    <NavigationProperty Name="CompanyFeatureToCompany" Relationship="Self.FK__CompanyFe__IdCom__489AC854" FromRole="Company" ToRole="CompanyFeatureToCompany" />
+    <NavigationProperty Name="CompanyIMG" Relationship="Self.FK__CompanyIM__IdCom__43D61337" FromRole="Company" ToRole="CompanyIMG" />
+    <NavigationProperty Name="CompanyMiddleman" Relationship="Self.FK__CompanyMi__IdCom__4E53A1AA" FromRole="Company" ToRole="CompanyMiddleman" />
+  </EntityType>
+  <EntityType Name="CompanyContractTypes">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="IdCompanyMiddleman" Type="Int32" Nullable="false" />
+    <Property Name="IdContractType" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="CompanyMiddleman" Relationship="Self.FK__CompanyCo__IdCom__56E8E7AB" FromRole="CompanyContractTypes" ToRole="CompanyMiddleman" />
+    <NavigationProperty Name="ContractType" Relationship="Self.FK__CompanyCo__IdCon__57DD0BE4" FromRole="CompanyContractTypes" ToRole="ContractType" />
+    <NavigationProperty Name="ContractFranchise" Relationship="Self.FK__ContractF__IdCom__5CA1C101" FromRole="CompanyContractTypes" ToRole="ContractFranchise" />
+  </EntityType>
+  <EntityType Name="CompanyDetail">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="IdCompany" Type="Int32" Nullable="false" />
+    <Property Name="Phone" Type="String" MaxLength="13" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Phone2" Type="String" MaxLength="13" FixedLength="false" Unicode="true" />
+    <Property Name="Description" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Address" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+    <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="SummaryRait" Type="Int32" Nullable="false" />
+    <Property Name="MTSBU_SummaryRait" Type="Int32" Nullable="false" />
+    <Property Name="MTSBU_UregulationRait" Type="Int32" Nullable="false" />
+    <Property Name="MTSBU_ComplaintLevel" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Company" Relationship="Self.FK__CompanyDe__IdCom__3E1D39E1" FromRole="CompanyDetail" ToRole="Company" />
+  </EntityType>
+  <EntityType Name="CompanyFeature">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="40" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Icon" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="CompanyFeatureToCompany" Relationship="Self.FK__CompanyFe__IdFea__498EEC8D" FromRole="CompanyFeature" ToRole="CompanyFeatureToCompany" />
+  </EntityType>
+  <EntityType Name="CompanyFeatureToCompany">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="IdCompany" Type="Int32" Nullable="false" />
+    <Property Name="IdFeature" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Company" Relationship="Self.FK__CompanyFe__IdCom__489AC854" FromRole="CompanyFeatureToCompany" ToRole="Company" />
+    <NavigationProperty Name="CompanyFeature" Relationship="Self.FK__CompanyFe__IdFea__498EEC8D" FromRole="CompanyFeatureToCompany" ToRole="CompanyFeature" />
+  </EntityType>
+  <EntityType Name="CompanyIMG">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="IdImageType" Type="Int32" Nullable="false" />
+    <Property Name="Path" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="IdCompany" Type="Int32" Nullable="false" />
+    <Property Name="ReferensToCompanyPage" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Company" Relationship="Self.FK__CompanyIM__IdCom__43D61337" FromRole="CompanyIMG" ToRole="Company" />
+    <NavigationProperty Name="ImageType" Relationship="Self.FK__CompanyIM__IdIma__42E1EEFE" FromRole="CompanyIMG" ToRole="ImageType" />
+  </EntityType>
+  <EntityType Name="CompanyMiddleman">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="IdCompany" Type="Int32" Nullable="false" />
+    <Property Name="IdMiddleman" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="BonusMalus" Relationship="Self.FK__BonusMalu__IdCom__2057CCD0" FromRole="CompanyMiddleman" ToRole="BonusMalus" />
+    <NavigationProperty Name="Company" Relationship="Self.FK__CompanyMi__IdCom__4E53A1AA" FromRole="CompanyMiddleman" ToRole="Company" />
+    <NavigationProperty Name="CompanyContractTypes" Relationship="Self.FK__CompanyCo__IdCom__56E8E7AB" FromRole="CompanyMiddleman" ToRole="CompanyContractTypes" />
+    <NavigationProperty Name="Middleman" Relationship="Self.FK__CompanyMi__IdMid__4F47C5E3" FromRole="CompanyMiddleman" ToRole="Middleman" />
+    <NavigationProperty Name="Contract" Relationship="Self.FK__Contract__IdComp__2AD55B43" FromRole="CompanyMiddleman" ToRole="Contract" />
+    <NavigationProperty Name="K1" Relationship="Self.FK__K1__IdCompanyMid__3B0BC30C" FromRole="CompanyMiddleman" ToRole="K1" />
+    <NavigationProperty Name="K2" Relationship="Self.FK__K2__IdCompanyMid__0E391C95" FromRole="CompanyMiddleman" ToRole="K2" />
+    <NavigationProperty Name="K3" Relationship="Self.FK__K3__IdCompanyMid__11158940" FromRole="CompanyMiddleman" ToRole="K3" />
+    <NavigationProperty Name="K4" Relationship="Self.FK__K4__IdCompanyMid__14E61A24" FromRole="CompanyMiddleman" ToRole="K4" />
+  </EntityType>
+  <EntityType Name="Contract">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="IdCompanyMiddleman" Type="Int32" Nullable="false" />
+    <Property Name="IdContractType" Type="Int32" Nullable="false" />
+    <Property Name="DateBegin" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="DateEnd" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="SumLimitForHealthDamage" Type="Double" Nullable="false" />
+    <Property Name="SumLimitForPropertyDamage" Type="Double" Nullable="false" />
+    <Property Name="IdContractFranchise" Type="Int32" Nullable="false" />
+    <Property Name="IdClient" Type="Int32" Nullable="false" />
+    <Property Name="IdClientCar" Type="Int32" Nullable="false" />
+    <Property Name="BaseCoef" Type="Double" Nullable="false" />
+    <Property Name="IdK1" Type="Int32" Nullable="false" />
+    <Property Name="IdK2" Type="Int32" Nullable="false" />
+    <Property Name="IdK3" Type="Int32" Nullable="false" />
+    <Property Name="IdK4" Type="Int32" Nullable="false" />
+    <Property Name="IdK5" Type="Int32" Nullable="false" />
+    <Property Name="IdK6" Type="Int32" Nullable="false" />
+    <Property Name="IdK7" Type="Int32" Nullable="false" />
+    <Property Name="IdBonusMalus" Type="Int32" Nullable="false" />
+    <Property Name="IdDiscountByQuantity" Type="Int32" Nullable="false" />
+    <Property Name="IdDiscountForClientWithPrivilegies" Type="Int32" Nullable="false" />
+    <Property Name="ContractPrice" Type="Double" Nullable="false" />
+    <Property Name="DateOfIssued" Type="DateTime" Precision="0" />
+    <Property Name="DateOfPayment" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="Note" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="BonusMalus" Relationship="Self.FK__Contract__IdBonu__36470DEF" FromRole="Contract" ToRole="BonusMalus" />
+    <NavigationProperty Name="Client" Relationship="Self.FK__Contract__IdClie__2DB1C7EE" FromRole="Contract" ToRole="Client" />
+    <NavigationProperty Name="ClientCar" Relationship="Self.FK__Contract__IdClie__2EA5EC27" FromRole="Contract" ToRole="ClientCar" />
+    <NavigationProperty Name="CompanyMiddleman" Relationship="Self.FK__Contract__IdComp__2AD55B43" FromRole="Contract" ToRole="CompanyMiddleman" />
+    <NavigationProperty Name="ContractType" Relationship="Self.FK__Contract__IdCont__2BC97F7C" FromRole="Contract" ToRole="ContractType" />
+    <NavigationProperty Name="ContractFranchise" Relationship="Self.FK__Contract__IdCont__2CBDA3B5" FromRole="Contract" ToRole="ContractFranchise" />
+    <NavigationProperty Name="DiscountByQuantity" Relationship="Self.FK__Contract__IdDisc__373B3228" FromRole="Contract" ToRole="DiscountByQuantity" />
+    <NavigationProperty Name="DiscountForClientWithPrivilegies" Relationship="Self.FK__Contract__IdDisc__382F5661" FromRole="Contract" ToRole="DiscountForClientWithPrivilegies" />
+    <NavigationProperty Name="K1" Relationship="Self.FK__Contract__IdK1__2F9A1060" FromRole="Contract" ToRole="K1" />
+    <NavigationProperty Name="K2" Relationship="Self.FK__Contract__IdK2__308E3499" FromRole="Contract" ToRole="K2" />
+    <NavigationProperty Name="K3" Relationship="Self.FK__Contract__IdK3__318258D2" FromRole="Contract" ToRole="K3" />
+    <NavigationProperty Name="K4" Relationship="Self.FK__Contract__IdK4__32767D0B" FromRole="Contract" ToRole="K4" />
+    <NavigationProperty Name="K5" Relationship="Self.FK__Contract__IdK5__336AA144" FromRole="Contract" ToRole="K5" />
+    <NavigationProperty Name="K6" Relationship="Self.FK__Contract__IdK6__345EC57D" FromRole="Contract" ToRole="K6" />
+    <NavigationProperty Name="K7" Relationship="Self.FK__Contract__IdK7__3552E9B6" FromRole="Contract" ToRole="K7" />
+  </EntityType>
+  <EntityType Name="ContractFranchise">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="IdCompanyContractType" Type="Int32" Nullable="false" />
+    <Property Name="IdFranchise" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="BonusMalus" Relationship="Self.FK__BonusMalu__IdCon__22401542" FromRole="ContractFranchise" ToRole="BonusMalus" />
+    <NavigationProperty Name="CompanyContractTypes" Relationship="Self.FK__ContractF__IdCom__5CA1C101" FromRole="ContractFranchise" ToRole="CompanyContractTypes" />
+    <NavigationProperty Name="Contract" Relationship="Self.FK__Contract__IdCont__2CBDA3B5" FromRole="ContractFranchise" ToRole="Contract" />
+    <NavigationProperty Name="Franchise" Relationship="Self.FK__ContractF__IdFra__5D95E53A" FromRole="ContractFranchise" ToRole="Franchise" />
+    <NavigationProperty Name="K2" Relationship="Self.FK__K2__IdContractFr__0D44F85C" FromRole="ContractFranchise" ToRole="K2" />
+    <NavigationProperty Name="K4" Relationship="Self.FK__K4__IdContractFr__16CE6296" FromRole="ContractFranchise" ToRole="K4" />
+  </EntityType>
+  <EntityType Name="ContractType">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="CompanyContractTypes" Relationship="Self.FK__CompanyCo__IdCon__57DD0BE4" FromRole="ContractType" ToRole="CompanyContractTypes" />
+    <NavigationProperty Name="Contract" Relationship="Self.FK__Contract__IdCont__2BC97F7C" FromRole="ContractType" ToRole="Contract" />
+  </EntityType>
+  <EntityType Name="CountryOfRegistration">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="60" FixedLength="false" Unicode="true" Nullable="false" />
+  </EntityType>
+  <EntityType Name="DiscountByQuantity">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="IsLegalEntity" Type="Boolean" Nullable="false" />
+    <Property Name="TransportCountFrom" Type="Int32" Nullable="false" />
+    <Property Name="TransportCountTo" Type="Int32" Nullable="false" />
+    <Property Name="Value" Type="Double" Nullable="false" />
+    <NavigationProperty Name="Contract" Relationship="Self.FK__Contract__IdDisc__373B3228" FromRole="DiscountByQuantity" ToRole="Contract" />
+  </EntityType>
+  <EntityType Name="DiscountForClientWithPrivilegies">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="IdDocumentType" Type="Int32" Nullable="false" />
+    <Property Name="Value" Type="Double" />
+    <NavigationProperty Name="Contract" Relationship="Self.FK__Contract__IdDisc__382F5661" FromRole="DiscountForClientWithPrivilegies" ToRole="Contract" />
+    <NavigationProperty Name="DocumentType" Relationship="Self.FK__DiscountF__IdDoc__2704CA5F" FromRole="DiscountForClientWithPrivilegies" ToRole="DocumentType" />
+  </EntityType>
+  <EntityType Name="Document">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="IdDocumentType" Type="Int32" Nullable="false" />
+    <Property Name="IdClient" Type="Int32" Nullable="false" />
+    <Property Name="Series" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="Number" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="DateOfIssue" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="IssueBy" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Client" Relationship="Self.FK__Document__IdClie__6DCC4D03" FromRole="Document" ToRole="Client" />
+    <NavigationProperty Name="DocumentType" Relationship="Self.FK__Document__IdDocu__6CD828CA" FromRole="Document" ToRole="DocumentType" />
+  </EntityType>
+  <EntityType Name="DocumentType">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="IsRightToBenefits" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="DiscountForClientWithPrivilegies" Relationship="Self.FK__DiscountF__IdDoc__2704CA5F" FromRole="DocumentType" ToRole="DiscountForClientWithPrivilegies" />
+    <NavigationProperty Name="Document" Relationship="Self.FK__Document__IdDocu__6CD828CA" FromRole="DocumentType" ToRole="Document" />
+  </EntityType>
+  <EntityType Name="Franchise">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Sum" Type="Double" Nullable="false" />
+    <Property Name="Currency" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="ContractFranchise" Relationship="Self.FK__ContractF__IdFra__5D95E53A" FromRole="Franchise" ToRole="ContractFranchise" />
+  </EntityType>
+  <EntityType Name="ImageType">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="CompanyIMG" Relationship="Self.FK__CompanyIM__IdIma__42E1EEFE" FromRole="ImageType" ToRole="CompanyIMG" />
+  </EntityType>
+  <EntityType Name="InsuranceZoneOfRegistration">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="6" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="BonusMalus" Relationship="Self.FK__BonusMalu__IdIns__214BF109" FromRole="InsuranceZoneOfRegistration" ToRole="BonusMalus" />
+    <NavigationProperty Name="CityOrCountryOfRegToZone" Relationship="Self.FK__CityOrCou__IdIns__04AFB25B" FromRole="InsuranceZoneOfRegistration" ToRole="CityOrCountryOfRegToZone" />
+    <NavigationProperty Name="K2" Relationship="Self.FK__K2__IdInsuranceZ__0B5CAFEA" FromRole="InsuranceZoneOfRegistration" ToRole="K2" />
+    <NavigationProperty Name="K3" Relationship="Self.FK__K3__IdInsuranceZ__3CF40B7E" FromRole="InsuranceZoneOfRegistration" ToRole="K3" />
+    <NavigationProperty Name="K4" Relationship="Self.FK__K4__IdInsuranceZ__15DA3E5D" FromRole="InsuranceZoneOfRegistration" ToRole="K4" />
+  </EntityType>
+  <EntityType Name="K1">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="IdCarInsuranceType" Type="Int32" Nullable="false" />
+    <Property Name="Value" Type="Double" Nullable="false" />
+    <Property Name="IdCompanyMiddleman" Type="Int32" />
+    <NavigationProperty Name="CarInsuranceType" Relationship="Self.FK__K1__IdCarInsuran__078C1F06" FromRole="K1" ToRole="CarInsuranceType" />
+    <NavigationProperty Name="CompanyMiddleman" Relationship="Self.FK__K1__IdCompanyMid__3B0BC30C" FromRole="K1" ToRole="CompanyMiddleman" />
+    <NavigationProperty Name="Contract" Relationship="Self.FK__Contract__IdK1__2F9A1060" FromRole="K1" ToRole="Contract" />
+  </EntityType>
+  <EntityType Name="K2">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="IdInsuranceZoneOfReg" Type="Int32" Nullable="false" />
+    <Property Name="IsLegalEntity" Type="Boolean" Nullable="false" />
+    <Property Name="IdCarInsuranceType" Type="Int32" Nullable="false" />
+    <Property Name="IdContractFranchise" Type="Int32" Nullable="false" />
+    <Property Name="IdCompanyMiddleman" Type="Int32" Nullable="false" />
+    <Property Name="Value" Type="Double" Nullable="false" />
+    <NavigationProperty Name="CarInsuranceType" Relationship="Self.FK__K2__IdCarInsuran__0C50D423" FromRole="K2" ToRole="CarInsuranceType" />
+    <NavigationProperty Name="CompanyMiddleman" Relationship="Self.FK__K2__IdCompanyMid__0E391C95" FromRole="K2" ToRole="CompanyMiddleman" />
+    <NavigationProperty Name="Contract" Relationship="Self.FK__Contract__IdK2__308E3499" FromRole="K2" ToRole="Contract" />
+    <NavigationProperty Name="ContractFranchise" Relationship="Self.FK__K2__IdContractFr__0D44F85C" FromRole="K2" ToRole="ContractFranchise" />
+    <NavigationProperty Name="InsuranceZoneOfRegistration" Relationship="Self.FK__K2__IdInsuranceZ__0B5CAFEA" FromRole="K2" ToRole="InsuranceZoneOfRegistration" />
+  </EntityType>
+  <EntityType Name="K3">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="IdCompanyMiddleman" Type="Int32" Nullable="false" />
+    <Property Name="IsLegalEntity" Type="Boolean" Nullable="false" />
+    <Property Name="IdCarInsuranceType" Type="Int32" Nullable="false" />
+    <Property Name="Value" Type="Double" Nullable="false" />
+    <Property Name="IdInsuranceZoneOfReg" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="CarInsuranceType" Relationship="Self.FK__K3__IdCarInsuran__1209AD79" FromRole="K3" ToRole="CarInsuranceType" />
+    <NavigationProperty Name="CompanyMiddleman" Relationship="Self.FK__K3__IdCompanyMid__11158940" FromRole="K3" ToRole="CompanyMiddleman" />
+    <NavigationProperty Name="Contract" Relationship="Self.FK__Contract__IdK3__318258D2" FromRole="K3" ToRole="Contract" />
+    <NavigationProperty Name="InsuranceZoneOfRegistration" Relationship="Self.FK__K3__IdInsuranceZ__3CF40B7E" FromRole="K3" ToRole="InsuranceZoneOfRegistration" />
+  </EntityType>
+  <EntityType Name="K4">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="IdCompanyMiddleman" Type="Int32" Nullable="false" />
+    <Property Name="IdInsuranceZoneOfReg" Type="Int32" Nullable="false" />
+    <Property Name="IdContractFranchise" Type="Int32" Nullable="false" />
+    <Property Name="IsLegalEntity" Type="Boolean" Nullable="false" />
+    <Property Name="Value" Type="Double" Nullable="false" />
+    <NavigationProperty Name="CompanyMiddleman" Relationship="Self.FK__K4__IdCompanyMid__14E61A24" FromRole="K4" ToRole="CompanyMiddleman" />
+    <NavigationProperty Name="Contract" Relationship="Self.FK__Contract__IdK4__32767D0B" FromRole="K4" ToRole="Contract" />
+    <NavigationProperty Name="ContractFranchise" Relationship="Self.FK__K4__IdContractFr__16CE6296" FromRole="K4" ToRole="ContractFranchise" />
+    <NavigationProperty Name="InsuranceZoneOfRegistration" Relationship="Self.FK__K4__IdInsuranceZ__15DA3E5D" FromRole="K4" ToRole="InsuranceZoneOfRegistration" />
+  </EntityType>
+  <EntityType Name="K5">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Period" Type="Int32" Nullable="false" />
+    <Property Name="Value" Type="Double" Nullable="false" />
+    <NavigationProperty Name="Contract" Relationship="Self.FK__Contract__IdK5__336AA144" FromRole="K5" ToRole="Contract" />
+  </EntityType>
+  <EntityType Name="K6">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Value" Type="Double" />
+    <Property Name="IsCheater" Type="Boolean" />
+    <NavigationProperty Name="Contract" Relationship="Self.FK__Contract__IdK6__345EC57D" FromRole="K6" ToRole="Contract" />
+  </EntityType>
+  <EntityType Name="K7">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Period" Type="Double" Nullable="false" />
+    <Property Name="Value" Type="Double" Nullable="false" />
+    <NavigationProperty Name="Contract" Relationship="Self.FK__Contract__IdK7__3552E9B6" FromRole="K7" ToRole="Contract" />
+  </EntityType>
+  <EntityType Name="Middleman">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="FullName" Type="String" MaxLength="80" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="CompanyMiddleman" Relationship="Self.FK__CompanyMi__IdMid__4F47C5E3" FromRole="Middleman" ToRole="CompanyMiddleman" />
+  </EntityType>
+  <EntityType Name="Privileges">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Client" Relationship="Self.FK__Client__IdPrivil__625A9A57" FromRole="Privileges" ToRole="Client" />
+  </EntityType>
+  <EntityType Name="RegioneOfRegistration">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="80" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="CityOfRegistration" Relationship="Self.FK__CityOfReg__IdReg__39237A9A" FromRole="RegioneOfRegistration" ToRole="CityOfRegistration" />
+  </EntityType>
+  <EntityType Name="TSC">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="IdCityOfRegistration" Type="Int32" Nullable="false" />
+    <Property Name="Name" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="Code" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="CityOfRegistration" Relationship="Self.FK__TSC__IdCityOfReg__7E02B4CC" FromRole="TSC" ToRole="CityOfRegistration" />
+    <NavigationProperty Name="CityOrCountryOfRegToZone" Relationship="Self.FK__CityOrCou__IdTSC__03BB8E22" FromRole="TSC" ToRole="CityOrCountryOfRegToZone" />
+  </EntityType>
+  <Association Name="FK__BonusMalu__IdCar__3DE82FB7">
+    <End Role="CarInsuranceType" Type="Self.CarInsuranceType" Multiplicity="0..1" />
+    <End Role="BonusMalus" Type="Self.BonusMalus" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CarInsuranceType">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="BonusMalus">
+        <PropertyRef Name="IdCarInsuranceType" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__BonusMalu__IdCom__2057CCD0">
+    <End Role="CompanyMiddleman" Type="Self.CompanyMiddleman" Multiplicity="1" />
+    <End Role="BonusMalus" Type="Self.BonusMalus" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CompanyMiddleman">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="BonusMalus">
+        <PropertyRef Name="IdCompanyMiddleman" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__BonusMalu__IdCon__22401542">
+    <End Role="ContractFranchise" Type="Self.ContractFranchise" Multiplicity="1" />
+    <End Role="BonusMalus" Type="Self.BonusMalus" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ContractFranchise">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="BonusMalus">
+        <PropertyRef Name="IdContractFranchise" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__BonusMalu__IdIns__214BF109">
+    <End Role="InsuranceZoneOfRegistration" Type="Self.InsuranceZoneOfRegistration" Multiplicity="1" />
+    <End Role="BonusMalus" Type="Self.BonusMalus" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="InsuranceZoneOfRegistration">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="BonusMalus">
+        <PropertyRef Name="IdInsuranceZoneOfReg" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Contract__IdBonu__36470DEF">
+    <End Role="BonusMalus" Type="Self.BonusMalus" Multiplicity="1" />
+    <End Role="Contract" Type="Self.Contract" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="BonusMalus">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Contract">
+        <PropertyRef Name="IdBonusMalus" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Car__IdCarInsura__3FD07829">
+    <End Role="CarInsuranceType" Type="Self.CarInsuranceType" Multiplicity="0..1" />
+    <End Role="Car" Type="Self.Car" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CarInsuranceType">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Car">
+        <PropertyRef Name="IdCarInsuranceType" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__ClientCar__IdCar__681373AD">
+    <End Role="Car" Type="Self.Car" Multiplicity="1" />
+    <End Role="ClientCar" Type="Self.ClientCar" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Car">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ClientCar">
+        <PropertyRef Name="IdCar" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__CarGlobal__IdGlo__74794A92">
+    <End Role="CarGlobalType" Type="Self.CarGlobalType" Multiplicity="1" />
+    <End Role="CarGlobalToInsuranceType" Type="Self.CarGlobalToInsuranceType" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CarGlobalType">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="CarGlobalToInsuranceType">
+        <PropertyRef Name="IdGlobalType" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__CarGlobal__IdIns__756D6ECB">
+    <End Role="CarInsuranceType" Type="Self.CarInsuranceType" Multiplicity="1" />
+    <End Role="CarGlobalToInsuranceType" Type="Self.CarGlobalToInsuranceType" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CarInsuranceType">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="CarGlobalToInsuranceType">
+        <PropertyRef Name="IdInsuraceType" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__K1__IdCarInsuran__078C1F06">
+    <End Role="CarInsuranceType" Type="Self.CarInsuranceType" Multiplicity="1" />
+    <End Role="K1" Type="Self.K1" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CarInsuranceType">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="K1">
+        <PropertyRef Name="IdCarInsuranceType" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__K2__IdCarInsuran__0C50D423">
+    <End Role="CarInsuranceType" Type="Self.CarInsuranceType" Multiplicity="1" />
+    <End Role="K2" Type="Self.K2" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CarInsuranceType">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="K2">
+        <PropertyRef Name="IdCarInsuranceType" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__K3__IdCarInsuran__1209AD79">
+    <End Role="CarInsuranceType" Type="Self.CarInsuranceType" Multiplicity="1" />
+    <End Role="K3" Type="Self.K3" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CarInsuranceType">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="K3">
+        <PropertyRef Name="IdCarInsuranceType" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Chart__IdCompany__5224328E">
+    <End Role="Company" Type="Self.Company" Multiplicity="1" />
+    <End Role="Chart" Type="Self.Chart" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Company">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Chart">
+        <PropertyRef Name="IdCompany" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__CityOfReg__IdReg__39237A9A">
+    <End Role="RegioneOfRegistration" Type="Self.RegioneOfRegistration" Multiplicity="0..1" />
+    <End Role="CityOfRegistration" Type="Self.CityOfRegistration" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="RegioneOfRegistration">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="CityOfRegistration">
+        <PropertyRef Name="IdRegioneOfRegistration" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__CityOrCou__IdCit__3A179ED3">
+    <End Role="CityOfRegistration" Type="Self.CityOfRegistration" Multiplicity="0..1" />
+    <End Role="CityOrCountryOfRegToZone" Type="Self.CityOrCountryOfRegToZone" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CityOfRegistration">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="CityOrCountryOfRegToZone">
+        <PropertyRef Name="IdCityOfRegistration" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__TSC__IdCityOfReg__7E02B4CC">
+    <End Role="CityOfRegistration" Type="Self.CityOfRegistration" Multiplicity="1" />
+    <End Role="TSC" Type="Self.TSC" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CityOfRegistration">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="TSC">
+        <PropertyRef Name="IdCityOfRegistration" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__CityOrCou__IdCom__02C769E9">
+    <End Role="Company" Type="Self.Company" Multiplicity="1" />
+    <End Role="CityOrCountryOfRegToZone" Type="Self.CityOrCountryOfRegToZone" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Company">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="CityOrCountryOfRegToZone">
+        <PropertyRef Name="IdCompany" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__CityOrCou__IdIns__04AFB25B">
+    <End Role="InsuranceZoneOfRegistration" Type="Self.InsuranceZoneOfRegistration" Multiplicity="0..1" />
+    <End Role="CityOrCountryOfRegToZone" Type="Self.CityOrCountryOfRegToZone" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="InsuranceZoneOfRegistration">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="CityOrCountryOfRegToZone">
+        <PropertyRef Name="IdInsuranceZoneOfReg" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__CityOrCou__IdTSC__03BB8E22">
+    <End Role="TSC" Type="Self.TSC" Multiplicity="0..1" />
+    <End Role="CityOrCountryOfRegToZone" Type="Self.CityOrCountryOfRegToZone" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TSC">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="CityOrCountryOfRegToZone">
+        <PropertyRef Name="IdTSC" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Client__IdPrivil__625A9A57">
+    <End Role="Privileges" Type="Self.Privileges" Multiplicity="0..1" />
+    <End Role="Client" Type="Self.Client" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Privileges">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Client">
+        <PropertyRef Name="IdPrivileges" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__ClientCar__IdCli__671F4F74">
+    <End Role="Client" Type="Self.Client" Multiplicity="1" />
+    <End Role="ClientCar" Type="Self.ClientCar" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Client">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ClientCar">
+        <PropertyRef Name="IdClient" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Contract__IdClie__2DB1C7EE">
+    <End Role="Client" Type="Self.Client" Multiplicity="1" />
+    <End Role="Contract" Type="Self.Contract" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Client">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Contract">
+        <PropertyRef Name="IdClient" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Document__IdClie__6DCC4D03">
+    <End Role="Client" Type="Self.Client" Multiplicity="1" />
+    <End Role="Document" Type="Self.Document" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Client">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Document">
+        <PropertyRef Name="IdClient" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Contract__IdClie__2EA5EC27">
+    <End Role="ClientCar" Type="Self.ClientCar" Multiplicity="1" />
+    <End Role="Contract" Type="Self.Contract" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ClientCar">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Contract">
+        <PropertyRef Name="IdClientCar" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__CompanyDe__IdCom__3E1D39E1">
+    <End Role="Company" Type="Self.Company" Multiplicity="1" />
+    <End Role="CompanyDetail" Type="Self.CompanyDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Company">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="CompanyDetail">
+        <PropertyRef Name="IdCompany" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__CompanyFe__IdCom__489AC854">
+    <End Role="Company" Type="Self.Company" Multiplicity="1" />
+    <End Role="CompanyFeatureToCompany" Type="Self.CompanyFeatureToCompany" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Company">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="CompanyFeatureToCompany">
+        <PropertyRef Name="IdCompany" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__CompanyIM__IdCom__43D61337">
+    <End Role="Company" Type="Self.Company" Multiplicity="1" />
+    <End Role="CompanyIMG" Type="Self.CompanyIMG" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Company">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="CompanyIMG">
+        <PropertyRef Name="IdCompany" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__CompanyMi__IdCom__4E53A1AA">
+    <End Role="Company" Type="Self.Company" Multiplicity="1" />
+    <End Role="CompanyMiddleman" Type="Self.CompanyMiddleman" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Company">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="CompanyMiddleman">
+        <PropertyRef Name="IdCompany" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__CompanyCo__IdCom__56E8E7AB">
+    <End Role="CompanyMiddleman" Type="Self.CompanyMiddleman" Multiplicity="1" />
+    <End Role="CompanyContractTypes" Type="Self.CompanyContractTypes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CompanyMiddleman">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="CompanyContractTypes">
+        <PropertyRef Name="IdCompanyMiddleman" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__CompanyCo__IdCon__57DD0BE4">
+    <End Role="ContractType" Type="Self.ContractType" Multiplicity="1" />
+    <End Role="CompanyContractTypes" Type="Self.CompanyContractTypes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ContractType">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="CompanyContractTypes">
+        <PropertyRef Name="IdContractType" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__ContractF__IdCom__5CA1C101">
+    <End Role="CompanyContractTypes" Type="Self.CompanyContractTypes" Multiplicity="1" />
+    <End Role="ContractFranchise" Type="Self.ContractFranchise" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CompanyContractTypes">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ContractFranchise">
+        <PropertyRef Name="IdCompanyContractType" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__CompanyFe__IdFea__498EEC8D">
+    <End Role="CompanyFeature" Type="Self.CompanyFeature" Multiplicity="1" />
+    <End Role="CompanyFeatureToCompany" Type="Self.CompanyFeatureToCompany" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CompanyFeature">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="CompanyFeatureToCompany">
+        <PropertyRef Name="IdFeature" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__CompanyIM__IdIma__42E1EEFE">
+    <End Role="ImageType" Type="Self.ImageType" Multiplicity="1" />
+    <End Role="CompanyIMG" Type="Self.CompanyIMG" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ImageType">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="CompanyIMG">
+        <PropertyRef Name="IdImageType" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__CompanyMi__IdMid__4F47C5E3">
+    <End Role="Middleman" Type="Self.Middleman" Multiplicity="1" />
+    <End Role="CompanyMiddleman" Type="Self.CompanyMiddleman" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Middleman">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="CompanyMiddleman">
+        <PropertyRef Name="IdMiddleman" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Contract__IdComp__2AD55B43">
+    <End Role="CompanyMiddleman" Type="Self.CompanyMiddleman" Multiplicity="1" />
+    <End Role="Contract" Type="Self.Contract" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CompanyMiddleman">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Contract">
+        <PropertyRef Name="IdCompanyMiddleman" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__K1__IdCompanyMid__3B0BC30C">
+    <End Role="CompanyMiddleman" Type="Self.CompanyMiddleman" Multiplicity="0..1" />
+    <End Role="K1" Type="Self.K1" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CompanyMiddleman">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="K1">
+        <PropertyRef Name="IdCompanyMiddleman" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__K2__IdCompanyMid__0E391C95">
+    <End Role="CompanyMiddleman" Type="Self.CompanyMiddleman" Multiplicity="1" />
+    <End Role="K2" Type="Self.K2" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CompanyMiddleman">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="K2">
+        <PropertyRef Name="IdCompanyMiddleman" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__K3__IdCompanyMid__11158940">
+    <End Role="CompanyMiddleman" Type="Self.CompanyMiddleman" Multiplicity="1" />
+    <End Role="K3" Type="Self.K3" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CompanyMiddleman">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="K3">
+        <PropertyRef Name="IdCompanyMiddleman" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__K4__IdCompanyMid__14E61A24">
+    <End Role="CompanyMiddleman" Type="Self.CompanyMiddleman" Multiplicity="1" />
+    <End Role="K4" Type="Self.K4" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CompanyMiddleman">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="K4">
+        <PropertyRef Name="IdCompanyMiddleman" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Contract__IdCont__2BC97F7C">
+    <End Role="ContractType" Type="Self.ContractType" Multiplicity="1" />
+    <End Role="Contract" Type="Self.Contract" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ContractType">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Contract">
+        <PropertyRef Name="IdContractType" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Contract__IdCont__2CBDA3B5">
+    <End Role="ContractFranchise" Type="Self.ContractFranchise" Multiplicity="1" />
+    <End Role="Contract" Type="Self.Contract" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ContractFranchise">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Contract">
+        <PropertyRef Name="IdContractFranchise" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Contract__IdDisc__373B3228">
+    <End Role="DiscountByQuantity" Type="Self.DiscountByQuantity" Multiplicity="1" />
+    <End Role="Contract" Type="Self.Contract" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DiscountByQuantity">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Contract">
+        <PropertyRef Name="IdDiscountByQuantity" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Contract__IdDisc__382F5661">
+    <End Role="DiscountForClientWithPrivilegies" Type="Self.DiscountForClientWithPrivilegies" Multiplicity="1" />
+    <End Role="Contract" Type="Self.Contract" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DiscountForClientWithPrivilegies">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Contract">
+        <PropertyRef Name="IdDiscountForClientWithPrivilegies" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Contract__IdK1__2F9A1060">
+    <End Role="K1" Type="Self.K1" Multiplicity="1" />
+    <End Role="Contract" Type="Self.Contract" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="K1">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Contract">
+        <PropertyRef Name="IdK1" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Contract__IdK2__308E3499">
+    <End Role="K2" Type="Self.K2" Multiplicity="1" />
+    <End Role="Contract" Type="Self.Contract" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="K2">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Contract">
+        <PropertyRef Name="IdK2" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Contract__IdK3__318258D2">
+    <End Role="K3" Type="Self.K3" Multiplicity="1" />
+    <End Role="Contract" Type="Self.Contract" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="K3">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Contract">
+        <PropertyRef Name="IdK3" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Contract__IdK4__32767D0B">
+    <End Role="K4" Type="Self.K4" Multiplicity="1" />
+    <End Role="Contract" Type="Self.Contract" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="K4">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Contract">
+        <PropertyRef Name="IdK4" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Contract__IdK5__336AA144">
+    <End Role="K5" Type="Self.K5" Multiplicity="1" />
+    <End Role="Contract" Type="Self.Contract" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="K5">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Contract">
+        <PropertyRef Name="IdK5" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Contract__IdK6__345EC57D">
+    <End Role="K6" Type="Self.K6" Multiplicity="1" />
+    <End Role="Contract" Type="Self.Contract" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="K6">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Contract">
+        <PropertyRef Name="IdK6" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Contract__IdK7__3552E9B6">
+    <End Role="K7" Type="Self.K7" Multiplicity="1" />
+    <End Role="Contract" Type="Self.Contract" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="K7">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Contract">
+        <PropertyRef Name="IdK7" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__ContractF__IdFra__5D95E53A">
+    <End Role="Franchise" Type="Self.Franchise" Multiplicity="1" />
+    <End Role="ContractFranchise" Type="Self.ContractFranchise" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Franchise">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ContractFranchise">
+        <PropertyRef Name="IdFranchise" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__K2__IdContractFr__0D44F85C">
+    <End Role="ContractFranchise" Type="Self.ContractFranchise" Multiplicity="1" />
+    <End Role="K2" Type="Self.K2" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ContractFranchise">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="K2">
+        <PropertyRef Name="IdContractFranchise" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__K4__IdContractFr__16CE6296">
+    <End Role="ContractFranchise" Type="Self.ContractFranchise" Multiplicity="1" />
+    <End Role="K4" Type="Self.K4" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ContractFranchise">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="K4">
+        <PropertyRef Name="IdContractFranchise" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__DiscountF__IdDoc__2704CA5F">
+    <End Role="DocumentType" Type="Self.DocumentType" Multiplicity="1" />
+    <End Role="DiscountForClientWithPrivilegies" Type="Self.DiscountForClientWithPrivilegies" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DocumentType">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="DiscountForClientWithPrivilegies">
+        <PropertyRef Name="IdDocumentType" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Document__IdDocu__6CD828CA">
+    <End Role="DocumentType" Type="Self.DocumentType" Multiplicity="1" />
+    <End Role="Document" Type="Self.Document" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DocumentType">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Document">
+        <PropertyRef Name="IdDocumentType" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__K2__IdInsuranceZ__0B5CAFEA">
+    <End Role="InsuranceZoneOfRegistration" Type="Self.InsuranceZoneOfRegistration" Multiplicity="1" />
+    <End Role="K2" Type="Self.K2" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="InsuranceZoneOfRegistration">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="K2">
+        <PropertyRef Name="IdInsuranceZoneOfReg" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__K3__IdInsuranceZ__3CF40B7E">
+    <End Role="InsuranceZoneOfRegistration" Type="Self.InsuranceZoneOfRegistration" Multiplicity="1" />
+    <End Role="K3" Type="Self.K3" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="InsuranceZoneOfRegistration">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="K3">
+        <PropertyRef Name="IdInsuranceZoneOfReg" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__K4__IdInsuranceZ__15DA3E5D">
+    <End Role="InsuranceZoneOfRegistration" Type="Self.InsuranceZoneOfRegistration" Multiplicity="1" />
+    <End Role="K4" Type="Self.K4" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="InsuranceZoneOfRegistration">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="K4">
+        <PropertyRef Name="IdInsuranceZoneOfReg" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="InsuranceServiceBD" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="BonusMalus" EntityType="Self.BonusMalus" />
+    <EntitySet Name="Car" EntityType="Self.Car" />
+    <EntitySet Name="CarGlobalToInsuranceType" EntityType="Self.CarGlobalToInsuranceType" />
+    <EntitySet Name="CarGlobalType" EntityType="Self.CarGlobalType" />
+    <EntitySet Name="CarInsuranceType" EntityType="Self.CarInsuranceType" />
+    <EntitySet Name="Chart" EntityType="Self.Chart" />
+    <EntitySet Name="CityOfRegistration" EntityType="Self.CityOfRegistration" />
+    <EntitySet Name="CityOrCountryOfRegToZone" EntityType="Self.CityOrCountryOfRegToZone" />
+    <EntitySet Name="Client" EntityType="Self.Client" />
+    <EntitySet Name="ClientCar" EntityType="Self.ClientCar" />
+    <EntitySet Name="Company" EntityType="Self.Company" />
+    <EntitySet Name="CompanyContractTypes" EntityType="Self.CompanyContractTypes" />
+    <EntitySet Name="CompanyDetail" EntityType="Self.CompanyDetail" />
+    <EntitySet Name="CompanyFeature" EntityType="Self.CompanyFeature" />
+    <EntitySet Name="CompanyFeatureToCompany" EntityType="Self.CompanyFeatureToCompany" />
+    <EntitySet Name="CompanyIMG" EntityType="Self.CompanyIMG" />
+    <EntitySet Name="CompanyMiddleman" EntityType="Self.CompanyMiddleman" />
+    <EntitySet Name="Contract" EntityType="Self.Contract" />
+    <EntitySet Name="ContractFranchise" EntityType="Self.ContractFranchise" />
+    <EntitySet Name="ContractType" EntityType="Self.ContractType" />
+    <EntitySet Name="CountryOfRegistration" EntityType="Self.CountryOfRegistration" />
+    <EntitySet Name="DiscountByQuantity" EntityType="Self.DiscountByQuantity" />
+    <EntitySet Name="DiscountForClientWithPrivilegies" EntityType="Self.DiscountForClientWithPrivilegies" />
+    <EntitySet Name="Document" EntityType="Self.Document" />
+    <EntitySet Name="DocumentType" EntityType="Self.DocumentType" />
+    <EntitySet Name="Franchise" EntityType="Self.Franchise" />
+    <EntitySet Name="ImageType" EntityType="Self.ImageType" />
+    <EntitySet Name="InsuranceZoneOfRegistration" EntityType="Self.InsuranceZoneOfRegistration" />
+    <EntitySet Name="K1" EntityType="Self.K1" />
+    <EntitySet Name="K2" EntityType="Self.K2" />
+    <EntitySet Name="K3" EntityType="Self.K3" />
+    <EntitySet Name="K4" EntityType="Self.K4" />
+    <EntitySet Name="K5" EntityType="Self.K5" />
+    <EntitySet Name="K6" EntityType="Self.K6" />
+    <EntitySet Name="K7" EntityType="Self.K7" />
+    <EntitySet Name="Middleman" EntityType="Self.Middleman" />
+    <EntitySet Name="Privileges" EntityType="Self.Privileges" />
+    <EntitySet Name="RegioneOfRegistration" EntityType="Self.RegioneOfRegistration" />
+    <EntitySet Name="TSC" EntityType="Self.TSC" />
+    <AssociationSet Name="FK__BonusMalu__IdCar__3DE82FB7" Association="Self.FK__BonusMalu__IdCar__3DE82FB7">
+      <End Role="CarInsuranceType" EntitySet="CarInsuranceType" />
+      <End Role="BonusMalus" EntitySet="BonusMalus" />
+    </AssociationSet>
+    <AssociationSet Name="FK__BonusMalu__IdCom__2057CCD0" Association="Self.FK__BonusMalu__IdCom__2057CCD0">
+      <End Role="CompanyMiddleman" EntitySet="CompanyMiddleman" />
+      <End Role="BonusMalus" EntitySet="BonusMalus" />
+    </AssociationSet>
+    <AssociationSet Name="FK__BonusMalu__IdCon__22401542" Association="Self.FK__BonusMalu__IdCon__22401542">
+      <End Role="ContractFranchise" EntitySet="ContractFranchise" />
+      <End Role="BonusMalus" EntitySet="BonusMalus" />
+    </AssociationSet>
+    <AssociationSet Name="FK__BonusMalu__IdIns__214BF109" Association="Self.FK__BonusMalu__IdIns__214BF109">
+      <End Role="InsuranceZoneOfRegistration" EntitySet="InsuranceZoneOfRegistration" />
+      <End Role="BonusMalus" EntitySet="BonusMalus" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Contract__IdBonu__36470DEF" Association="Self.FK__Contract__IdBonu__36470DEF">
+      <End Role="BonusMalus" EntitySet="BonusMalus" />
+      <End Role="Contract" EntitySet="Contract" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Car__IdCarInsura__3FD07829" Association="Self.FK__Car__IdCarInsura__3FD07829">
+      <End Role="CarInsuranceType" EntitySet="CarInsuranceType" />
+      <End Role="Car" EntitySet="Car" />
+    </AssociationSet>
+    <AssociationSet Name="FK__ClientCar__IdCar__681373AD" Association="Self.FK__ClientCar__IdCar__681373AD">
+      <End Role="Car" EntitySet="Car" />
+      <End Role="ClientCar" EntitySet="ClientCar" />
+    </AssociationSet>
+    <AssociationSet Name="FK__CarGlobal__IdGlo__74794A92" Association="Self.FK__CarGlobal__IdGlo__74794A92">
+      <End Role="CarGlobalType" EntitySet="CarGlobalType" />
+      <End Role="CarGlobalToInsuranceType" EntitySet="CarGlobalToInsuranceType" />
+    </AssociationSet>
+    <AssociationSet Name="FK__CarGlobal__IdIns__756D6ECB" Association="Self.FK__CarGlobal__IdIns__756D6ECB">
+      <End Role="CarInsuranceType" EntitySet="CarInsuranceType" />
+      <End Role="CarGlobalToInsuranceType" EntitySet="CarGlobalToInsuranceType" />
+    </AssociationSet>
+    <AssociationSet Name="FK__K1__IdCarInsuran__078C1F06" Association="Self.FK__K1__IdCarInsuran__078C1F06">
+      <End Role="CarInsuranceType" EntitySet="CarInsuranceType" />
+      <End Role="K1" EntitySet="K1" />
+    </AssociationSet>
+    <AssociationSet Name="FK__K2__IdCarInsuran__0C50D423" Association="Self.FK__K2__IdCarInsuran__0C50D423">
+      <End Role="CarInsuranceType" EntitySet="CarInsuranceType" />
+      <End Role="K2" EntitySet="K2" />
+    </AssociationSet>
+    <AssociationSet Name="FK__K3__IdCarInsuran__1209AD79" Association="Self.FK__K3__IdCarInsuran__1209AD79">
+      <End Role="CarInsuranceType" EntitySet="CarInsuranceType" />
+      <End Role="K3" EntitySet="K3" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Chart__IdCompany__5224328E" Association="Self.FK__Chart__IdCompany__5224328E">
+      <End Role="Company" EntitySet="Company" />
+      <End Role="Chart" EntitySet="Chart" />
+    </AssociationSet>
+    <AssociationSet Name="FK__CityOfReg__IdReg__39237A9A" Association="Self.FK__CityOfReg__IdReg__39237A9A">
+      <End Role="RegioneOfRegistration" EntitySet="RegioneOfRegistration" />
+      <End Role="CityOfRegistration" EntitySet="CityOfRegistration" />
+    </AssociationSet>
+    <AssociationSet Name="FK__CityOrCou__IdCit__3A179ED3" Association="Self.FK__CityOrCou__IdCit__3A179ED3">
+      <End Role="CityOfRegistration" EntitySet="CityOfRegistration" />
+      <End Role="CityOrCountryOfRegToZone" EntitySet="CityOrCountryOfRegToZone" />
+    </AssociationSet>
+    <AssociationSet Name="FK__TSC__IdCityOfReg__7E02B4CC" Association="Self.FK__TSC__IdCityOfReg__7E02B4CC">
+      <End Role="CityOfRegistration" EntitySet="CityOfRegistration" />
+      <End Role="TSC" EntitySet="TSC" />
+    </AssociationSet>
+    <AssociationSet Name="FK__CityOrCou__IdCom__02C769E9" Association="Self.FK__CityOrCou__IdCom__02C769E9">
+      <End Role="Company" EntitySet="Company" />
+      <End Role="CityOrCountryOfRegToZone" EntitySet="CityOrCountryOfRegToZone" />
+    </AssociationSet>
+    <AssociationSet Name="FK__CityOrCou__IdIns__04AFB25B" Association="Self.FK__CityOrCou__IdIns__04AFB25B">
+      <End Role="InsuranceZoneOfRegistration" EntitySet="InsuranceZoneOfRegistration" />
+      <End Role="CityOrCountryOfRegToZone" EntitySet="CityOrCountryOfRegToZone" />
+    </AssociationSet>
+    <AssociationSet Name="FK__CityOrCou__IdTSC__03BB8E22" Association="Self.FK__CityOrCou__IdTSC__03BB8E22">
+      <End Role="TSC" EntitySet="TSC" />
+      <End Role="CityOrCountryOfRegToZone" EntitySet="CityOrCountryOfRegToZone" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Client__IdPrivil__625A9A57" Association="Self.FK__Client__IdPrivil__625A9A57">
+      <End Role="Privileges" EntitySet="Privileges" />
+      <End Role="Client" EntitySet="Client" />
+    </AssociationSet>
+    <AssociationSet Name="FK__ClientCar__IdCli__671F4F74" Association="Self.FK__ClientCar__IdCli__671F4F74">
+      <End Role="Client" EntitySet="Client" />
+      <End Role="ClientCar" EntitySet="ClientCar" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Contract__IdClie__2DB1C7EE" Association="Self.FK__Contract__IdClie__2DB1C7EE">
+      <End Role="Client" EntitySet="Client" />
+      <End Role="Contract" EntitySet="Contract" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Document__IdClie__6DCC4D03" Association="Self.FK__Document__IdClie__6DCC4D03">
+      <End Role="Client" EntitySet="Client" />
+      <End Role="Document" EntitySet="Document" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Contract__IdClie__2EA5EC27" Association="Self.FK__Contract__IdClie__2EA5EC27">
+      <End Role="ClientCar" EntitySet="ClientCar" />
+      <End Role="Contract" EntitySet="Contract" />
+    </AssociationSet>
+    <AssociationSet Name="FK__CompanyDe__IdCom__3E1D39E1" Association="Self.FK__CompanyDe__IdCom__3E1D39E1">
+      <End Role="Company" EntitySet="Company" />
+      <End Role="CompanyDetail" EntitySet="CompanyDetail" />
+    </AssociationSet>
+    <AssociationSet Name="FK__CompanyFe__IdCom__489AC854" Association="Self.FK__CompanyFe__IdCom__489AC854">
+      <End Role="Company" EntitySet="Company" />
+      <End Role="CompanyFeatureToCompany" EntitySet="CompanyFeatureToCompany" />
+    </AssociationSet>
+    <AssociationSet Name="FK__CompanyIM__IdCom__43D61337" Association="Self.FK__CompanyIM__IdCom__43D61337">
+      <End Role="Company" EntitySet="Company" />
+      <End Role="CompanyIMG" EntitySet="CompanyIMG" />
+    </AssociationSet>
+    <AssociationSet Name="FK__CompanyMi__IdCom__4E53A1AA" Association="Self.FK__CompanyMi__IdCom__4E53A1AA">
+      <End Role="Company" EntitySet="Company" />
+      <End Role="CompanyMiddleman" EntitySet="CompanyMiddleman" />
+    </AssociationSet>
+    <AssociationSet Name="FK__CompanyCo__IdCom__56E8E7AB" Association="Self.FK__CompanyCo__IdCom__56E8E7AB">
+      <End Role="CompanyMiddleman" EntitySet="CompanyMiddleman" />
+      <End Role="CompanyContractTypes" EntitySet="CompanyContractTypes" />
+    </AssociationSet>
+    <AssociationSet Name="FK__CompanyCo__IdCon__57DD0BE4" Association="Self.FK__CompanyCo__IdCon__57DD0BE4">
+      <End Role="ContractType" EntitySet="ContractType" />
+      <End Role="CompanyContractTypes" EntitySet="CompanyContractTypes" />
+    </AssociationSet>
+    <AssociationSet Name="FK__ContractF__IdCom__5CA1C101" Association="Self.FK__ContractF__IdCom__5CA1C101">
+      <End Role="CompanyContractTypes" EntitySet="CompanyContractTypes" />
+      <End Role="ContractFranchise" EntitySet="ContractFranchise" />
+    </AssociationSet>
+    <AssociationSet Name="FK__CompanyFe__IdFea__498EEC8D" Association="Self.FK__CompanyFe__IdFea__498EEC8D">
+      <End Role="CompanyFeature" EntitySet="CompanyFeature" />
+      <End Role="CompanyFeatureToCompany" EntitySet="CompanyFeatureToCompany" />
+    </AssociationSet>
+    <AssociationSet Name="FK__CompanyIM__IdIma__42E1EEFE" Association="Self.FK__CompanyIM__IdIma__42E1EEFE">
+      <End Role="ImageType" EntitySet="ImageType" />
+      <End Role="CompanyIMG" EntitySet="CompanyIMG" />
+    </AssociationSet>
+    <AssociationSet Name="FK__CompanyMi__IdMid__4F47C5E3" Association="Self.FK__CompanyMi__IdMid__4F47C5E3">
+      <End Role="Middleman" EntitySet="Middleman" />
+      <End Role="CompanyMiddleman" EntitySet="CompanyMiddleman" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Contract__IdComp__2AD55B43" Association="Self.FK__Contract__IdComp__2AD55B43">
+      <End Role="CompanyMiddleman" EntitySet="CompanyMiddleman" />
+      <End Role="Contract" EntitySet="Contract" />
+    </AssociationSet>
+    <AssociationSet Name="FK__K1__IdCompanyMid__3B0BC30C" Association="Self.FK__K1__IdCompanyMid__3B0BC30C">
+      <End Role="CompanyMiddleman" EntitySet="CompanyMiddleman" />
+      <End Role="K1" EntitySet="K1" />
+    </AssociationSet>
+    <AssociationSet Name="FK__K2__IdCompanyMid__0E391C95" Association="Self.FK__K2__IdCompanyMid__0E391C95">
+      <End Role="CompanyMiddleman" EntitySet="CompanyMiddleman" />
+      <End Role="K2" EntitySet="K2" />
+    </AssociationSet>
+    <AssociationSet Name="FK__K3__IdCompanyMid__11158940" Association="Self.FK__K3__IdCompanyMid__11158940">
+      <End Role="CompanyMiddleman" EntitySet="CompanyMiddleman" />
+      <End Role="K3" EntitySet="K3" />
+    </AssociationSet>
+    <AssociationSet Name="FK__K4__IdCompanyMid__14E61A24" Association="Self.FK__K4__IdCompanyMid__14E61A24">
+      <End Role="CompanyMiddleman" EntitySet="CompanyMiddleman" />
+      <End Role="K4" EntitySet="K4" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Contract__IdCont__2BC97F7C" Association="Self.FK__Contract__IdCont__2BC97F7C">
+      <End Role="ContractType" EntitySet="ContractType" />
+      <End Role="Contract" EntitySet="Contract" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Contract__IdCont__2CBDA3B5" Association="Self.FK__Contract__IdCont__2CBDA3B5">
+      <End Role="ContractFranchise" EntitySet="ContractFranchise" />
+      <End Role="Contract" EntitySet="Contract" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Contract__IdDisc__373B3228" Association="Self.FK__Contract__IdDisc__373B3228">
+      <End Role="DiscountByQuantity" EntitySet="DiscountByQuantity" />
+      <End Role="Contract" EntitySet="Contract" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Contract__IdDisc__382F5661" Association="Self.FK__Contract__IdDisc__382F5661">
+      <End Role="DiscountForClientWithPrivilegies" EntitySet="DiscountForClientWithPrivilegies" />
+      <End Role="Contract" EntitySet="Contract" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Contract__IdK1__2F9A1060" Association="Self.FK__Contract__IdK1__2F9A1060">
+      <End Role="K1" EntitySet="K1" />
+      <End Role="Contract" EntitySet="Contract" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Contract__IdK2__308E3499" Association="Self.FK__Contract__IdK2__308E3499">
+      <End Role="K2" EntitySet="K2" />
+      <End Role="Contract" EntitySet="Contract" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Contract__IdK3__318258D2" Association="Self.FK__Contract__IdK3__318258D2">
+      <End Role="K3" EntitySet="K3" />
+      <End Role="Contract" EntitySet="Contract" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Contract__IdK4__32767D0B" Association="Self.FK__Contract__IdK4__32767D0B">
+      <End Role="K4" EntitySet="K4" />
+      <End Role="Contract" EntitySet="Contract" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Contract__IdK5__336AA144" Association="Self.FK__Contract__IdK5__336AA144">
+      <End Role="K5" EntitySet="K5" />
+      <End Role="Contract" EntitySet="Contract" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Contract__IdK6__345EC57D" Association="Self.FK__Contract__IdK6__345EC57D">
+      <End Role="K6" EntitySet="K6" />
+      <End Role="Contract" EntitySet="Contract" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Contract__IdK7__3552E9B6" Association="Self.FK__Contract__IdK7__3552E9B6">
+      <End Role="K7" EntitySet="K7" />
+      <End Role="Contract" EntitySet="Contract" />
+    </AssociationSet>
+    <AssociationSet Name="FK__ContractF__IdFra__5D95E53A" Association="Self.FK__ContractF__IdFra__5D95E53A">
+      <End Role="Franchise" EntitySet="Franchise" />
+      <End Role="ContractFranchise" EntitySet="ContractFranchise" />
+    </AssociationSet>
+    <AssociationSet Name="FK__K2__IdContractFr__0D44F85C" Association="Self.FK__K2__IdContractFr__0D44F85C">
+      <End Role="ContractFranchise" EntitySet="ContractFranchise" />
+      <End Role="K2" EntitySet="K2" />
+    </AssociationSet>
+    <AssociationSet Name="FK__K4__IdContractFr__16CE6296" Association="Self.FK__K4__IdContractFr__16CE6296">
+      <End Role="ContractFranchise" EntitySet="ContractFranchise" />
+      <End Role="K4" EntitySet="K4" />
+    </AssociationSet>
+    <AssociationSet Name="FK__DiscountF__IdDoc__2704CA5F" Association="Self.FK__DiscountF__IdDoc__2704CA5F">
+      <End Role="DocumentType" EntitySet="DocumentType" />
+      <End Role="DiscountForClientWithPrivilegies" EntitySet="DiscountForClientWithPrivilegies" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Document__IdDocu__6CD828CA" Association="Self.FK__Document__IdDocu__6CD828CA">
+      <End Role="DocumentType" EntitySet="DocumentType" />
+      <End Role="Document" EntitySet="Document" />
+    </AssociationSet>
+    <AssociationSet Name="FK__K2__IdInsuranceZ__0B5CAFEA" Association="Self.FK__K2__IdInsuranceZ__0B5CAFEA">
+      <End Role="InsuranceZoneOfRegistration" EntitySet="InsuranceZoneOfRegistration" />
+      <End Role="K2" EntitySet="K2" />
+    </AssociationSet>
+    <AssociationSet Name="FK__K3__IdInsuranceZ__3CF40B7E" Association="Self.FK__K3__IdInsuranceZ__3CF40B7E">
+      <End Role="InsuranceZoneOfRegistration" EntitySet="InsuranceZoneOfRegistration" />
+      <End Role="K3" EntitySet="K3" />
+    </AssociationSet>
+    <AssociationSet Name="FK__K4__IdInsuranceZ__15DA3E5D" Association="Self.FK__K4__IdInsuranceZ__15DA3E5D">
+      <End Role="InsuranceZoneOfRegistration" EntitySet="InsuranceZoneOfRegistration" />
+      <End Role="K4" EntitySet="K4" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
