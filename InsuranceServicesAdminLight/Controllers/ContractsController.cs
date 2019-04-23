@@ -14,7 +14,6 @@ namespace InsuranceServicesAdminLight.Controllers
 
         public string GetCheckedCompany(string companyChecked)
         {
-            //var companyFromJS = new JavaScriptSerializer().Deserialize<string>(companyChecked.ToString());
             var company = db.Companies.Where(c => c.Name == companyChecked).FirstOrDefault();
             if (company == null)
             {
@@ -60,31 +59,79 @@ namespace InsuranceServicesAdminLight.Controllers
 
         public string GetConditionsForCoefK1(string companyName, string middlemanName)
         {
-            int idCompany, idMiddleman, idCompanyMiddleman;
-            if (companyName == "")
-                return "Error! Company is empty";
+            int idCompany = 0, idMiddleman = 0, idCompanyMiddleman = 0;
 
-            idCompany = db.Companies.Where(ci => ci.Name == companyName).Select(c => c.Id).FirstOrDefault();
-
-            if (idCompany == 0)
-                return "Error! Company not found";
-
-            if (middlemanName == "")
-                return "Error! Middleman is empty";
-
-            idMiddleman = db.Middlemen.Where(mi => mi.FullName == middlemanName).Select(m => m.Id).FirstOrDefault();
-
-            if (idMiddleman == 0)
-                return "Error! Middleman not found";
-
-            idCompanyMiddleman = db.CompanyMiddlemen.Where(ci => ci.IdCompany == idCompany && ci.IdMiddleman == idMiddleman).Select(cm => cm.Id).FirstOrDefault();
-
-            if (idCompanyMiddleman == 0)
-                return "Error! Company hasn`t that middleman";
+            string resultOfChekingCompanyMiddleman = GetCompanyMiddlemanData(companyName, middlemanName, ref idCompany, ref idMiddleman, ref idCompanyMiddleman);
+            if (resultOfChekingCompanyMiddleman != "Success!")
+                return resultOfChekingCompanyMiddleman;
 
             var K1 = db.K1.Where(i => i.IdCompanyMiddleman == idCompanyMiddleman);
             List<TableK1ToSend> K1Table = new List<TableK1ToSend>();
 
+            var resultOfChekingExistingRows = InsertDataForK1(companyName, middlemanName, idCompanyMiddleman);
+            if (resultOfChekingExistingRows != "Success!")
+                return resultOfChekingExistingRows;
+
+            K1 = db.K1.Where(i => i.IdCompanyMiddleman == idCompanyMiddleman);
+
+            foreach (var k in K1)
+            {
+                TableK1ToSend tempTableRow = new TableK1ToSend();
+                tempTableRow.InsuranceTypeOfCar = db.CarInsuranceTypes.Where(cit => cit.Id == k.IdCarInsuranceType).Select(cit => cit.Type).FirstOrDefault();
+                tempTableRow.Value = k.Value;
+                K1Table.Add(tempTableRow);
+            }
+
+            JavaScriptSerializer js = new JavaScriptSerializer();
+            return js.Serialize(K1Table);
+        }
+
+        public string GetConditionsForCoefK2(string companyName, string middlemanName)
+        {
+            int idCompany = 0, idMiddleman = 0, idCompanyMiddleman = 0;
+
+            string resultOfChekingCompanyMiddleman = GetCompanyMiddlemanData(companyName, middlemanName, ref idCompany, ref idMiddleman, ref idCompanyMiddleman);
+            if (resultOfChekingCompanyMiddleman != "Success!")
+                return resultOfChekingCompanyMiddleman;
+
+            var K2 = db.K2.Where(i => i.IdCompanyMiddleman == idCompanyMiddleman);
+            List<TableK2ToSend> K2Table = new List<TableK2ToSend>();
+
+            var resultOfChekingExistingRows = InsertDataForK2(companyName, middlemanName, idCompanyMiddleman);
+            if (resultOfChekingExistingRows != "Success!")
+                return resultOfChekingExistingRows;
+
+            K2 = db.K2.Where(i => i.IdCompanyMiddleman == idCompanyMiddleman);
+
+            foreach (var k in K2)
+            {
+                TableK2ToSend tempTableRow = new TableK2ToSend();
+                tempTableRow.CarZoneOfRegistration = db.InsuranceZoneOfRegistrations
+                                                        .Where(czor => czor.Id == k.IdInsuranceZoneOfReg)
+                                                        .Select(czor => czor.Name)
+                                                        .FirstOrDefault();
+                tempTableRow.IsLegalEntity = k.IsLegalEntity.ToString();
+                tempTableRow.InsuranceTypeOfCar = db.CarInsuranceTypes
+                                                    .Where(cit => cit.Id == k.IdCarInsuranceType)
+                                                    .Select(cit => cit.Type)
+                                                    .FirstOrDefault();
+                tempTableRow.Franchise = db.Franchises.Where(i => i.Id == k.ContractFranchise.IdFranchise).Select(i => i.Sum).FirstOrDefault();
+                //tempTableRow.Franchise = db.Franchises.Where(i => i.Id == k.ContractFranchise.IdFranchise && k.ContractFranchise.IdCompanyContractType == idContractType).Select(i => i.Sum).FirstOrDefault();
+                tempTableRow.Value = k.Value;
+                K2Table.Add(tempTableRow);
+            }
+
+            JavaScriptSerializer js = new JavaScriptSerializer();
+            return js.Serialize(K2Table);
+        }
+
+        //public string GetConditionsForCoefK3(string companyName, string middlemanName)
+        //{
+
+        //}
+
+        private string InsertDataForK1(string companyName, string middlemanName, int idCompanyMiddleman)
+        {
             var carInsuranceType = db.CarInsuranceTypes.ToList();
             if (carInsuranceType.Count == 0)
                 return "Error! List car type is empty";
@@ -105,125 +152,11 @@ namespace InsuranceServicesAdminLight.Controllers
                 }
             }
 
-            K1 = db.K1.Where(i => i.IdCompanyMiddleman == idCompanyMiddleman);
-
-            foreach (var k in K1)
-            {
-                TableK1ToSend tempTableRow = new TableK1ToSend();
-                tempTableRow.InsuranceTypeOfCar = db.CarInsuranceTypes.Where(cit => cit.Id == k.IdCarInsuranceType).Select(cit => cit.Type).FirstOrDefault();
-                tempTableRow.Value = k.Value;
-                K1Table.Add(tempTableRow);
-            }
-
-            JavaScriptSerializer js = new JavaScriptSerializer();
-            return js.Serialize(K1Table);
+            return "Success!";
         }
 
-        public string GetConditionsForCoefK2(string companyName, string middlemanName)
+        private string InsertDataForK2(string companyName, string middlemanName, int idCompanyMiddleman)
         {
-            int idCompany, idMiddleman, idCompanyMiddleman;
-            if (companyName == "")
-                return "Error! Company is empty";
-
-            idCompany = db.Companies.Where(ci => ci.Name == companyName).Select(c => c.Id).FirstOrDefault();
-
-            if (idCompany == 0)
-                return "Error! Company not found";
-
-            if (middlemanName == "")
-                return "Error! Middleman is empty";
-
-            idMiddleman = db.Middlemen.Where(mi => mi.FullName == middlemanName).Select(m => m.Id).FirstOrDefault();
-
-            if (idMiddleman == 0)
-                return "Error! Middleman not found";
-
-            idCompanyMiddleman = db.CompanyMiddlemen.Where(ci => ci.IdCompany == idCompany && ci.IdMiddleman == idMiddleman).Select(cm => cm.Id).FirstOrDefault();
-
-            if (idCompanyMiddleman == 0)
-                return "Error! Company hasn`t that middleman";
-
-            var K2 = db.K2.Where(i => i.IdCompanyMiddleman == idCompanyMiddleman);
-            List<TableK2ToSend> K2Table = new List<TableK2ToSend>();
-
-            int idContractType = db.ContractTypes.Where(n => n.Name == "ГО").Select(i => i.Id).FirstOrDefault();
-            if (idContractType == 0)
-                return "Error! Contract Type not found";
-
-            int idCompanyContractType = db.CompanyContractTypes
-                .Where(m => m.IdCompanyMiddleman == idCompanyMiddleman && m.IdContractType == idContractType)
-                .Select(i => i.Id)
-                .FirstOrDefault();
-            if (idCompanyContractType == 0)
-                return "Error! In this middlemant not exit this type of contract";
-
-            var idsFranchise = db.ContractFranchises.Where(cct => cct.IdCompanyContractType == idCompanyContractType).Select(i => i.Id).ToList();
-            if (idsFranchise.Count == 0)
-                return "Error! This contract hasn`t franchise";
-
-            var franchise = db.Franchises.Where(i => idsFranchise.Contains(i.Id)).ToList();
-            if (franchise.Count == 0)
-                return "Error! In Data Base not exist franchise for this conditions!";
-
-            var insuranceZoneOfReg = db.InsuranceZoneOfRegistrations.ToList();
-            var isLegal = new List<bool> { true, false };//db.K2.Select(l => l.IsLegalEntity).ToList();
-            var insuranceTypeOfCar = db.CarInsuranceTypes.ToList();
-
-            //TEST 22/04/19
-            var a = InsertDataForK2(companyName, middlemanName);
-            //
-
-            K2 = db.K2.Where(i => i.IdCompanyMiddleman == idCompanyMiddleman);
-                //.OrderBy(i => i.IdInsuranceZoneOfReg)
-                //.ThenBy(i => i.IsLegalEntity)
-                //.ThenBy(i => i.CarInsuranceType)
-                //.ThenBy(i => i.ContractFranchise);
-
-            foreach (var k in K2)
-            {
-                TableK2ToSend tempTableRow = new TableK2ToSend();
-                tempTableRow.CarZoneOfRegistration = db.InsuranceZoneOfRegistrations
-                                                        .Where(czor => czor.Id == k.IdInsuranceZoneOfReg)
-                                                        .Select(czor => czor.Name)
-                                                        .FirstOrDefault();
-                tempTableRow.IsLegalEntity = k.IsLegalEntity.ToString();
-                tempTableRow.InsuranceTypeOfCar = db.CarInsuranceTypes
-                                                    .Where(cit => cit.Id == k.IdCarInsuranceType)
-                                                    .Select(cit => cit.Type)
-                                                    .FirstOrDefault();
-                tempTableRow.Franchise = db.Franchises.Where(i => i.Id == k.ContractFranchise.IdFranchise).Select(i => i.Sum).FirstOrDefault();
-                tempTableRow.Value = k.Value;
-                K2Table.Add(tempTableRow);
-            }
-
-            JavaScriptSerializer js = new JavaScriptSerializer();
-            return js.Serialize(K2Table);
-        }
-
-        public string InsertDataForK2(string companyName, string middlemanName)
-        {
-            int idCompany, idMiddleman, idCompanyMiddleman;
-            if (companyName == "")
-                return "Error! Company is empty";
-
-            idCompany = db.Companies.Where(ci => ci.Name == companyName).Select(c => c.Id).FirstOrDefault();
-
-            if (idCompany == 0)
-                return "Error! Company not found";
-
-            if (middlemanName == "")
-                return "Error! Middleman is empty";
-
-            idMiddleman = db.Middlemen.Where(mi => mi.FullName == middlemanName).Select(m => m.Id).FirstOrDefault();
-
-            if (idMiddleman == 0)
-                return "Error! Middleman not found";
-
-            idCompanyMiddleman = db.CompanyMiddlemen.Where(ci => ci.IdCompany == idCompany && ci.IdMiddleman == idMiddleman).Select(cm => cm.Id).FirstOrDefault();
-
-            if (idCompanyMiddleman == 0)
-                return "Error! Company hasn`t that middleman";
-
             var K2 = db.K2.Where(i => i.IdCompanyMiddleman == idCompanyMiddleman);
             List<TableK2ToSend> K2Table = new List<TableK2ToSend>();
 
@@ -247,7 +180,7 @@ namespace InsuranceServicesAdminLight.Controllers
                 return "Error! In Data Base not exist franchise for this conditions!";
 
             var insuranceZoneOfReg = db.InsuranceZoneOfRegistrations.ToList();
-            var isLegal = new List<bool> { true, false };//db.K2.Select(l => l.IsLegalEntity).ToList();
+            var isLegal = new List<bool> { true, false };
             var insuranceTypeOfCar = db.CarInsuranceTypes.ToList();
 
             List<InsCarType> ict = new List<InsCarType>();
@@ -316,6 +249,46 @@ namespace InsuranceServicesAdminLight.Controllers
                     }
                 }
             }
+            return "Success!";
+        }
+
+        private int GetMiddlemanId(string middlemanName)
+        {
+            return db.Middlemen.Where(mi => mi.FullName == middlemanName).Select(m => m.Id).FirstOrDefault();
+        }
+
+        private int GetCompanyId(string companyName)
+        {
+            return db.Companies.Where(ci => ci.Name == companyName).Select(c => c.Id).FirstOrDefault();
+        }
+
+        private int GetCompanyMiddlemanId(int idCompany, int idMiddleman)
+        {
+            return db.CompanyMiddlemen.Where(ci => ci.IdCompany == idCompany && ci.IdMiddleman == idMiddleman).Select(cm => cm.Id).FirstOrDefault();
+        }
+
+        private string GetCompanyMiddlemanData(string companyName, string middlemanName, ref int idCompany, ref int idMiddleman, ref int idCompanyMiddleman)
+        {
+            if (companyName == "")
+                return "Error! Company is empty";
+
+            idCompany = GetCompanyId(companyName);
+
+            if (idCompany == 0)
+                return "Error! Company not found";
+
+            if (middlemanName == "")
+                return "Error! Middleman is empty";
+
+            idMiddleman = GetMiddlemanId(middlemanName);
+
+            if (idMiddleman == 0)
+                return "Error! Middleman not found";
+
+            idCompanyMiddleman = GetCompanyMiddlemanId(idCompany, idMiddleman);
+
+            if (idCompanyMiddleman == 0)
+                return "Error! Company hasn`t that middleman";
 
             return "Success!";
         }
