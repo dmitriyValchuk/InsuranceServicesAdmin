@@ -125,10 +125,42 @@ namespace InsuranceServicesAdminLight.Controllers
             return js.Serialize(K2Table);
         }
 
-        //public string GetConditionsForCoefK3(string companyName, string middlemanName)
-        //{
+        public string GetConditionsForCoefK3(string companyName, string middlemanName)
+        {
+            int idCompany = 0, idMiddleman = 0, idCompanyMiddleman = 0;
 
-        //}
+            string resultOfChekingCompanyMiddleman = GetCompanyMiddlemanData(companyName, middlemanName, ref idCompany, ref idMiddleman, ref idCompanyMiddleman);
+            if (resultOfChekingCompanyMiddleman != "Success!")
+                return resultOfChekingCompanyMiddleman;
+
+            var K3 = db.K3.Where(i => i.IdCompanyMiddleman == idCompanyMiddleman);
+            List<TableK3ToSend> K3Table = new List<TableK3ToSend>();
+
+            var resultOfChekingExistingRows = InsertDataForK3(companyName, middlemanName, idCompanyMiddleman);
+            if (resultOfChekingExistingRows != "Success!")
+                return resultOfChekingExistingRows;
+
+            K3 = db.K3.Where(i => i.IdCompanyMiddleman == idCompanyMiddleman);
+
+            foreach (var k in K3)
+            {
+                TableK3ToSend tempTableRow = new TableK3ToSend();
+                tempTableRow.CarZoneOfRegistration = db.InsuranceZoneOfRegistrations
+                                                        .Where(czor => czor.Id == k.IdInsuranceZoneOfReg)
+                                                        .Select(czor => czor.Name)
+                                                        .FirstOrDefault();
+                tempTableRow.IsLegalEntity = k.IsLegalEntity.ToString();
+                tempTableRow.InsuranceTypeOfCar = db.CarInsuranceTypes
+                                                    .Where(cit => cit.Id == k.IdCarInsuranceType)
+                                                    .Select(cit => cit.Type)
+                                                    .FirstOrDefault();
+                tempTableRow.Value = k.Value;
+                K3Table.Add(tempTableRow);
+            }
+
+            JavaScriptSerializer js = new JavaScriptSerializer();
+            return js.Serialize(K3Table);
+        }
 
         private string InsertDataForK1(string companyName, string middlemanName, int idCompanyMiddleman)
         {
@@ -252,6 +284,67 @@ namespace InsuranceServicesAdminLight.Controllers
             return "Success!";
         }
 
+        private string InsertDataForK3(string companyName, string middlemanName, int idCompanyMiddleman)
+        {
+            var K3 = db.K3.Where(i => i.IdCompanyMiddleman == idCompanyMiddleman);
+            List<TableK2ToSend> K2Table = new List<TableK2ToSend>();
+
+            var insuranceZoneOfReg = db.InsuranceZoneOfRegistrations.ToList();
+            var isLegal = new List<bool> { true, false };
+            var insuranceTypeOfCar = db.CarInsuranceTypes.ToList();
+
+            List<InsCarType> ict = new List<InsCarType>();
+            List<InsZoneOfReg> izor = new List<InsZoneOfReg>();
+            List<bool> isLegalBool = new List<bool>();
+            foreach (var i in insuranceZoneOfReg)
+            {
+                InsZoneOfReg curZoneOfReg = new InsZoneOfReg();
+                curZoneOfReg.id = i.Id;
+                curZoneOfReg.name = i.Name;
+                izor.Add(curZoneOfReg);
+            }
+            foreach (var i in isLegal)
+            {
+                isLegalBool.Add(i);
+            }
+            foreach (var i in insuranceTypeOfCar)
+            {
+                InsCarType curIcsCarType = new InsCarType();
+                curIcsCarType.id = i.Id;
+                curIcsCarType.name = i.Type;
+                ict.Add(curIcsCarType);
+            }
+
+            foreach (var i in insuranceZoneOfReg)
+            {
+                foreach (var j in isLegal)
+                {
+                    foreach (var q in insuranceTypeOfCar)
+                    {
+
+                        if (db.K3.Where(k => k.IdInsuranceZoneOfReg == i.Id
+                                                    && k.IsLegalEntity == j
+                                                    && k.IdCarInsuranceType == q.Id
+                                                    && k.IdCompanyMiddleman == idCompanyMiddleman).Count() == 0)
+                        {
+                            var newRowK3 = new K3()
+                            {
+                                IdInsuranceZoneOfReg = i.Id,
+                                IsLegalEntity = j,
+                                IdCarInsuranceType = q.Id,
+                                Value = 0,
+                                IdCompanyMiddleman = idCompanyMiddleman,
+                            };
+
+                            db.K3.Add(newRowK3);
+                            db.SaveChanges();
+                        }
+                    }
+                }
+            }
+            return "Success!";
+        }
+
         private int GetMiddlemanId(string middlemanName)
         {
             return db.Middlemen.Where(mi => mi.FullName == middlemanName).Select(m => m.Id).FirstOrDefault();
@@ -324,6 +417,14 @@ namespace InsuranceServicesAdminLight.Controllers
         public string IsLegalEntity { get; set; }
         public string InsuranceTypeOfCar { get; set; }
         public double Franchise { get; set; }
+        public double Value { get; set; }
+    }
+
+    public class TableK3ToSend
+    {
+        public string CarZoneOfRegistration { get; set; }
+        public string IsLegalEntity { get; set; }
+        public string InsuranceTypeOfCar { get; set; }
         public double Value { get; set; }
     }
 
