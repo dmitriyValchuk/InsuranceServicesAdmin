@@ -12,7 +12,7 @@ namespace InsuranceServicesAdminLight.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public InsuranceZoneOfRegistration()
         {
-            BonusMalus = new HashSet<BonusMalu>();
+            BonusMalus = new HashSet<BonusMalus>();
             CityOrCountryOfRegToZones = new HashSet<CityOrCountryOfRegToZone>();
             K2 = new HashSet<K2>();
             K3 = new HashSet<K3>();
@@ -26,7 +26,7 @@ namespace InsuranceServicesAdminLight.Models
         public string Name { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<BonusMalu> BonusMalus { get; set; }
+        public virtual ICollection<BonusMalus> BonusMalus { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CityOrCountryOfRegToZone> CityOrCountryOfRegToZones { get; set; }

@@ -12,7 +12,7 @@ namespace InsuranceServicesAdminLight.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public ContractFranchise()
         {
-            BonusMalus = new HashSet<BonusMalu>();
+            BonusMalus = new HashSet<BonusMalus>();
             Contracts = new HashSet<Contract>();
             K2 = new HashSet<K2>();
             K4 = new HashSet<K4>();
@@ -25,7 +25,7 @@ namespace InsuranceServicesAdminLight.Models
         public int IdFranchise { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<BonusMalu> BonusMalus { get; set; }
+        public virtual ICollection<BonusMalus> BonusMalus { get; set; }
 
         public virtual CompanyContractType CompanyContractType { get; set; }
 

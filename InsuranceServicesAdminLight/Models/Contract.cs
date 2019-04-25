@@ -64,7 +64,7 @@ namespace InsuranceServicesAdminLight.Models
         [StringLength(4000)]
         public string Note { get; set; }
 
-        public virtual BonusMalu BonusMalu { get; set; }
+        public virtual BonusMalus BonusMalu { get; set; }
 
         public virtual Client Client { get; set; }
 

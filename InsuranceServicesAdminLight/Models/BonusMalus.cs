@@ -6,10 +6,10 @@ namespace InsuranceServicesAdminLight.Models
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    public partial class BonusMalu
+    public partial class BonusMalus
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public BonusMalu()
+        public BonusMalus()
         {
             Contracts = new HashSet<Contract>();
         }

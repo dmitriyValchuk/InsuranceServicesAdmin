@@ -13,7 +13,7 @@ namespace InsuranceServicesAdminLight.Models
         }
 
         public virtual DbSet<C__MigrationHistory> C__MigrationHistory { get; set; }
-        public virtual DbSet<BonusMalu> BonusMalus { get; set; }
+        public virtual DbSet<BonusMalus> BonusMalus { get; set; }
         public virtual DbSet<Car> Cars { get; set; }
         public virtual DbSet<CarGlobalToInsuranceType> CarGlobalToInsuranceTypes { get; set; }
         public virtual DbSet<CarGlobalType> CarGlobalTypes { get; set; }
@@ -57,7 +57,7 @@ namespace InsuranceServicesAdminLight.Models
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<BonusMalu>()
+            modelBuilder.Entity<BonusMalus>()
                 .HasMany(e => e.Contracts)
                 .WithRequired(e => e.BonusMalu)
                 .HasForeignKey(e => e.IdBonusMalus)
