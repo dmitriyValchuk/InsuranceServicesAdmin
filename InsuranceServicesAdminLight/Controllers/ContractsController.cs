@@ -14,6 +14,7 @@ namespace InsuranceServicesAdminLight.Controllers
         InsuranceServicesContext db = new InsuranceServicesContext();
 
         const string GoodResponse = "Success";
+        const string BadResponse = "Fail";
 
         public string GetCheckedCompany(string companyChecked)
         {
@@ -199,8 +200,7 @@ namespace InsuranceServicesAdminLight.Controllers
             return js.Serialize(K4Table);
         }
 
-        //When will be fix build js, drop paramiters in this method!
-        public string GetConditionsForCoefK5(string companyName, string middlemanName)
+        public string GetConditionsForCoefK5()
         {
             var K5 = db.K5.ToList();
             List<TableK5ToSend> K5Table = new List<TableK5ToSend>();
@@ -217,8 +217,7 @@ namespace InsuranceServicesAdminLight.Controllers
             return js.Serialize(K5Table);
         }
 
-        //When will be fix build js, drop paramiters in this method!
-        public string GetConditionsForCoefK6(string companyName, string middlemanName)
+        public string GetConditionsForCoefK6()
         {
             var K6 = db.K6.ToList();
             List<TableK6ToSend> K6Table = new List<TableK6ToSend>();
@@ -235,8 +234,7 @@ namespace InsuranceServicesAdminLight.Controllers
             return js.Serialize(K6Table);
         }
 
-        //When will be fix build js, drop paramiters in this method!
-        public string GetConditionsForCoefK7(string companyName, string middlemanName)
+        public string GetConditionsForCoefK7()
         {
             var K7 = db.K7.ToList();
             List<TableK7ToSend> K7Table = new List<TableK7ToSend>();
@@ -292,8 +290,7 @@ namespace InsuranceServicesAdminLight.Controllers
             return js.Serialize(BMTable);
         }
 
-        //When will be fix build js, drop paramiters in this method!
-        public string GetConditionsForCoefKPark(string companyName, string middlemanName)
+        public string GetConditionsForCoefKPark()
         {
             var KPark = db.DiscountByQuantities.ToList();
             List<TableKParkToSend> KParkTable = new List<TableKParkToSend>();
@@ -334,8 +331,8 @@ namespace InsuranceServicesAdminLight.Controllers
                         var recordForDel = db.K1.Where(k => k.CarInsuranceType.Type == currentInsuranceType).First();
                         db.K1.Remove(recordForDel);
                         db.SaveChanges();
+                        return js.Serialize(GoodResponse);
                     }
-                    break;
                 case "K2":
                     {
                         string currentCarZone = dataParsed.CarZoneOfRegistration;
@@ -349,8 +346,8 @@ namespace InsuranceServicesAdminLight.Controllers
                                                          && k.ContractFranchise.Franchise.Sum == currentFranchise).First();
                         //db.K2.Remove(recordForDel);
                         //db.SaveChanges();
+                        return js.Serialize(GoodResponse);
                     }
-                    break;
                 case "K3":
                     {
                         string currentCarZone = dataParsed.CarZoneOfRegistration;
@@ -362,8 +359,8 @@ namespace InsuranceServicesAdminLight.Controllers
                                                          && k.CarInsuranceType.Type == currentInsuranceType).First();
                         //db.K3.Remove(recordForDel);
                         //db.SaveChanges();
+                        return js.Serialize(GoodResponse);
                     }
-                    break;
                 case "K4":
                     {
                         string currentCarZone = dataParsed.CarZoneOfRegistration;
@@ -375,8 +372,8 @@ namespace InsuranceServicesAdminLight.Controllers
                                                          && k.ContractFranchise.Franchise.Sum == currentFranchise).First();
                         //db.K4.Remove(recordForDel);
                         //db.SaveChanges();
+                        return js.Serialize(GoodResponse);
                     }
-                    break;
                 case "K5":
                     {
                         int currentPeriod = dataParsed.Period;
@@ -384,8 +381,8 @@ namespace InsuranceServicesAdminLight.Controllers
                         var recordForDel = db.K5.Where(k => k.Period == currentPeriod).First();
                         //db.K5.Remove(recordForDel);
                         //db.SaveChanges();
+                        return js.Serialize(GoodResponse);
                     }
-                    break;
                 case "K6":
                     {
                         bool currentIsCheater = dataParsed.IsCheater == "Шахрай" ? true : false;
@@ -393,20 +390,52 @@ namespace InsuranceServicesAdminLight.Controllers
                         var recordForDel = db.K6.Where(k => k.IsCheater == currentIsCheater).First();
                         //db.K6.Remove(recordForDel);
                         //db.SaveChanges();
+                        return js.Serialize(GoodResponse);
                     }
-                    break;
-                //case "K7":
-                //    {
+                case "K7":
+                    {
+                        double currentPeriod = dataParsed.Period;
 
-                //    }
+                        var recordForDel = db.K7.Where(k => k.Period == currentPeriod).First();
+                        //db.K7.Remove(recordForDel);
+                        //db.SaveChanges();
+                        return js.Serialize(GoodResponse);
+                    }
+                case "BM":
+                    {
+                        string currentCarZone = dataParsed.CarZoneOfRegistration;
+                        bool currentIsLegalEntity = dataParsed.IsLegalEntity == "Юр" ? true : false;
+                        string currentInsuranceType = dataParsed.InsuranceTypeOfCar;
+                        double currentFranchise = dataParsed.Franchise;
+
+                        var recordForDel = db.BonusMalus.Where(k => k.InsuranceZoneOfRegistration.Name == currentCarZone
+                                                         && k.IsLegalEntity == currentIsLegalEntity
+                                                         && k.CarInsuranceType.Type == currentInsuranceType
+                                                         && k.ContractFranchise.Franchise.Sum == currentFranchise).First();
+                        //db.BonusMalus.Remove(recordForDel);
+                        //db.SaveChanges();
+                        return js.Serialize(GoodResponse);
+                    }
+                case "KPark":
+                    {
+                        bool currentIsLegalEntity = dataParsed.IsLegalEntity == "Юр" ? true : false;
+                        int currentTransportCountFrom = dataParsed.TransportCountFrom;
+                        int currentTransportCountTo = dataParsed.TransportCountTo;
+
+                        var recordForDel = db.DiscountByQuantities.Where(k => k.IsLegalEntity == currentIsLegalEntity
+                                                                            && k.TransportCountFrom == currentTransportCountFrom
+                                                                            && k.TransportCountTo == currentTransportCountTo).First();
+                        //db.DiscountByQuantities.Remove(recordForDel);
+                        //db.SaveChanges();
+                        return js.Serialize(GoodResponse);
+                    }
+                case "KPilg":
+                    {
+                        return js.Serialize(GoodResponse);
+                    }
             }
-                
 
-            
-            string CarZoneOfRegistration = dataParsed.CarZoneOfRegistration;
-
-            
-            return js.Serialize(GoodResponse);
+            return js.Serialize(BadResponse);
         }
 
         private string InsertDataForK1(string companyName, string middlemanName, int idCompanyMiddleman)
