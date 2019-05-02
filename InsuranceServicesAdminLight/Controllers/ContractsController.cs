@@ -77,8 +77,10 @@ namespace InsuranceServicesAdminLight.Controllers
             if (resultOfChekingExistingRows != "Success!")
                 return resultOfChekingExistingRows;
 
-            K1 = db.K1.Where(i => i.IdCompanyMiddleman == idCompanyMiddleman);
+            K1 = db.K1.Where(i => i.IdCompanyMiddleman == idCompanyMiddleman)
+                      .OrderBy(k => k.CarInsuranceType.Type);
 
+            
             foreach (var k in K1)
             {
                 TableK1ToSend tempTableRow = new TableK1ToSend();
@@ -106,7 +108,11 @@ namespace InsuranceServicesAdminLight.Controllers
             if (resultOfChekingExistingRows != "Success!")
                 return resultOfChekingExistingRows;
 
-            K2 = db.K2.Where(i => i.IdCompanyMiddleman == idCompanyMiddleman);
+            K2 = db.K2.Where(i => i.IdCompanyMiddleman == idCompanyMiddleman)
+                      .OrderBy(k => k.InsuranceZoneOfRegistration.Name)
+                      .ThenBy(k => k.IsLegalEntity)
+                      .ThenBy(k => k.CarInsuranceType.Type)
+                      .ThenBy(k => k.ContractFranchise.Franchise.Sum);
 
             foreach (var k in K2)
             {
@@ -145,7 +151,10 @@ namespace InsuranceServicesAdminLight.Controllers
             if (resultOfChekingExistingRows != "Success!")
                 return resultOfChekingExistingRows;
 
-            K3 = db.K3.Where(i => i.IdCompanyMiddleman == idCompanyMiddleman);
+            K3 = db.K3.Where(i => i.IdCompanyMiddleman == idCompanyMiddleman)
+                      .OrderBy(k => k.InsuranceZoneOfRegistration.Name)
+                      .ThenBy(k => k.IsLegalEntity)
+                      .ThenBy(k => k.CarInsuranceType.Type);
 
             foreach (var k in K3)
             {
@@ -182,7 +191,10 @@ namespace InsuranceServicesAdminLight.Controllers
             if (resultOfChekingExistingRows != "Success!")
                 return resultOfChekingExistingRows;
 
-            K4 = db.K4.Where(i => i.IdCompanyMiddleman == idCompanyMiddleman);
+            K4 = db.K4.Where(i => i.IdCompanyMiddleman == idCompanyMiddleman)
+                      .OrderBy(k => k.InsuranceZoneOfRegistration.Name)
+                      .ThenBy(k => k.IsLegalEntity)
+                      .ThenBy(k => k.ContractFranchise.Franchise.Sum);
 
             foreach (var k in K4)
             {
@@ -267,7 +279,11 @@ namespace InsuranceServicesAdminLight.Controllers
             if (resultOfChekingExistingRows != "Success!")
                 return resultOfChekingExistingRows;
 
-            BM = db.BonusMalus.Where(i => i.IdCompanyMiddleman == idCompanyMiddleman);
+            BM = db.BonusMalus.Where(i => i.IdCompanyMiddleman == idCompanyMiddleman)
+                              .OrderBy(k => k.InsuranceZoneOfRegistration.Name)
+                              .ThenBy(k => k.IsLegalEntity)
+                              .ThenBy(k => k.CarInsuranceType.Type)
+                              .ThenBy(k => k.ContractFranchise.Franchise);
 
             foreach (var k in BM)
             {
@@ -329,7 +345,8 @@ namespace InsuranceServicesAdminLight.Controllers
                 case "K1":
                     {
                         string currentInsuranceType = dataParsed.InsuranceTypeOfCar;
-                        var recordForDel = db.K1.Where(k => k.CarInsuranceType.Type == currentInsuranceType).First();
+                        var recordForDel = db.K1.Where(k => k.CarInsuranceType.Type == currentInsuranceType
+                                                         && k.IdCompanyMiddleman == idCompanyMiddleman).First();
                         db.K1.Remove(recordForDel);
                         db.SaveChanges();
                         return js.Serialize(GoodResponse);
@@ -344,9 +361,10 @@ namespace InsuranceServicesAdminLight.Controllers
                         var recordForDel = db.K2.Where(k => k.InsuranceZoneOfRegistration.Name == currentCarZone
                                                          && k.IsLegalEntity == currentIsLegalEntity
                                                          && k.CarInsuranceType.Type == currentInsuranceType
-                                                         && k.ContractFranchise.Franchise.Sum == currentFranchise).First();
-                        //db.K2.Remove(recordForDel);
-                        //db.SaveChanges();
+                                                         && k.ContractFranchise.Franchise.Sum == currentFranchise
+                                                         && k.IdCompanyMiddleman == idCompanyMiddleman).First();
+                        db.K2.Remove(recordForDel);
+                        db.SaveChanges();
                         return js.Serialize(GoodResponse);
                     }
                 case "K3":
@@ -357,9 +375,10 @@ namespace InsuranceServicesAdminLight.Controllers
 
                         var recordForDel = db.K3.Where(k => k.InsuranceZoneOfRegistration.Name == currentCarZone
                                                          && k.IsLegalEntity == currentIsLegalEntity
-                                                         && k.CarInsuranceType.Type == currentInsuranceType).First();
-                        //db.K3.Remove(recordForDel);
-                        //db.SaveChanges();
+                                                         && k.CarInsuranceType.Type == currentInsuranceType
+                                                         && k.IdCompanyMiddleman == idCompanyMiddleman).First();
+                        db.K3.Remove(recordForDel);
+                        db.SaveChanges();
                         return js.Serialize(GoodResponse);
                     }
                 case "K4":
@@ -370,9 +389,10 @@ namespace InsuranceServicesAdminLight.Controllers
 
                         var recordForDel = db.K4.Where(k => k.InsuranceZoneOfRegistration.Name == currentCarZone
                                                          && k.IsLegalEntity == currentIsLegalEntity
-                                                         && k.ContractFranchise.Franchise.Sum == currentFranchise).First();
-                        //db.K4.Remove(recordForDel);
-                        //db.SaveChanges();
+                                                         && k.ContractFranchise.Franchise.Sum == currentFranchise
+                                                         && k.IdCompanyMiddleman == idCompanyMiddleman).First();
+                        db.K4.Remove(recordForDel);
+                        db.SaveChanges();
                         return js.Serialize(GoodResponse);
                     }
                 case "K5":
@@ -380,8 +400,8 @@ namespace InsuranceServicesAdminLight.Controllers
                         int currentPeriod = dataParsed.Period;
 
                         var recordForDel = db.K5.Where(k => k.Period == currentPeriod).First();
-                        //db.K5.Remove(recordForDel);
-                        //db.SaveChanges();
+                        db.K5.Remove(recordForDel);
+                        db.SaveChanges();
                         return js.Serialize(GoodResponse);
                     }
                 case "K6":
@@ -389,8 +409,8 @@ namespace InsuranceServicesAdminLight.Controllers
                         bool currentIsCheater = dataParsed.IsCheater == "Шахрай" ? true : false;
 
                         var recordForDel = db.K6.Where(k => k.IsCheater == currentIsCheater).First();
-                        //db.K6.Remove(recordForDel);
-                        //db.SaveChanges();
+                        db.K6.Remove(recordForDel);
+                        db.SaveChanges();
                         return js.Serialize(GoodResponse);
                     }
                 case "K7":
@@ -398,8 +418,8 @@ namespace InsuranceServicesAdminLight.Controllers
                         double currentPeriod = dataParsed.Period;
 
                         var recordForDel = db.K7.Where(k => k.Period == currentPeriod).First();
-                        //db.K7.Remove(recordForDel);
-                        //db.SaveChanges();
+                        db.K7.Remove(recordForDel);
+                        db.SaveChanges();
                         return js.Serialize(GoodResponse);
                     }
                 case "BM":
@@ -412,9 +432,10 @@ namespace InsuranceServicesAdminLight.Controllers
                         var recordForDel = db.BonusMalus.Where(k => k.InsuranceZoneOfRegistration.Name == currentCarZone
                                                          && k.IsLegalEntity == currentIsLegalEntity
                                                          && k.CarInsuranceType.Type == currentInsuranceType
-                                                         && k.ContractFranchise.Franchise.Sum == currentFranchise).First();
-                        //db.BonusMalus.Remove(recordForDel);
-                        //db.SaveChanges();
+                                                         && k.ContractFranchise.Franchise.Sum == currentFranchise
+                                                         && k.IdCompanyMiddleman == idCompanyMiddleman).First();
+                        db.BonusMalus.Remove(recordForDel);
+                        db.SaveChanges();
                         return js.Serialize(GoodResponse);
                     }
                 case "KPark":
@@ -426,8 +447,8 @@ namespace InsuranceServicesAdminLight.Controllers
                         var recordForDel = db.DiscountByQuantities.Where(k => k.IsLegalEntity == currentIsLegalEntity
                                                                             && k.TransportCountFrom == currentTransportCountFrom
                                                                             && k.TransportCountTo == currentTransportCountTo).First();
-                        //db.DiscountByQuantities.Remove(recordForDel);
-                        //db.SaveChanges();
+                        db.DiscountByQuantities.Remove(recordForDel);
+                        db.SaveChanges();
                         return js.Serialize(GoodResponse);
                     }
                 case "KPilg":
@@ -444,10 +465,11 @@ namespace InsuranceServicesAdminLight.Controllers
         {
             int idCompany = 0, idMiddleman = 0, idCompanyMiddleman = 0;
 
-            System.IO.Stream request = Request.InputStream;
-            request.Seek(0, SeekOrigin.Begin);
-            string bodyData = new StreamReader(request).ReadToEnd();
-            dynamic dataParsed = JsonConvert.DeserializeObject(bodyData);
+            //System.IO.Stream request = Request.InputStream;
+            //request.Seek(0, SeekOrigin.Begin);
+            //string bodyData = new StreamReader(request).ReadToEnd();
+            //dynamic dataParsed = JsonConvert.DeserializeObject(bodyData);
+            dynamic dataParsed = GetPotsRequestBody();
             string companyName = Convert.ToString(dataParsed.companyName);
             string middlemanName = Convert.ToString(dataParsed.middlemanName);
             string coef = Convert.ToString(dataParsed.coef);
@@ -470,10 +492,11 @@ namespace InsuranceServicesAdminLight.Controllers
                         foreach(var dt in dataParsed.data)
                         {
                             tempInsuranceTypeOfCar = dt.InsuranceTypeOfCar;
-                            var recorForChange = db.K1.Where(k => k.CarInsuranceType.Type == tempInsuranceTypeOfCar).First();
-                            if(recorForChange != null)
+                            var recordForChange = db.K1.Where(k => k.CarInsuranceType.Type == tempInsuranceTypeOfCar
+                                                               && k.IdCompanyMiddleman == idCompanyMiddleman).First();
+                            if(recordForChange != null)
                             {
-                                recorForChange.Value = dt.Value;
+                                recordForChange.Value = dt.Value;
                                 db.SaveChanges();
                             }
                             else
@@ -495,13 +518,14 @@ namespace InsuranceServicesAdminLight.Controllers
                             tempInsuranceType = dt.InsuranceTypeOfCar;
                             tempFranchise = dt.Franchise;
 
-                            var recorForChange = db.K2.Where(k => k.InsuranceZoneOfRegistration.Name == tempCarZone
+                            var recordForChange = db.K2.Where(k => k.InsuranceZoneOfRegistration.Name == tempCarZone
                                                              && k.IsLegalEntity == tempIsLegalEntity
                                                              && k.CarInsuranceType.Type == tempInsuranceType
-                                                             && k.ContractFranchise.Franchise.Sum == tempFranchise).First();
-                            if (recorForChange != null)
+                                                             && k.ContractFranchise.Franchise.Sum == tempFranchise
+                                                             && k.IdCompanyMiddleman == idCompanyMiddleman).First();
+                            if (recordForChange != null)
                             {
-                                recorForChange.Value = dt.Value;
+                                recordForChange.Value = dt.Value;
                                 db.SaveChanges();
                             }
                             else
@@ -511,98 +535,181 @@ namespace InsuranceServicesAdminLight.Controllers
                     }
                 case "K3":
                     {
-                        string currentCarZone = dataParsed.CarZoneOfRegistration;
-                        bool currentIsLegalEntity = dataParsed.IsLegalEntity == "Юр" ? true : false;
-                        string currentInsuranceType = dataParsed.InsuranceTypeOfCar;
+                        string tempCarZone;
+                        bool tempIsLegalEntity;
+                        string tempInsuranceType;
 
-                        var recordForDel = db.K3.Where(k => k.InsuranceZoneOfRegistration.Name == currentCarZone
-                                                         && k.IsLegalEntity == currentIsLegalEntity
-                                                         && k.CarInsuranceType.Type == currentInsuranceType).First();
-                        //db.K3.Remove(recordForDel);
-                        //db.SaveChanges();
+                        foreach (var dt in dataParsed.data)
+                        {
+                            tempCarZone = dt.CarZoneOfRegistration;
+                            tempIsLegalEntity = dt.IsLegalEntity == "Юр" ? true : false;
+                            tempInsuranceType = dt.InsuranceTypeOfCar;
+
+                            var recordForChange = db.K3.Where(k => k.InsuranceZoneOfRegistration.Name == tempCarZone
+                                                             && k.IsLegalEntity == tempIsLegalEntity
+                                                             && k.CarInsuranceType.Type == tempInsuranceType
+                                                             && k.IdCompanyMiddleman == idCompanyMiddleman).First();
+                            if (recordForChange != null)
+                            {
+                                recordForChange.Value = dt.Value;
+                                db.SaveChanges();
+                            }
+                            else
+                                return js.Serialize(BadResponse);
+                        }
                         return js.Serialize(GoodResponse);
                     }
                 case "K4":
                     {
-                        string currentCarZone = dataParsed.CarZoneOfRegistration;
-                        bool currentIsLegalEntity = dataParsed.IsLegalEntity == "Юр" ? true : false;
-                        double currentFranchise = dataParsed.Franchise;
+                        string tempCarZone;
+                        bool tempIsLegalEntity;
+                        double tempFranchise;
 
-                        var recordForDel = db.K4.Where(k => k.InsuranceZoneOfRegistration.Name == currentCarZone
-                                                         && k.IsLegalEntity == currentIsLegalEntity
-                                                         && k.ContractFranchise.Franchise.Sum == currentFranchise).First();
-                        //db.K4.Remove(recordForDel);
-                        //db.SaveChanges();
+                        foreach (var dt in dataParsed.data)
+                        {
+                            tempCarZone = dt.CarZoneOfRegistration;
+                            tempIsLegalEntity = dt.IsLegalEntity == "Юр" ? true : false;
+                            tempFranchise = dt.Franchise;
+
+                            var recordForChange = db.K4.Where(k => k.InsuranceZoneOfRegistration.Name == tempCarZone
+                                                             && k.IsLegalEntity == tempIsLegalEntity
+                                                             && k.ContractFranchise.Franchise.Sum == tempFranchise
+                                                             && k.IdCompanyMiddleman == idCompanyMiddleman).First();
+                            if (recordForChange != null)
+                            {
+                                recordForChange.Value = dt.Value;
+                                db.SaveChanges();
+                            }
+                            else
+                                return js.Serialize(BadResponse);
+                        }
                         return js.Serialize(GoodResponse);
                     }
                 case "K5":
                     {
-                        int currentPeriod = dataParsed.Period;
+                        int tempPeriod;
+                        foreach (var dt in dataParsed.data)
+                        {
+                            tempPeriod = dt.Period;
 
-                        var recordForDel = db.K5.Where(k => k.Period == currentPeriod).First();
-                        //db.K5.Remove(recordForDel);
-                        //db.SaveChanges();
+                            var recordForChange = db.K5.Where(k => k.Period == tempPeriod).First();
+                            if (recordForChange != null)
+                            {
+                                recordForChange.Value = dt.Value;
+                                db.SaveChanges();
+                            }
+                            else
+                                return js.Serialize(BadResponse);
+                        }
                         return js.Serialize(GoodResponse);
                     }
                 case "K6":
                     {
-                        bool currentIsCheater = dataParsed.IsCheater == "Шахрай" ? true : false;
+                        bool tempIsCheater;
 
-                        var recordForDel = db.K6.Where(k => k.IsCheater == currentIsCheater).First();
-                        //db.K6.Remove(recordForDel);
-                        //db.SaveChanges();
+                        foreach (var dt in dataParsed.data)
+                        {
+                            tempIsCheater = dt.IsCheater == "Шахрай" ? true : false;
+
+                            var recordForChange = db.K6.Where(k => k.IsCheater == tempIsCheater).First();
+                            if (recordForChange != null)
+                            {
+                                recordForChange.Value = dt.Value;
+                                db.SaveChanges();
+                            }
+                            else
+                                return js.Serialize(BadResponse);
+                        }
                         return js.Serialize(GoodResponse);
                     }
                 case "K7":
                     {
-                        double currentPeriod = dataParsed.Period;
+                        double tempPeriod;
 
-                        var recordForDel = db.K7.Where(k => k.Period == currentPeriod).First();
-                        //db.K7.Remove(recordForDel);
-                        //db.SaveChanges();
+                        foreach (var dt in dataParsed.data)
+                        {
+                            tempPeriod = dt.Period;
+
+                            var recordForChange = db.K7.Where(k => k.Period == tempPeriod).First();
+                            if (recordForChange != null)
+                            {
+                                recordForChange.Value = dt.Value;
+                                db.SaveChanges();
+                            }
+                            else
+                                return js.Serialize(BadResponse);
+                        }
                         return js.Serialize(GoodResponse);
                     }
                 case "BM":
                     {
-                        string currentCarZone = dataParsed.CarZoneOfRegistration;
-                        bool currentIsLegalEntity = dataParsed.IsLegalEntity == "Юр" ? true : false;
-                        string currentInsuranceType = dataParsed.InsuranceTypeOfCar;
-                        double currentFranchise = dataParsed.Franchise;
+                        string tempCarZone;
+                        bool tempIsLegalEntity;
+                        string tempInsuranceType;
+                        double tempFranchise;
 
-                        var recordForDel = db.BonusMalus.Where(k => k.InsuranceZoneOfRegistration.Name == currentCarZone
-                                                         && k.IsLegalEntity == currentIsLegalEntity
-                                                         && k.CarInsuranceType.Type == currentInsuranceType
-                                                         && k.ContractFranchise.Franchise.Sum == currentFranchise).First();
-                        //db.BonusMalus.Remove(recordForDel);
-                        //db.SaveChanges();
+                        foreach (var dt in dataParsed.data)
+                        {
+                            tempCarZone = dt.CarZoneOfRegistration;
+                            tempIsLegalEntity = dt.IsLegalEntity == "Юр" ? true : false;
+                            tempInsuranceType = dt.InsuranceTypeOfCar;
+                            tempFranchise = dt.Franchise;
+
+                            var recordForChange = db.BonusMalus.Where(k => k.InsuranceZoneOfRegistration.Name == tempCarZone
+                                                             && k.IsLegalEntity == tempIsLegalEntity
+                                                             && k.CarInsuranceType.Type == tempInsuranceType
+                                                             && k.ContractFranchise.Franchise.Sum == tempFranchise
+                                                             && k.IdCompanyMiddleman == idCompanyMiddleman).First();
+                            if (recordForChange != null)
+                            {
+                                recordForChange.Value = dt.Value;
+                                db.SaveChanges();
+                            }
+                            else
+                                return js.Serialize(BadResponse);
+                        }
                         return js.Serialize(GoodResponse);
                     }
                 case "KPark":
                     {
-                        bool currentIsLegalEntity = dataParsed.IsLegalEntity == "Юр" ? true : false;
-                        int currentTransportCountFrom = dataParsed.TransportCountFrom;
-                        int currentTransportCountTo = dataParsed.TransportCountTo;
+                        bool tempIsLegalEntity;
+                        int tempTransportCountFrom;
+                        int tempTransportCountTo;
 
-                        var recordForDel = db.DiscountByQuantities.Where(k => k.IsLegalEntity == currentIsLegalEntity
-                                                                            && k.TransportCountFrom == currentTransportCountFrom
-                                                                            && k.TransportCountTo == currentTransportCountTo).First();
-                        //db.DiscountByQuantities.Remove(recordForDel);
-                        //db.SaveChanges();
+                        foreach (var dt in dataParsed.data)
+                        {
+                            tempIsLegalEntity = dt.IsLegalEntity == "Юр" ? true : false;
+                            tempTransportCountFrom = dt.TransportCountFrom;
+                            tempTransportCountTo = dt.TransportCountTo;
+
+                            var recordForChange = db.DiscountByQuantities.Where(k => k.IsLegalEntity == tempIsLegalEntity
+                                                                                && k.TransportCountFrom == tempTransportCountFrom
+                                                                                && k.TransportCountTo == tempTransportCountTo).First();
+                            if (recordForChange != null)
+                            {
+                                recordForChange.Value = dt.Value;
+                                db.SaveChanges();
+                            }
+                            else
+                                return js.Serialize(BadResponse);
+                        }
                         return js.Serialize(GoodResponse);
                     }
                 case "KPilg":
                     {
                         return js.Serialize(GoodResponse);
                     }
-
             }
-            //List<string> currentInsuranceType = new List<string>();
-            //foreach(var dp in dataParsed)
-            //{
-            //    currentInsuranceType.Add(Convert.ToString(dp.InsuranceTypeOfCar));
-            //}
 
             return js.Serialize(GoodResponse);
+        }
+
+        private dynamic GetPotsRequestBody()
+        {
+            System.IO.Stream request = Request.InputStream;
+            request.Seek(0, SeekOrigin.Begin);
+            string bodyData = new StreamReader(request).ReadToEnd();
+            return JsonConvert.DeserializeObject(bodyData);
         }
 
         private string InsertDataForK1(string companyName, string middlemanName, int idCompanyMiddleman)
