@@ -45,21 +45,9 @@ namespace InsuranceServicesAdminLight.Controllers
         [HttpPost]
         public string GetAllCompanies()
         {
-            InsuranceServicesContext db = new InsuranceServicesContext();
-            var companies = db.Companies.ToArray();
-            List<CompanyToSend> compList = new List<CompanyToSend>();
-
-            foreach (var c in companies)
-            {
-                CompanyToSend cts = new CompanyToSend();
-                cts.Id = c.Id;
-                cts.Name = c.Name;
-                cts.Code = c.Code;
-                compList.Add(cts);
-            }
-
+            List<string> companiesNames = db.Companies.Select(c => c.Name).ToList();
             JavaScriptSerializer js = new JavaScriptSerializer();
-            return js.Serialize(compList);
+            return js.Serialize(companiesNames);            
         }
 
         public string GetConditionsForCoefK1(string companyName, string middlemanName)
@@ -481,7 +469,6 @@ namespace InsuranceServicesAdminLight.Controllers
                     return resultOfChekingCompanyMiddleman;
             }
 
-            //dynamic dataParsed = JsonConvert.DeserializeObject(data);
             JavaScriptSerializer js = new JavaScriptSerializer();
 
             switch (coef)
@@ -1200,13 +1187,5 @@ namespace InsuranceServicesAdminLight.Controllers
         public int TransportCountTo { get; set; }
         public double Value { get; set; }
     }
-
-    public class CompanyToSend
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public int Code { get; set; }
-    }
-
-    
+   
 }
