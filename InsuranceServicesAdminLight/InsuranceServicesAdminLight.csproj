@@ -215,6 +215,14 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\calc.css" />
+    <Content Include="Content\img\add.svg" />
+    <Content Include="Content\img\analysis.svg" />
+    <Content Include="Content\img\avatar.svg" />
+    <Content Include="Content\img\close.svg" />
+    <Content Include="Content\img\contract.svg" />
+    <Content Include="Content\img\minus.svg" />
+    <Content Include="Content\img\skyline.svg" />
+    <Content Include="Content\img\website.svg" />
     <Content Include="Content\scaffolding.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
