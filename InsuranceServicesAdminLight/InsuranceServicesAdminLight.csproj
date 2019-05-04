@@ -221,6 +221,7 @@
     <Content Include="Content\img\close.svg" />
     <Content Include="Content\img\contract.svg" />
     <Content Include="Content\img\minus.svg" />
+    <Content Include="Content\img\save.svg" />
     <Content Include="Content\img\skyline.svg" />
     <Content Include="Content\img\website.svg" />
     <Content Include="Content\scaffolding.css" />

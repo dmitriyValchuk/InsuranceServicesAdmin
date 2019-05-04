@@ -31,26 +31,37 @@ namespace InsuranceServicesAdminLight.Controllers
         
         public string GetCheckedCompany(string companyChecked)
         {
+            ResponseToClient responseToClient = new ResponseToClient();
+
             var company = db.Companies.Where(c => c.Name == companyChecked).FirstOrDefault();
+
+            JavaScriptSerializer js = new JavaScriptSerializer();
+
             if (company == null)
             {
-                return "Error! Company not found!";
+                responseToClient.responseType = ResponseType.Bad;
+                responseToClient.responseText = "Error! Company not found!";
+                return js.Serialize(responseToClient);
             }
             else
             {
                 var companyMiddleMan = db.CompanyMiddlemen.Where(ci => ci.IdCompany == company.Id);
                 List<string> middlemen = new List<string>();
+
                 if (companyMiddleMan == null)
-                    return "Error! Company hasn`t any middleman!";
+                {
+                    responseToClient.responseType = ResponseType.Bad;
+                    responseToClient.responseText = "Error! Company hasn`t any middleman!";
+                    return js.Serialize(responseToClient);
+                }
+
                 foreach (var cm in companyMiddleMan)
                 {
                     var currentMiddleman = db.Middlemen.Where(m => m.Id == cm.IdMiddleman).FirstOrDefault();
                     middlemen.Add(currentMiddleman.FullName);
                 }
-
-                JavaScriptSerializer js = new JavaScriptSerializer();
+                
                 return js.Serialize(middlemen);
-
             }
         }
 
