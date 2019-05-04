@@ -64,11 +64,13 @@ namespace InsuranceServicesAdminLight.Controllers
 
         public string GetConditionsForCoefK1(string companyName, string middlemanName)
         {
+            JavaScriptSerializer js = new JavaScriptSerializer();
+
             int idCompany = 0, idMiddleman = 0, idCompanyMiddleman = 0;
 
-            string resultOfChekingCompanyMiddleman = GetCompanyMiddlemanData(companyName, middlemanName, ref idCompany, ref idMiddleman, ref idCompanyMiddleman);
-            if (resultOfChekingCompanyMiddleman != "Success!")
-                return resultOfChekingCompanyMiddleman;
+            ResponseToClient resultOfChekingCompanyMiddleman = GetCompanyMiddlemanData(companyName, middlemanName, ref idCompany, ref idMiddleman, ref idCompanyMiddleman);
+            if (resultOfChekingCompanyMiddleman.responseType != ResponseType.Good)
+                return js.Serialize(resultOfChekingCompanyMiddleman);
 
             var K1 = db.K1.Where(i => i.IdCompanyMiddleman == idCompanyMiddleman);
             List<TableK1ToSend> K1Table = new List<TableK1ToSend>();
@@ -89,17 +91,19 @@ namespace InsuranceServicesAdminLight.Controllers
                 K1Table.Add(tempTableRow);
             }
 
-            JavaScriptSerializer js = new JavaScriptSerializer();
+            
             return js.Serialize(K1Table);
         }
 
         public string GetConditionsForCoefK2(string companyName, string middlemanName)
         {
+            JavaScriptSerializer js = new JavaScriptSerializer();
+
             int idCompany = 0, idMiddleman = 0, idCompanyMiddleman = 0;
 
-            string resultOfChekingCompanyMiddleman = GetCompanyMiddlemanData(companyName, middlemanName, ref idCompany, ref idMiddleman, ref idCompanyMiddleman);
-            if (resultOfChekingCompanyMiddleman != "Success!")
-                return resultOfChekingCompanyMiddleman;
+            ResponseToClient resultOfChekingCompanyMiddleman = GetCompanyMiddlemanData(companyName, middlemanName, ref idCompany, ref idMiddleman, ref idCompanyMiddleman);
+            if (resultOfChekingCompanyMiddleman.responseType != ResponseType.Good)
+                return js.Serialize(resultOfChekingCompanyMiddleman);
 
             var K2 = db.K2.Where(i => i.IdCompanyMiddleman == idCompanyMiddleman);
             List<TableK2ToSend> K2Table = new List<TableK2ToSend>();
@@ -132,17 +136,18 @@ namespace InsuranceServicesAdminLight.Controllers
                 K2Table.Add(tempTableRow);
             }
 
-            JavaScriptSerializer js = new JavaScriptSerializer();
             return js.Serialize(K2Table);
         }
 
         public string GetConditionsForCoefK3(string companyName, string middlemanName)
         {
+            JavaScriptSerializer js = new JavaScriptSerializer();
+
             int idCompany = 0, idMiddleman = 0, idCompanyMiddleman = 0;
 
-            string resultOfChekingCompanyMiddleman = GetCompanyMiddlemanData(companyName, middlemanName, ref idCompany, ref idMiddleman, ref idCompanyMiddleman);
-            if (resultOfChekingCompanyMiddleman != "Success!")
-                return resultOfChekingCompanyMiddleman;
+            ResponseToClient resultOfChekingCompanyMiddleman = GetCompanyMiddlemanData(companyName, middlemanName, ref idCompany, ref idMiddleman, ref idCompanyMiddleman);
+            if (resultOfChekingCompanyMiddleman.responseType != ResponseType.Good)
+                return js.Serialize(resultOfChekingCompanyMiddleman);
 
             var K3 = db.K3.Where(i => i.IdCompanyMiddleman == idCompanyMiddleman);
             List<TableK3ToSend> K3Table = new List<TableK3ToSend>();
@@ -172,17 +177,18 @@ namespace InsuranceServicesAdminLight.Controllers
                 K3Table.Add(tempTableRow);
             }
 
-            JavaScriptSerializer js = new JavaScriptSerializer();
             return js.Serialize(K3Table);
         }
 
         public string GetConditionsForCoefK4(string companyName, string middlemanName)
         {
+            JavaScriptSerializer js = new JavaScriptSerializer();
+
             int idCompany = 0, idMiddleman = 0, idCompanyMiddleman = 0;
 
-            string resultOfChekingCompanyMiddleman = GetCompanyMiddlemanData(companyName, middlemanName, ref idCompany, ref idMiddleman, ref idCompanyMiddleman);
-            if (resultOfChekingCompanyMiddleman != "Success!")
-                return resultOfChekingCompanyMiddleman;
+            ResponseToClient resultOfChekingCompanyMiddleman = GetCompanyMiddlemanData(companyName, middlemanName, ref idCompany, ref idMiddleman, ref idCompanyMiddleman);
+            if (resultOfChekingCompanyMiddleman.responseType != ResponseType.Good)
+                return js.Serialize(resultOfChekingCompanyMiddleman);
 
             var K4 = db.K4.Where(i => i.IdCompanyMiddleman == idCompanyMiddleman);
             List<TableK4ToSend> K4Table = new List<TableK4ToSend>();
@@ -209,7 +215,6 @@ namespace InsuranceServicesAdminLight.Controllers
                 K4Table.Add(tempTableRow);
             }
 
-            JavaScriptSerializer js = new JavaScriptSerializer();
             return js.Serialize(K4Table);
         }
 
@@ -266,11 +271,13 @@ namespace InsuranceServicesAdminLight.Controllers
 
         public string GetConditionsForCoefBM(string companyName, string middlemanName)
         {
+            JavaScriptSerializer js = new JavaScriptSerializer();
+
             int idCompany = 0, idMiddleman = 0, idCompanyMiddleman = 0;
 
-            string resultOfChekingCompanyMiddleman = GetCompanyMiddlemanData(companyName, middlemanName, ref idCompany, ref idMiddleman, ref idCompanyMiddleman);
-            if (resultOfChekingCompanyMiddleman != "Success!")
-                return resultOfChekingCompanyMiddleman;
+            ResponseToClient resultOfChekingCompanyMiddleman = GetCompanyMiddlemanData(companyName, middlemanName, ref idCompany, ref idMiddleman, ref idCompanyMiddleman);
+            if (resultOfChekingCompanyMiddleman.responseType != ResponseType.Good)
+                return js.Serialize(resultOfChekingCompanyMiddleman);
 
             var BM = db.BonusMalus.Where(i => i.IdCompanyMiddleman == idCompanyMiddleman);
             List<TableBMToSend> BMTable = new List<TableBMToSend>();
@@ -303,7 +310,6 @@ namespace InsuranceServicesAdminLight.Controllers
                 BMTable.Add(tempTableRow);
             }
 
-            JavaScriptSerializer js = new JavaScriptSerializer();
             return js.Serialize(BMTable);
         }
 
@@ -328,17 +334,15 @@ namespace InsuranceServicesAdminLight.Controllers
 
         public string RemoveDataFromTable(string coef, string companyName, string middlemanName, string data)
         {
+            JavaScriptSerializer js = new JavaScriptSerializer();
+
             int idCompany = 0, idMiddleman = 0, idCompanyMiddleman = 0;
 
-            string resultOfChekingCompanyMiddleman = GetCompanyMiddlemanData(companyName, middlemanName, ref idCompany, ref idMiddleman, ref idCompanyMiddleman);
-            if (resultOfChekingCompanyMiddleman != "Success!")
-            {
-                if(coef != "K5" && coef != "K6" && coef != "K7" && coef != "KPark")
-                    return resultOfChekingCompanyMiddleman;
-            }
+            ResponseToClient resultOfChekingCompanyMiddleman = GetCompanyMiddlemanData(companyName, middlemanName, ref idCompany, ref idMiddleman, ref idCompanyMiddleman);
+            if (resultOfChekingCompanyMiddleman.responseType != ResponseType.Good)
+                return js.Serialize(resultOfChekingCompanyMiddleman);
 
             dynamic dataParsed = JsonConvert.DeserializeObject(data);
-            JavaScriptSerializer js = new JavaScriptSerializer();
 
             ResponseToClient responseToClient = new ResponseToClient();
 
@@ -578,14 +582,11 @@ namespace InsuranceServicesAdminLight.Controllers
 
             ResponseToClient responseToClient = new ResponseToClient();
 
-            string resultOfChekingCompanyMiddleman = GetCompanyMiddlemanData(companyName, middlemanName, ref idCompany, ref idMiddleman, ref idCompanyMiddleman);
-            if (resultOfChekingCompanyMiddleman != "Success!")
-            {
-                if (coef != "K5" && coef != "K6" && coef != "K7" && coef != "KPark")
-                    return resultOfChekingCompanyMiddleman;
-            }
-
             JavaScriptSerializer js = new JavaScriptSerializer();
+
+            ResponseToClient resultOfChekingCompanyMiddleman = GetCompanyMiddlemanData(companyName, middlemanName, ref idCompany, ref idMiddleman, ref idCompanyMiddleman);
+            if (resultOfChekingCompanyMiddleman.responseType != ResponseType.Good)
+                return js.Serialize(resultOfChekingCompanyMiddleman);
 
             switch (coef)
             {
@@ -836,14 +837,11 @@ namespace InsuranceServicesAdminLight.Controllers
 
             ResponseToClient responseToClient = new ResponseToClient();
 
-            string resultOfChekingCompanyMiddleman = GetCompanyMiddlemanData(companyName, middlemanName, ref idCompany, ref idMiddleman, ref idCompanyMiddleman);
-            if (resultOfChekingCompanyMiddleman != "Success!")
-            {
-                if (coef != "K5" && coef != "K6" && coef != "K7" && coef != "KPark")
-                    return resultOfChekingCompanyMiddleman;
-            }
-
             JavaScriptSerializer js = new JavaScriptSerializer();
+
+            ResponseToClient resultOfChekingCompanyMiddleman = GetCompanyMiddlemanData(companyName, middlemanName, ref idCompany, ref idMiddleman, ref idCompanyMiddleman);
+            if (resultOfChekingCompanyMiddleman.responseType != ResponseType.Good)
+                return js.Serialize(resultOfChekingCompanyMiddleman);
 
             switch (coef)
             {
@@ -1573,30 +1571,53 @@ namespace InsuranceServicesAdminLight.Controllers
             return db.CompanyMiddlemen.Where(ci => ci.IdCompany == idCompany && ci.IdMiddleman == idMiddleman).Select(cm => cm.Id).FirstOrDefault();
         }
 
-        private string GetCompanyMiddlemanData(string companyName, string middlemanName, ref int idCompany, ref int idMiddleman, ref int idCompanyMiddleman)
+        private ResponseToClient GetCompanyMiddlemanData(string companyName, string middlemanName, ref int idCompany, ref int idMiddleman, ref int idCompanyMiddleman)
         {
+            ResponseToClient responseToClient = new ResponseToClient();
             if (companyName == "")
-                return "Error! Company is empty";
+            {
+                responseToClient.responseType = ResponseType.Bad;
+                responseToClient.responseText = "Не вказана назва компанії";
+                return responseToClient;
+                //return "Error! Company is empty";
+            }
 
             idCompany = GetCompanyId(companyName);
 
             if (idCompany == 0)
-                return "Error! Company not found";
+            {
+                responseToClient.responseType = ResponseType.Bad;
+                responseToClient.responseText = "Не вдалося знайти компанію в базі даних";
+                return responseToClient;
+            }
 
             if (middlemanName == "")
-                return "Error! Middleman is empty";
+            {
+                responseToClient.responseType = ResponseType.Bad;
+                responseToClient.responseText = "Не вказано ім'я посередника";
+                return responseToClient;
+            }
 
             idMiddleman = GetMiddlemanId(middlemanName);
 
             if (idMiddleman == 0)
-                return "Error! Middleman not found";
+            {
+                responseToClient.responseType = ResponseType.Bad;
+                responseToClient.responseText = "Не вдалося знайти посередника в базі даних";
+                return responseToClient;
+            }
 
             idCompanyMiddleman = GetCompanyMiddlemanId(idCompany, idMiddleman);
 
             if (idCompanyMiddleman == 0)
-                return "Error! Company hasn`t that middleman";
+            {
+                responseToClient.responseType = ResponseType.Bad;
+                responseToClient.responseText = $"Для компанії \"{companyName}\" відсутній посередник \"{middlemanName}\"";
+                return responseToClient;
+            }
 
-            return "Success!";
+            responseToClient.responseType = ResponseType.Good;
+            return responseToClient;
         }
     }
 
