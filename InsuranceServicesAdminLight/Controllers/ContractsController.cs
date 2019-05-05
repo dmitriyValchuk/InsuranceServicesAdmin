@@ -102,8 +102,16 @@ namespace InsuranceServicesAdminLight.Controllers
                 K1Table.Add(tempTableRow);
             }
 
-            
-            return js.Serialize(K1Table);
+            List<TitlesToSend> titles = new List<TitlesToSend>();
+            titles.Add(FillTitleToSend(name: "InsuranceTypeOfCar", titleUkr: "Тип транспорту", titleRus: "Тип транспорта"));
+            titles.Add(FillTitleToSend(name: "Value", titleUkr: "Значення", titleRus: "Значение"));
+
+            Dictionary<string, object> dataToSend = new Dictionary<string, object>();
+
+            dataToSend.Add("titles", titles);
+            dataToSend.Add("data", K1Table);
+
+            return js.Serialize(dataToSend);
         }
 
         public string GetConditionsForCoefK2(string companyName, string middlemanName)
@@ -147,7 +155,19 @@ namespace InsuranceServicesAdminLight.Controllers
                 K2Table.Add(tempTableRow);
             }
 
-            return js.Serialize(K2Table);
+            List<TitlesToSend> titles = new List<TitlesToSend>();
+            titles.Add(FillTitleToSend(name: "CarZoneOfRegistration", titleUkr: "Зона регестрації", titleRus: "Зона регистрации"));
+            titles.Add(FillTitleToSend(name: "IsLegalEntity", titleUkr: "Юр / Фіз", titleRus: "Юр / Физ"));
+            titles.Add(FillTitleToSend(name: "InsuranceTypeOfCar", titleUkr: "Тип транспорту", titleRus: "Тип транспорта"));
+            titles.Add(FillTitleToSend(name: "Franchise", titleUkr: "Франшиза", titleRus: "Франшиза"));
+            titles.Add(FillTitleToSend(name: "Value", titleUkr: "Значення", titleRus: "Значение"));
+
+            Dictionary<string, object> dataToSend = new Dictionary<string, object>();
+
+            dataToSend.Add("titles", titles);
+            dataToSend.Add("data", K2Table);
+
+            return js.Serialize(dataToSend);
         }
 
         public string GetConditionsForCoefK3(string companyName, string middlemanName)
@@ -188,7 +208,18 @@ namespace InsuranceServicesAdminLight.Controllers
                 K3Table.Add(tempTableRow);
             }
 
-            return js.Serialize(K3Table);
+            List<TitlesToSend> titles = new List<TitlesToSend>();
+            titles.Add(FillTitleToSend(name: "CarZoneOfRegistration", titleUkr: "Зона регестрації", titleRus: "Зона регистрации"));
+            titles.Add(FillTitleToSend(name: "IsLegalEntity", titleUkr: "Юр / Фіз", titleRus: "Юр / Физ"));
+            titles.Add(FillTitleToSend(name: "InsuranceTypeOfCar", titleUkr: "Тип транспорту", titleRus: "Тип транспорта"));
+            titles.Add(FillTitleToSend(name: "Value", titleUkr: "Значення", titleRus: "Значение"));
+
+            Dictionary<string, object> dataToSend = new Dictionary<string, object>();
+
+            dataToSend.Add("titles", titles);
+            dataToSend.Add("data", K3Table);
+
+            return js.Serialize(dataToSend);
         }
 
         public string GetConditionsForCoefK4(string companyName, string middlemanName)
@@ -226,7 +257,18 @@ namespace InsuranceServicesAdminLight.Controllers
                 K4Table.Add(tempTableRow);
             }
 
-            return js.Serialize(K4Table);
+            List<TitlesToSend> titles = new List<TitlesToSend>();
+            titles.Add(FillTitleToSend(name: "CarZoneOfRegistration", titleUkr: "Зона регестрації", titleRus: "Зона регистрации"));
+            titles.Add(FillTitleToSend(name: "IsLegalEntity", titleUkr: "Юр / Фіз", titleRus: "Юр / Физ"));
+            titles.Add(FillTitleToSend(name: "Franchise", titleUkr: "Франшиза", titleRus: "Франшиза"));
+            titles.Add(FillTitleToSend(name: "Value", titleUkr: "Значення", titleRus: "Значение"));
+
+            Dictionary<string, object> dataToSend = new Dictionary<string, object>();
+
+            dataToSend.Add("titles", titles);
+            dataToSend.Add("data", K4Table);
+
+            return js.Serialize(dataToSend);
         }
 
         public string GetConditionsForCoefK5()
@@ -243,7 +285,17 @@ namespace InsuranceServicesAdminLight.Controllers
             }
 
             JavaScriptSerializer js = new JavaScriptSerializer();
-            return js.Serialize(K5Table);
+
+            List<TitlesToSend> titles = new List<TitlesToSend>();
+            titles.Add(FillTitleToSend(name: "Period", titleUkr: "Період страхування", titleRus: "Период страхования"));
+            titles.Add(FillTitleToSend(name: "Value", titleUkr: "Значення", titleRus: "Значение"));
+
+            Dictionary<string, object> dataToSend = new Dictionary<string, object>();
+
+            dataToSend.Add("titles", titles);
+            dataToSend.Add("data", K5Table);
+
+            return js.Serialize(dataToSend);
         }
 
         public string GetConditionsForCoefK6()
@@ -260,7 +312,17 @@ namespace InsuranceServicesAdminLight.Controllers
             }
 
             JavaScriptSerializer js = new JavaScriptSerializer();
-            return js.Serialize(K6Table);
+
+            List<TitlesToSend> titles = new List<TitlesToSend>();
+            titles.Add(FillTitleToSend(name: "IsCheater", titleUkr: "Шахрай", titleRus: "Мошенник"));
+            titles.Add(FillTitleToSend(name: "Value", titleUkr: "Значення", titleRus: "Значение"));
+
+            Dictionary<string, object> dataToSend = new Dictionary<string, object>();
+
+            dataToSend.Add("titles", titles);
+            dataToSend.Add("data", K6Table);
+
+            return js.Serialize(dataToSend);
         }
 
         public string GetConditionsForCoefK7()
@@ -277,7 +339,17 @@ namespace InsuranceServicesAdminLight.Controllers
             }
 
             JavaScriptSerializer js = new JavaScriptSerializer();
-            return js.Serialize(K7Table);
+
+            List<TitlesToSend> titles = new List<TitlesToSend>();
+            titles.Add(FillTitleToSend(name: "Period", titleUkr: "Період страхування", titleRus: "Период страхования"));
+            titles.Add(FillTitleToSend(name: "Value", titleUkr: "Значення", titleRus: "Значение"));
+
+            Dictionary<string, object> dataToSend = new Dictionary<string, object>();
+
+            dataToSend.Add("titles", titles);
+            dataToSend.Add("data", K7Table);
+
+            return js.Serialize(dataToSend);
         }
 
         public string GetConditionsForCoefBM(string companyName, string middlemanName)
@@ -293,7 +365,7 @@ namespace InsuranceServicesAdminLight.Controllers
             var BM = db.BonusMalus.Where(i => i.IdCompanyMiddleman == idCompanyMiddleman);
             List<TableBMToSend> BMTable = new List<TableBMToSend>();
 
-            var resultOfChekingExistingRows = InsertDataForK2(companyName, middlemanName, idCompanyMiddleman);
+            var resultOfChekingExistingRows = InsertDataForBM(companyName, middlemanName, idCompanyMiddleman);
             if (resultOfChekingExistingRows != "Success!")
                 return resultOfChekingExistingRows;
 
@@ -321,12 +393,27 @@ namespace InsuranceServicesAdminLight.Controllers
                 BMTable.Add(tempTableRow);
             }
 
-            return js.Serialize(BMTable);
+            List<TitlesToSend> titles = new List<TitlesToSend>();
+            titles.Add(FillTitleToSend(name: "CarZoneOfRegistration", titleUkr: "Зона регестрації", titleRus: "Зона регистрации"));
+            titles.Add(FillTitleToSend(name: "IsLegalEntity", titleUkr: "Юр / Фіз", titleRus: "Юр / Физ"));
+            titles.Add(FillTitleToSend(name: "InsuranceTypeOfCar", titleUkr: "Тип транспорту", titleRus: "Тип транспорта"));
+            titles.Add(FillTitleToSend(name: "Franchise", titleUkr: "Франшиза", titleRus: "Франшиза"));
+            titles.Add(FillTitleToSend(name: "Value", titleUkr: "Значення", titleRus: "Значение"));
+
+            Dictionary<string, object> dataToSend = new Dictionary<string, object>();
+
+            dataToSend.Add("titles", titles);
+            dataToSend.Add("data", BMTable);
+
+            return js.Serialize(dataToSend);
         }
 
         public string GetConditionsForCoefKPark()
         {
-            var KPark = db.DiscountByQuantities.ToList();
+            var KPark = db.DiscountByQuantities
+                          .OrderBy(k => k.TransportCountFrom)
+                          .ThenBy(k => k.IsLegalEntity)
+                          .ToList();
             List<TableKParkToSend> KParkTable = new List<TableKParkToSend>();
 
             foreach (var k in KPark)
@@ -340,7 +427,19 @@ namespace InsuranceServicesAdminLight.Controllers
             }
 
             JavaScriptSerializer js = new JavaScriptSerializer();
-            return js.Serialize(KParkTable);
+
+            List<TitlesToSend> titles = new List<TitlesToSend>();
+            titles.Add(FillTitleToSend(name: "IsLegalEntity", titleUkr: "Юр / Фіз", titleRus: "Юр / Физ"));
+            titles.Add(FillTitleToSend(name: "TransportCountFrom", titleUkr: "Кількість ТЗ від", titleRus: "Количество ТС от"));
+            titles.Add(FillTitleToSend(name: "TransportCountTo", titleUkr: "Кількість ТЗ до", titleRus: "Количество ТС до"));
+            titles.Add(FillTitleToSend(name: "Value", titleUkr: "Значення", titleRus: "Значение"));
+
+            Dictionary<string, object> dataToSend = new Dictionary<string, object>();
+
+            dataToSend.Add("titles", titles);
+            dataToSend.Add("data", KParkTable);
+
+            return js.Serialize(dataToSend);
         }
 
         public string RemoveDataFromTable(string coef, string companyName, string middlemanName, string data)
@@ -1196,14 +1295,6 @@ namespace InsuranceServicesAdminLight.Controllers
             return js.Serialize(responseToClient);
         }
 
-        private dynamic GetPotsRequestBody()
-        {
-            System.IO.Stream request = Request.InputStream;
-            request.Seek(0, SeekOrigin.Begin);
-            string bodyData = new StreamReader(request).ReadToEnd();
-            return JsonConvert.DeserializeObject(bodyData);
-        }
-
         private string InsertDataForK1(string companyName, string middlemanName, int idCompanyMiddleman)
         {
             var carInsuranceType = db.CarInsuranceTypes.ToList();
@@ -1567,6 +1658,185 @@ namespace InsuranceServicesAdminLight.Controllers
             return "Success!";
         }
 
+        public string GetConditionsToAddK1Record()
+        {
+            Dictionary<string, List<string>> dataToSend = new Dictionary<string, List<string>>();
+            List<string> carInsuranceTypes = db.CarInsuranceTypes.Select(t => t.Type).ToList();
+            dataToSend.Add("InsuranceTypeOfCar", carInsuranceTypes);
+            JavaScriptSerializer js = new JavaScriptSerializer();
+            return js.Serialize(dataToSend);
+        }
+
+        public string GetConditionsToAddK2Record(string companyName, string middlemanName)
+        {
+            Dictionary<string, List<string>> dataToSend = new Dictionary<string, List<string>>();
+
+            List<string> carInsuranceZoneOfReg = db.InsuranceZoneOfRegistrations.Select(n => n.Name).ToList();
+            List<string> isLegalEntity = new List<string>() { "Юр", "Фіз" };
+            List<string> carInsuranceTypes = db.CarInsuranceTypes.Select(t => t.Type).ToList();
+
+            int idCompany = 0, idMiddleman = 0, idCompanyMiddleman = 0;
+
+            ResponseToClient responseToClient = new ResponseToClient();
+
+            JavaScriptSerializer js = new JavaScriptSerializer();
+
+            ResponseToClient resultOfChekingCompanyMiddleman = GetCompanyMiddlemanData(companyName, middlemanName, ref idCompany, ref idMiddleman, ref idCompanyMiddleman);
+            if (resultOfChekingCompanyMiddleman.responseType != ResponseType.Good)
+                return js.Serialize(resultOfChekingCompanyMiddleman);
+
+            List<string> franchise = GetListFranchiseForCompanyMiddlemanAndContractType(idCompanyMiddleman, "ГО");
+
+            dataToSend.Add("CarZoneOfRegistration", carInsuranceZoneOfReg);
+            dataToSend.Add("IsLegalEntity", isLegalEntity);
+            dataToSend.Add("InsuranceTypeOfCar", carInsuranceTypes);
+            dataToSend.Add("Franchise", franchise);
+
+            return js.Serialize(dataToSend);
+        }
+
+        public string GetConditionsToAddK3Record()
+        {
+            Dictionary<string, List<string>> dataToSend = new Dictionary<string, List<string>>();
+
+            List<string> carInsuranceZoneOfReg = db.InsuranceZoneOfRegistrations.Select(n => n.Name).ToList();
+            List<string> isLegalEntity = new List<string>() { "Юр", "Фіз" };
+            List<string> carInsuranceTypes = db.CarInsuranceTypes.Select(t => t.Type).ToList();
+
+            dataToSend.Add("CarZoneOfRegistration", carInsuranceZoneOfReg);
+            dataToSend.Add("IsLegalEntity", isLegalEntity);
+            dataToSend.Add("InsuranceTypeOfCar", carInsuranceTypes);
+
+            JavaScriptSerializer js = new JavaScriptSerializer();
+            return js.Serialize(dataToSend);
+        }
+
+        public string GetConditionsToAddK4Record(string companyName, string middlemanName)
+        {
+            Dictionary<string, List<string>> dataToSend = new Dictionary<string, List<string>>();
+
+            List<string> carInsuranceZoneOfReg = db.InsuranceZoneOfRegistrations.Select(n => n.Name).ToList();
+            List<string> isLegalEntity = new List<string>() { "Юр", "Фіз" };
+            List<string> carInsuranceTypes = db.CarInsuranceTypes.Select(t => t.Type).ToList();
+
+            int idCompany = 0, idMiddleman = 0, idCompanyMiddleman = 0;
+
+            ResponseToClient responseToClient = new ResponseToClient();
+
+            JavaScriptSerializer js = new JavaScriptSerializer();
+
+            ResponseToClient resultOfChekingCompanyMiddleman = GetCompanyMiddlemanData(companyName, middlemanName, ref idCompany, ref idMiddleman, ref idCompanyMiddleman);
+            if (resultOfChekingCompanyMiddleman.responseType != ResponseType.Good)
+                return js.Serialize(resultOfChekingCompanyMiddleman);
+
+            List<string> franchise = GetListFranchiseForCompanyMiddlemanAndContractType(idCompanyMiddleman, "ГО");
+
+            dataToSend.Add("CarZoneOfRegistration", carInsuranceZoneOfReg);
+            dataToSend.Add("IsLegalEntity", isLegalEntity);
+            dataToSend.Add("Franchise", franchise);
+
+            return js.Serialize(dataToSend);
+        }
+
+        public string GetConditionsToAddK5Record()
+        {
+            Dictionary<string, List<string>> dataToSend = new Dictionary<string, List<string>>();
+
+            List<string> period = db.K5.Select(p => p.Period.ToString()).ToList();
+
+            dataToSend.Add("Period", period);
+
+            JavaScriptSerializer js = new JavaScriptSerializer();
+            return js.Serialize(dataToSend);
+        }
+
+        public string GetConditionsToAddK6Record()
+        {
+            Dictionary<string, List<string>> dataToSend = new Dictionary<string, List<string>>();
+
+            List<string> IsCheater = new List<string>() { "Шахрай", "Не шахрай" };
+
+            dataToSend.Add("IsCheater", IsCheater);
+
+            JavaScriptSerializer js = new JavaScriptSerializer();
+            return js.Serialize(dataToSend);
+        }
+
+        public string GetConditionsToAddK7Record()
+        {
+            Dictionary<string, List<string>> dataToSend = new Dictionary<string, List<string>>();
+
+            List<string> period = db.K7.Select(p => p.Period.ToString()).ToList();
+
+            dataToSend.Add("Period", period);
+
+            JavaScriptSerializer js = new JavaScriptSerializer();
+            return js.Serialize(dataToSend);
+        }
+
+        public string GetConditionsToAddBMRecord(string companyName, string middlemanName)
+        {
+            Dictionary<string, List<string>> dataToSend = new Dictionary<string, List<string>>();
+
+            List<string> carInsuranceZoneOfReg = db.InsuranceZoneOfRegistrations.Select(n => n.Name).ToList();
+            List<string> isLegalEntity = new List<string>() { "Юр", "Фіз" };
+            List<string> carInsuranceTypes = db.CarInsuranceTypes.Select(t => t.Type).ToList();
+
+            int idCompany = 0, idMiddleman = 0, idCompanyMiddleman = 0;
+
+            ResponseToClient responseToClient = new ResponseToClient();
+
+            JavaScriptSerializer js = new JavaScriptSerializer();
+
+            ResponseToClient resultOfChekingCompanyMiddleman = GetCompanyMiddlemanData(companyName, middlemanName, ref idCompany, ref idMiddleman, ref idCompanyMiddleman);
+            if (resultOfChekingCompanyMiddleman.responseType != ResponseType.Good)
+                return js.Serialize(resultOfChekingCompanyMiddleman);
+
+            List<string> franchise = GetListFranchiseForCompanyMiddlemanAndContractType(idCompanyMiddleman, "ГО");
+
+            dataToSend.Add("CarZoneOfRegistration", carInsuranceZoneOfReg);
+            dataToSend.Add("IsLegalEntity", isLegalEntity);
+            dataToSend.Add("InsuranceTypeOfCar", carInsuranceTypes);
+            dataToSend.Add("Franchise", franchise);
+
+            return js.Serialize(dataToSend);
+        }
+
+        //SUPPORTING METHODS
+        private List<string> GetListFranchiseForCompanyMiddlemanAndContractType(int idCompanyMiddleman, string contractType)
+        {
+            int idContractType = db.ContractTypes.Where(ct => ct.Name == contractType).Select(ct => ct.Id).First();
+
+            List<int> idsCompanyContractTypes = db.CompanyContractTypes
+                                         .Where(cct => cct.IdCompanyMiddleman == idCompanyMiddleman && cct.IdContractType == idContractType)
+                                         .Select(cct => cct.Id)
+                                         .ToList();
+            List<string> franchise = db.ContractFranchises
+                                        .Where(cf => idsCompanyContractTypes.Contains(cf.IdCompanyContractType))
+                                        .Select(cf => cf.Franchise.Sum.ToString())
+                                        .ToList();
+
+            return franchise;
+        }
+
+        private TitlesToSend FillTitleToSend(string name, string titleUkr, string titleRus)
+        {
+            return new TitlesToSend
+            {
+                Name = name,
+                TitleUkr = titleUkr,
+                TitleRus = titleRus
+            };
+        }
+
+        private dynamic GetPotsRequestBody()
+        {
+            System.IO.Stream request = Request.InputStream;
+            request.Seek(0, SeekOrigin.Begin);
+            string bodyData = new StreamReader(request).ReadToEnd();
+            return JsonConvert.DeserializeObject(bodyData);
+        }
+
         private int GetMiddlemanId(string middlemanName)
         {
             return db.Middlemen.Where(mi => mi.FullName == middlemanName).Select(m => m.Id).FirstOrDefault();
@@ -1590,7 +1860,6 @@ namespace InsuranceServicesAdminLight.Controllers
                 responseToClient.responseType = ResponseType.Bad;
                 responseToClient.responseText = "Не вказана назва компанії";
                 return responseToClient;
-                //return "Error! Company is empty";
             }
 
             idCompany = GetCompanyId(companyName);
@@ -1632,7 +1901,7 @@ namespace InsuranceServicesAdminLight.Controllers
         }
     }
 
-    //Block test class start
+    //Supporting classes
     public class InsCarType
     {
         public int id { get; set; }
@@ -1648,7 +1917,6 @@ namespace InsuranceServicesAdminLight.Controllers
         public int id { get; set; }
         public double sum { get; set; }
     }
-    //Block test class end
 
     public class TableK1ToSend
     {
@@ -1714,6 +1982,13 @@ namespace InsuranceServicesAdminLight.Controllers
         public int TransportCountFrom { get; set; }
         public int TransportCountTo { get; set; }
         public double Value { get; set; }
+    }
+
+    public class TitlesToSend
+    {
+        public string Name { get; set; }
+        public string TitleUkr { get; set; }
+        public string TitleRus { get; set; }
     }
     
 }
