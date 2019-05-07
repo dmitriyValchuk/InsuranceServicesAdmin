@@ -100,3 +100,4 @@ E:\Диплом\InsuranceServicesAdminLight\InsuranceServicesAdminLight\obj\Debu
 E:\Диплом\InsuranceServicesAdminLight\InsuranceServicesAdminLight\obj\Debug\InsuranceServicesAdminLight.dll
 E:\Диплом\InsuranceServicesAdminLight\InsuranceServicesAdminLight\obj\Debug\InsuranceServicesAdminLight.pdb
 E:\Диплом\InsuranceServicesAdminLight\InsuranceServicesAdminLight\bin\ru\EntityFramework.resources.dll
+E:\Диплом\InsuranceServicesAdminLight\InsuranceServicesAdminLight\obj\Debug\InsuranceServicesAdminLight.csprojAssemblyReference.cache
