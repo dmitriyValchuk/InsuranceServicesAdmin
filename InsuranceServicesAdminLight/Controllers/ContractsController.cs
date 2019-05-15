@@ -1655,6 +1655,8 @@ namespace InsuranceServicesAdminLight.Controllers
             return "Success!";
         }
 
+        //public string AddNewRecordToK1()
+
         public string GetConditionsToAddK1Record()
         {
             Dictionary<string, List<string>> dataToSend = new Dictionary<string, List<string>>();
