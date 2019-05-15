@@ -25,9 +25,6 @@ namespace InsuranceServicesAdminLight.Controllers
             public ResponseType responseType { get; set; }
             public string responseText { get; set; }
         }
-
-        const string GoodResponse = "Success";
-        const string BadResponse = "Fail";
         
         public string GetCheckedCompany(string companyChecked)
         {

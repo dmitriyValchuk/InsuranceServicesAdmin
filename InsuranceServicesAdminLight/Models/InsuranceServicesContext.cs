@@ -51,7 +51,6 @@ namespace InsuranceServicesAdminLight.Models
         public virtual DbSet<Middleman> Middlemen { get; set; }
         public virtual DbSet<Privilege> Privileges { get; set; }
         public virtual DbSet<RegioneOfRegistration> RegioneOfRegistrations { get; set; }
-        public virtual DbSet<RegioneOfRegistration1> RegioneOfRegistrations1 { get; set; }
         public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<TSC> TSCs { get; set; }
 
@@ -312,9 +311,19 @@ namespace InsuranceServicesAdminLight.Models
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<InsuranceZoneOfRegistration>()
+                .HasMany(e => e.CityOfRegistrations)
+                .WithOptional(e => e.InsuranceZoneOfRegistration)
+                .HasForeignKey(e => e.IdZoneOfRegistration);
+
+            modelBuilder.Entity<InsuranceZoneOfRegistration>()
                 .HasMany(e => e.CityOrCountryOfRegToZones)
                 .WithOptional(e => e.InsuranceZoneOfRegistration)
                 .HasForeignKey(e => e.IdInsuranceZoneOfReg);
+
+            modelBuilder.Entity<InsuranceZoneOfRegistration>()
+                .HasMany(e => e.CountryOfRegistrations)
+                .WithOptional(e => e.InsuranceZoneOfRegistration)
+                .HasForeignKey(e => e.IdZoneOfRegistration);
 
             modelBuilder.Entity<InsuranceZoneOfRegistration>()
                 .HasMany(e => e.K2)
