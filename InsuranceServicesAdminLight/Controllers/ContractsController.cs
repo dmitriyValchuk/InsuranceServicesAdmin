@@ -385,7 +385,6 @@ namespace InsuranceServicesAdminLight.Controllers
                                                     .Select(cit => cit.Type)
                                                     .FirstOrDefault();
                 tempTableRow.Franchise = db.Franchises.Where(i => i.Id == k.ContractFranchise.IdFranchise).Select(i => i.Sum).FirstOrDefault();
-                //tempTableRow.Franchise = db.Franchises.Where(i => i.Id == k.ContractFranchise.IdFranchise && k.ContractFranchise.IdCompanyContractType == idContractType).Select(i => i.Sum).FirstOrDefault();
                 tempTableRow.Value = k.Value;
                 BMTable.Add(tempTableRow);
             }
@@ -441,17 +440,21 @@ namespace InsuranceServicesAdminLight.Controllers
 
         public string RemoveDataFromTable(string coef, string companyName, string middlemanName, string data)
         {
-            JavaScriptSerializer js = new JavaScriptSerializer();
-
             int idCompany = 0, idMiddleman = 0, idCompanyMiddleman = 0;
-
-            ResponseToClient resultOfChekingCompanyMiddleman = GetCompanyMiddlemanData(companyName, middlemanName, ref idCompany, ref idMiddleman, ref idCompanyMiddleman);
-            if (resultOfChekingCompanyMiddleman.responseType != ResponseType.Good)
-                return js.Serialize(resultOfChekingCompanyMiddleman);
 
             dynamic dataParsed = JsonConvert.DeserializeObject(data);
 
+            bool coefIsDependent = Convert.ToBoolean(dataParsed.coefIsDependent);
+
             ResponseToClient responseToClient = new ResponseToClient();
+            JavaScriptSerializer js = new JavaScriptSerializer();
+
+            if (coefIsDependent)
+            {
+                ResponseToClient resultOfChekingCompanyMiddleman = GetCompanyMiddlemanData(companyName, middlemanName, ref idCompany, ref idMiddleman, ref idCompanyMiddleman);
+                if (resultOfChekingCompanyMiddleman.responseType != ResponseType.Good)
+                    return js.Serialize(resultOfChekingCompanyMiddleman);
+            }
 
             switch (coef)
             {
@@ -459,15 +462,15 @@ namespace InsuranceServicesAdminLight.Controllers
                     {
                         string currentInsuranceType = dataParsed.InsuranceTypeOfCar;
                         var recordForDel = db.K1.Where(k => k.CarInsuranceType.Type == currentInsuranceType
-                                                         && k.IdCompanyMiddleman == idCompanyMiddleman).First();
-                        if (recordForDel == null)
+                                                         && k.IdCompanyMiddleman == idCompanyMiddleman);
+                        if (!recordForDel.Any())
                         {
                             responseToClient.responseType = ResponseType.Bad;
                             responseToClient.responseText = "Запис не знайдений в базі даних";
                         }
                         else
                         {
-                            db.K1.Remove(recordForDel);
+                            db.K1.Remove(recordForDel.First());
                             db.SaveChanges();
                             responseToClient.responseType = ResponseType.Good;
                             responseToClient.responseText = "Запис успішно видалений з бази даних";
@@ -485,15 +488,15 @@ namespace InsuranceServicesAdminLight.Controllers
                                                          && k.IsLegalEntity == currentIsLegalEntity
                                                          && k.CarInsuranceType.Type == currentInsuranceType
                                                          && k.ContractFranchise.Franchise.Sum == currentFranchise
-                                                         && k.IdCompanyMiddleman == idCompanyMiddleman).First();                        
-                        if (recordForDel == null)
+                                                         && k.IdCompanyMiddleman == idCompanyMiddleman);                        
+                        if (!recordForDel.Any())
                         {
                             responseToClient.responseType = ResponseType.Bad;
                             responseToClient.responseText = "Запис не знайдений в базі даних";
                         }
                         else
                         {
-                            db.K2.Remove(recordForDel);
+                            db.K2.Remove(recordForDel.First());
                             db.SaveChanges();
                             responseToClient.responseType = ResponseType.Good;
                             responseToClient.responseText = "Запис успішно видалений з бази даних";
@@ -509,16 +512,16 @@ namespace InsuranceServicesAdminLight.Controllers
                         var recordForDel = db.K3.Where(k => k.InsuranceZoneOfRegistration.Name == currentCarZone
                                                          && k.IsLegalEntity == currentIsLegalEntity
                                                          && k.CarInsuranceType.Type == currentInsuranceType
-                                                         && k.IdCompanyMiddleman == idCompanyMiddleman).First();
+                                                         && k.IdCompanyMiddleman == idCompanyMiddleman);
                         
-                        if (recordForDel == null)
+                        if (!recordForDel.Any())
                         {
                             responseToClient.responseType = ResponseType.Bad;
                             responseToClient.responseText = "Запис не знайдений в базі даних";
                         }
                         else
                         {
-                            db.K3.Remove(recordForDel);
+                            db.K3.Remove(recordForDel.First());
                             db.SaveChanges();
                             responseToClient.responseType = ResponseType.Good;
                             responseToClient.responseText = "Запис успішно видалений з бази даних";
@@ -534,16 +537,16 @@ namespace InsuranceServicesAdminLight.Controllers
                         var recordForDel = db.K4.Where(k => k.InsuranceZoneOfRegistration.Name == currentCarZone
                                                          && k.IsLegalEntity == currentIsLegalEntity
                                                          && k.ContractFranchise.Franchise.Sum == currentFranchise
-                                                         && k.IdCompanyMiddleman == idCompanyMiddleman).First();
+                                                         && k.IdCompanyMiddleman == idCompanyMiddleman);
                         
-                        if (recordForDel == null)
+                        if (!recordForDel.Any())
                         {
                             responseToClient.responseType = ResponseType.Bad;
                             responseToClient.responseText = "Запис не знайдений в базі даних";
                         }
                         else
                         {
-                            db.K4.Remove(recordForDel);
+                            db.K4.Remove(recordForDel.First());
                             db.SaveChanges();
                             responseToClient.responseType = ResponseType.Good;
                             responseToClient.responseText = "Запис успішно видалений з бази даних";
@@ -554,16 +557,16 @@ namespace InsuranceServicesAdminLight.Controllers
                     {
                         int currentPeriod = dataParsed.Period;
 
-                        var recordForDel = db.K5.Where(k => k.Period == currentPeriod).First();
+                        var recordForDel = db.K5.Where(k => k.Period == currentPeriod);
                         
-                        if (recordForDel == null)
+                        if (!recordForDel.Any())
                         {
                             responseToClient.responseType = ResponseType.Bad;
                             responseToClient.responseText = "Запис не знайдений в базі даних";
                         }
                         else
                         {
-                            db.K5.Remove(recordForDel);
+                            db.K5.Remove(recordForDel.First());
                             db.SaveChanges();
                             responseToClient.responseType = ResponseType.Good;
                             responseToClient.responseText = "Запис успішно видалений з бази даних";
@@ -574,16 +577,16 @@ namespace InsuranceServicesAdminLight.Controllers
                     {
                         bool currentIsCheater = dataParsed.IsCheater == "Шахрай" ? true : false;
 
-                        var recordForDel = db.K6.Where(k => k.IsCheater == currentIsCheater).First();
+                        var recordForDel = db.K6.Where(k => k.IsCheater == currentIsCheater);
                         
-                        if (recordForDel == null)
+                        if (!recordForDel.Any())
                         {
                             responseToClient.responseType = ResponseType.Bad;
                             responseToClient.responseText = "Запис не знайдений в базі даних";
                         }
                         else
                         {
-                            db.K6.Remove(recordForDel);
+                            db.K6.Remove(recordForDel.First());
                             db.SaveChanges();
                             responseToClient.responseType = ResponseType.Good;
                             responseToClient.responseText = "Запис успішно видалений з бази даних";
@@ -594,16 +597,16 @@ namespace InsuranceServicesAdminLight.Controllers
                     {
                         double currentPeriod = dataParsed.Period;
 
-                        var recordForDel = db.K7.Where(k => k.Period == currentPeriod).First();
+                        var recordForDel = db.K7.Where(k => k.Period == currentPeriod);
                         
-                        if (recordForDel == null)
+                        if (!recordForDel.Any())
                         {
                             responseToClient.responseType = ResponseType.Bad;
                             responseToClient.responseText = "Запис не знайдений в базі даних";
                         }
                         else
                         {
-                            db.K7.Remove(recordForDel);
+                            db.K7.Remove(recordForDel.First());
                             db.SaveChanges();
                             responseToClient.responseType = ResponseType.Good;
                             responseToClient.responseText = "Запис успішно видалений з бази даних";
@@ -621,16 +624,16 @@ namespace InsuranceServicesAdminLight.Controllers
                                                          && k.IsLegalEntity == currentIsLegalEntity
                                                          && k.CarInsuranceType.Type == currentInsuranceType
                                                          && k.ContractFranchise.Franchise.Sum == currentFranchise
-                                                         && k.IdCompanyMiddleman == idCompanyMiddleman).First();
+                                                         && k.IdCompanyMiddleman == idCompanyMiddleman);
                         
-                        if (recordForDel == null)
+                        if (!recordForDel.Any())
                         {
                             responseToClient.responseType = ResponseType.Bad;
                             responseToClient.responseText = "Запис не знайдений в базі даних";
                         }
                         else
                         {
-                            db.BonusMalus.Remove(recordForDel);
+                            db.BonusMalus.Remove(recordForDel.First());
                             db.SaveChanges();
                             responseToClient.responseType = ResponseType.Good;
                             responseToClient.responseText = "Запис успішно видалений з бази даних";
@@ -645,16 +648,16 @@ namespace InsuranceServicesAdminLight.Controllers
 
                         var recordForDel = db.DiscountByQuantities.Where(k => k.IsLegalEntity == currentIsLegalEntity
                                                                             && k.TransportCountFrom == currentTransportCountFrom
-                                                                            && k.TransportCountTo == currentTransportCountTo).First();
+                                                                            && k.TransportCountTo == currentTransportCountTo);
                         
-                        if (recordForDel == null)
+                        if (!recordForDel.Any())
                         {
                             responseToClient.responseType = ResponseType.Bad;
                             responseToClient.responseText = "Запис не знайдений в базі даних";
                         }
                         else
                         {
-                            db.DiscountByQuantities.Remove(recordForDel);
+                            db.DiscountByQuantities.Remove(recordForDel.First());
                             db.SaveChanges();
                             responseToClient.responseType = ResponseType.Good;
                             responseToClient.responseText = "Запис успішно видалений з бази даних";
@@ -686,14 +689,17 @@ namespace InsuranceServicesAdminLight.Controllers
             string companyName = Convert.ToString(dataParsed.companyName);
             string middlemanName = Convert.ToString(dataParsed.middlemanName);
             string coef = Convert.ToString(dataParsed.coef);
+            bool coefIsDependent = Convert.ToBoolean(dataParsed.coefIsDependent);
 
             ResponseToClient responseToClient = new ResponseToClient();
-
             JavaScriptSerializer js = new JavaScriptSerializer();
 
-            ResponseToClient resultOfChekingCompanyMiddleman = GetCompanyMiddlemanData(companyName, middlemanName, ref idCompany, ref idMiddleman, ref idCompanyMiddleman);
-            if (resultOfChekingCompanyMiddleman.responseType != ResponseType.Good)
-                return js.Serialize(resultOfChekingCompanyMiddleman);
+            if (coefIsDependent)
+            {
+                ResponseToClient resultOfChekingCompanyMiddleman = GetCompanyMiddlemanData(companyName, middlemanName, ref idCompany, ref idMiddleman, ref idCompanyMiddleman);
+                if (resultOfChekingCompanyMiddleman.responseType != ResponseType.Good)
+                    return js.Serialize(resultOfChekingCompanyMiddleman);
+            }
 
             switch (coef)
             {
@@ -941,14 +947,17 @@ namespace InsuranceServicesAdminLight.Controllers
             string companyName = Convert.ToString(dataParsed.companyName);
             string middlemanName = Convert.ToString(dataParsed.middlemanName);
             string coef = Convert.ToString(dataParsed.coef);
+            bool coefIsDependent = Convert.ToBoolean(dataParsed.coefIsDependent);
 
             ResponseToClient responseToClient = new ResponseToClient();
-
             JavaScriptSerializer js = new JavaScriptSerializer();
 
-            ResponseToClient resultOfChekingCompanyMiddleman = GetCompanyMiddlemanData(companyName, middlemanName, ref idCompany, ref idMiddleman, ref idCompanyMiddleman);
-            if (resultOfChekingCompanyMiddleman.responseType != ResponseType.Good)
-                return js.Serialize(resultOfChekingCompanyMiddleman);
+            if (coefIsDependent)
+            {
+                ResponseToClient resultOfChekingCompanyMiddleman = GetCompanyMiddlemanData(companyName, middlemanName, ref idCompany, ref idMiddleman, ref idCompanyMiddleman);
+                if (resultOfChekingCompanyMiddleman.responseType != ResponseType.Good)
+                    return js.Serialize(resultOfChekingCompanyMiddleman);
+            }
 
             switch (coef)
             {
@@ -1665,16 +1674,16 @@ namespace InsuranceServicesAdminLight.Controllers
             string companyName = Convert.ToString(dataParsed.companyName);
             string middlemanName = Convert.ToString(dataParsed.middlemanName);
             string coef = Convert.ToString(dataParsed.coef);
+            bool coefIsDependent = Convert.ToBoolean(dataParsed.coefIsDependent);
 
             ResponseToClient responseToClient = new ResponseToClient();
             JavaScriptSerializer js = new JavaScriptSerializer();
 
-            ResponseToClient resultOfChekingCompanyMiddleman = GetCompanyMiddlemanData(companyName, middlemanName, ref idCompany, ref idMiddleman, ref idCompanyMiddleman);
-            if (resultOfChekingCompanyMiddleman.responseType != ResponseType.Good)
-                return js.Serialize(resultOfChekingCompanyMiddleman);
-
-            idCompanyMiddleman = 16;
-
+            if (coefIsDependent) { 
+                ResponseToClient resultOfChekingCompanyMiddleman = GetCompanyMiddlemanData(companyName, middlemanName, ref idCompany, ref idMiddleman, ref idCompanyMiddleman);
+                if (resultOfChekingCompanyMiddleman.responseType != ResponseType.Good)
+                    return js.Serialize(resultOfChekingCompanyMiddleman);
+            }
 
             switch (coef)
             {
@@ -1715,9 +1724,6 @@ namespace InsuranceServicesAdminLight.Controllers
                         var checkExist = db.K1.Where(k => k.IdCarInsuranceType == idInsuranceTypeOfCar
                                                     && k.Value == newValue && k.IdCompanyMiddleman == idCompanyMiddleman);
 
-                        bool testValue2 = db.K1.Where(k => k.IdCarInsuranceType == idInsuranceTypeOfCar
-                                                    && k.Value == newValue && k.IdCompanyMiddleman == idCompanyMiddleman).Any();
-
                         if (checkExist.Any())
                         {
                             responseToClient.responseType = ResponseType.Bad;
@@ -1725,10 +1731,8 @@ namespace InsuranceServicesAdminLight.Controllers
                         }
 
                         var checkExistSimilar = db.K1.Where(k => k.IdCarInsuranceType == idInsuranceTypeOfCar
-                                                                && k.Value != newValue && k.IdCompanyMiddleman == idCompanyMiddleman);
-
-                        bool testValue = db.K1.Where(k => k.IdCarInsuranceType == idInsuranceTypeOfCar && k.Value != newValue && k.IdCompanyMiddleman == idCompanyMiddleman)
-                                             .Any();
+                                                                && k.Value != newValue 
+                                                                && k.IdCompanyMiddleman == idCompanyMiddleman);
 
                         if (checkExistSimilar.Any())
                         {
@@ -1760,10 +1764,21 @@ namespace InsuranceServicesAdminLight.Controllers
                     }
                 case "K2":
                     {
-                        string insuranceTypeOfCar = Convert.ToString(dataParsed.data.InsuranceTypeOfCar);
-                        string isLegalEntity = Convert.ToString(dataParsed.data.IsLegalEntity);
-                        string carZoneOfRegistration = Convert.ToString(dataParsed.data.CarZoneOfRegistration);
-                        string franchise = Convert.ToString(dataParsed.data.Franchise);
+                        string insuranceTypeOfCar, isLegalEntity, carZoneOfRegistration, franchise;
+                        try
+                        {
+                            insuranceTypeOfCar = Convert.ToString(dataParsed.data.InsuranceTypeOfCar);
+                            isLegalEntity = Convert.ToString(dataParsed.data.IsLegalEntity);
+                            carZoneOfRegistration = Convert.ToString(dataParsed.data.CarZoneOfRegistration);
+                            franchise = Convert.ToString(dataParsed.data.Franchise);
+                        }
+                        catch
+                        {
+                            responseToClient.responseType = ResponseType.Bad;
+                            responseToClient.responseText = "Помилка отримання даних. Спробуйте ще";
+                            return js.Serialize(responseToClient);
+                        }
+
 
                         K2 newK2Record = new K2();
                         newK2Record.IdCarInsuranceType = db.CarInsuranceTypes.Where(c => c.Type == insuranceTypeOfCar).Select(c => c.Id).First();
