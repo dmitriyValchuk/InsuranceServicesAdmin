@@ -1658,11 +1658,23 @@ namespace InsuranceServicesAdminLight.Controllers
         [HttpPost]
         public string AddNewRecordToCoef()
         {
+
+            int idCompany = 0, idMiddleman = 0, idCompanyMiddleman = 0;
+
             dynamic dataParsed = GetPotsRequestBody();
+            string companyName = Convert.ToString(dataParsed.companyName);
+            string middlemanName = Convert.ToString(dataParsed.middlemanName);
             string coef = Convert.ToString(dataParsed.coef);
 
             ResponseToClient responseToClient = new ResponseToClient();
             JavaScriptSerializer js = new JavaScriptSerializer();
+
+            ResponseToClient resultOfChekingCompanyMiddleman = GetCompanyMiddlemanData(companyName, middlemanName, ref idCompany, ref idMiddleman, ref idCompanyMiddleman);
+            if (resultOfChekingCompanyMiddleman.responseType != ResponseType.Good)
+                return js.Serialize(resultOfChekingCompanyMiddleman);
+
+            idCompanyMiddleman = 16;
+
 
             switch (coef)
             {
@@ -1670,83 +1682,95 @@ namespace InsuranceServicesAdminLight.Controllers
                     return js.Serialize(responseToClient.responseType = ResponseType.Good);
                 case "K1":
                     { 
-                    string insuranceTypeOfCar = Convert.ToString(dataParsed.InsuranceTypeOfCar);
+                        string insuranceTypeOfCar = Convert.ToString(dataParsed.data.InsuranceTypeOfCar);
 
-                    if (dataParsed.InsuranceTypeOfCar == null || dataParsed.Value == null)
-                    {
-                        responseToClient.responseType = ResponseType.Bad;
-                        responseToClient.responseText = "Не вдалося отримати данні. Заповніть всі поля та спробуйте знову.";
+                        if (dataParsed.data.InsuranceTypeOfCar == null || dataParsed.data.Value == null)
+                        {
+                            responseToClient.responseType = ResponseType.Bad;
+                            responseToClient.responseText = "Не вдалося отримати данні. Заповніть всі поля та спробуйте знову.";
+                            return js.Serialize(responseToClient);
+                        }
+
+                        int idInsuranceTypeOfCar = GetIdInsuranceTypeOfCar(insuranceTypeOfCar);
+
+                        if (idInsuranceTypeOfCar == 0)
+                        {
+                            responseToClient.responseType = ResponseType.Bad;
+                            responseToClient.responseText = $"Не вдалося знайти тип транспорту {insuranceTypeOfCar} в базі даних";
+                            return js.Serialize(responseToClient);
+                        }
+
+                        double newValue = 0;
+                        try
+                        {
+                            newValue = Convert.ToDouble(dataParsed.data.Value);
+                        }
+                        catch
+                        {
+                            responseToClient.responseType = ResponseType.Bad;
+                            responseToClient.responseText = "Виникла помилка при обробці поля \"Значення\" коєфіцієнта. Значення має бути числом.";
+                            return js.Serialize(responseToClient);
+                        }
+
+                        var checkExist = db.K1.Where(k => k.IdCarInsuranceType == idInsuranceTypeOfCar
+                                                    && k.Value == newValue && k.IdCompanyMiddleman == idCompanyMiddleman);
+
+                        bool testValue2 = db.K1.Where(k => k.IdCarInsuranceType == idInsuranceTypeOfCar
+                                                    && k.Value == newValue && k.IdCompanyMiddleman == idCompanyMiddleman).Any();
+
+                        if (checkExist.Any())
+                        {
+                            responseToClient.responseType = ResponseType.Bad;
+                            responseToClient.responseText = "Запис з такою умовою вже існує.";
+                        }
+
+                        var checkExistSimilar = db.K1.Where(k => k.IdCarInsuranceType == idInsuranceTypeOfCar
+                                                                && k.Value != newValue && k.IdCompanyMiddleman == idCompanyMiddleman);
+
+                        bool testValue = db.K1.Where(k => k.IdCarInsuranceType == idInsuranceTypeOfCar && k.Value != newValue && k.IdCompanyMiddleman == idCompanyMiddleman)
+                                             .Any();
+
+                        if (checkExistSimilar.Any())
+                        {
+                            responseToClient.responseType = ResponseType.Bad;
+                            responseToClient.responseText = "Ми знайшли схожий запис з іншим значенням поля \"Значення\". Будь ласка оновіть значення в існуючому записі.";
+                            return js.Serialize(responseToClient);
+                        }
+
+                        K1 newK1Record = new K1();
+                        newK1Record.IdCarInsuranceType = idInsuranceTypeOfCar;
+                        newK1Record.Value = newValue;
+                        newK1Record.IdCompanyMiddleman = idCompanyMiddleman;
+
+                        try
+                        {
+                            db.K1.Add(newK1Record);
+                            db.SaveChanges();
+                        }
+                        catch
+                        {
+                            responseToClient.responseType = ResponseType.Bad;
+                            responseToClient.responseText = "Виникла неочікувана помилка. Будь ласка спробуйте ще.";
+                            return js.Serialize(responseToClient);
+                        }
+
+                        responseToClient.responseType = ResponseType.Good;
+                        responseToClient.responseText = $"Запис для коефіцієнту {dataParsed.coef} успішно збережений в базі даних";
                         return js.Serialize(responseToClient);
-                    }
-
-                    int idInsuranceTypeOfCar = GetIdInsuranceTypeOfCar(insuranceTypeOfCar);
-
-                    if (idInsuranceTypeOfCar == 0)
-                    {
-                        responseToClient.responseType = ResponseType.Bad;
-                        responseToClient.responseText = $"Не вдалося знайти тип транспорту {insuranceTypeOfCar} в базі даних";
-                        return js.Serialize(responseToClient);
-                    }
-
-                    double newValue;
-                    bool parseNewValueResult = double.TryParse(dataParsed.Value.ToString(), out newValue);
-                    if (parseNewValueResult)
-                    {
-                        responseToClient.responseType = ResponseType.Bad;
-                        responseToClient.responseText = "Виникла помилка при обробці поля \"Значення\" коєфіцієнта. Значення має бути числом.";
-                        return js.Serialize(responseToClient);
-                    }
-
-                    var checkExist = db.K1.Where(k => k.IdCarInsuranceType == idInsuranceTypeOfCar
-                                                    && k.Value == newValue).First();
-                    if (checkExist != null)
-                    {
-                        responseToClient.responseType = ResponseType.Bad;
-                        responseToClient.responseText = "Запис з такою умовою вже існує.";
-                    }
-
-                    var checkExistSimilar = db.K1.Where(k => k.IdCarInsuranceType == idInsuranceTypeOfCar
-                                                            && k.Value != newValue).First();
-                    if (checkExistSimilar != null)
-                    {
-                        responseToClient.responseType = ResponseType.Bad;
-                        responseToClient.responseText = "Ми знайшли схожий запис з іншим значенням поля \"Значення\". Будь ласка оновіть значення в існуючому записі.";
-                        return js.Serialize(responseToClient);
-                    }
-
-                    K1 newK1Record = new K1();
-                    newK1Record.IdCarInsuranceType = idInsuranceTypeOfCar;
-                    newK1Record.Value = newValue;
-
-                    try
-                    {
-                        db.K1.Add(newK1Record);
-                        db.SaveChanges();
-                    }
-                    catch
-                    {
-                        responseToClient.responseType = ResponseType.Bad;
-                        responseToClient.responseText = "Виникла неочікувана помилка. Будь ласка спробуйте ще.";
-                        return js.Serialize(responseToClient);
-                    }
-
-                    responseToClient.responseType = ResponseType.Good;
-                    responseToClient.responseText = $"Запис для коефіцієнту {dataParsed.coef} успішно збережений в базі даних";
-                    return js.Serialize(responseToClient);
                     }
                 case "K2":
                     {
-                        string insuranceTypeOfCar = Convert.ToString(dataParsed.InsuranceTypeOfCar);
-                        string isLegalEntity = Convert.ToString(dataParsed.IsLegalEntity);
-                        string carZoneOfRegistration = Convert.ToString(dataParsed.CarZoneOfRegistration);
-                        string franchise = Convert.ToString(dataParsed.Franchise);
+                        string insuranceTypeOfCar = Convert.ToString(dataParsed.data.InsuranceTypeOfCar);
+                        string isLegalEntity = Convert.ToString(dataParsed.data.IsLegalEntity);
+                        string carZoneOfRegistration = Convert.ToString(dataParsed.data.CarZoneOfRegistration);
+                        string franchise = Convert.ToString(dataParsed.data.Franchise);
 
                         K2 newK2Record = new K2();
                         newK2Record.IdCarInsuranceType = db.CarInsuranceTypes.Where(c => c.Type == insuranceTypeOfCar).Select(c => c.Id).First();
                         newK2Record.IsLegalEntity = isLegalEntity == "Юр" ? true : false;
                         newK2Record.IdInsuranceZoneOfReg = db.InsuranceZoneOfRegistrations.Where(i => i.Name == carZoneOfRegistration).Select(i => i.Id).First();
                         newK2Record.IdContractFranchise = db.ContractFranchises.Where(c => c.Franchise.Sum.ToString() == franchise).Select(c => c.Id).First();
-                        newK2Record.Value = dataParsed.Value;
+                        newK2Record.Value = dataParsed.data.Value;
 
                         db.K2.Add(newK2Record);
                         db.SaveChanges();
