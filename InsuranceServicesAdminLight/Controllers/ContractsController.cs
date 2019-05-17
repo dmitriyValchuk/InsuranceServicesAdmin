@@ -807,23 +807,37 @@ namespace InsuranceServicesAdminLight.Controllers
                     {
                         int tempPeriod = dataParsed.data.Period;
 
-                        var recordForChange = db.K5.Where(k => k.Period == tempPeriod).First();
+                        K5 recordForChange = new K5();
+                        try
+                        {
+                            recordForChange = db.K5.Where(k => k.Period == tempPeriod).First();
+                        }
+                        catch
+                        {
+                            recordForChange.Period = tempPeriod;
+                            recordForChange.Value = dataParsed.data.Value;
+                            db.K5.Add(recordForChange);
+                            db.SaveChanges();
+                            responseToClient.responseType = ResponseType.Good;
+                            responseToClient.responseText = $"Запис для коєфіцента - {coef} успішно збережено до бази даних";
+                        }
 
-                        if (recordForChange != null)
+                        try
                         {
                             recordForChange.Value = dataParsed.data.Value;
                             db.SaveChanges();
                         }
-                        else
+                        catch
                         {
                             responseToClient.responseType = ResponseType.Bad;
-                            responseToClient.responseText = $"Запис з параметром {tempPeriod} не знайдено в базі даних";
+                            responseToClient.responseText = $"Не вдалося зберегти період \"{tempPeriod}\" в базу даних";
                             return js.Serialize(responseToClient);
                         }
+
                         responseToClient.responseType = ResponseType.Good;
                         responseToClient.responseText = $"Запис для коєфіцента - {coef} успішно збережено до бази даних";
+                        return js.Serialize(responseToClient);
                     }
-                    break;
                 case "K6":
                     {
                         bool tempIsCheater = dataParsed.data.IsCheater == "Шахрай" ? true : false;
@@ -843,29 +857,43 @@ namespace InsuranceServicesAdminLight.Controllers
                         }
                         responseToClient.responseType = ResponseType.Good;
                         responseToClient.responseText = $"Запис для коєфіцента - {coef} успішно збережено до бази даних";
+                        return js.Serialize(responseToClient);
                     }
-                    break;
                 case "K7":
                     {
                         double tempPeriod = dataParsed.data.Period;
 
-                        var recordForChange = db.K7.Where(k => k.Period == tempPeriod).First();
+                        K7 recordForChange = new K7();
+                        try
+                        {
+                            recordForChange = db.K7.Where(k => k.Period == tempPeriod).First();
+                        }
+                        catch
+                        {
+                            recordForChange.Period = tempPeriod;
+                            recordForChange.Value = dataParsed.data.Value;
+                            db.K7.Add(recordForChange);
+                            db.SaveChanges();
+                            responseToClient.responseType = ResponseType.Good;
+                            responseToClient.responseText = $"Запис для коєфіцента - {coef} успішно збережено до бази даних";
+                        }
 
-                        if (recordForChange != null)
+                        try
                         {
                             recordForChange.Value = dataParsed.data.Value;
                             db.SaveChanges();
                         }
-                        else
+                        catch
                         {
                             responseToClient.responseType = ResponseType.Bad;
-                            responseToClient.responseText = $"Запис з параметром {tempPeriod} не знайдено в базі даних";
+                            responseToClient.responseText = $"Не вдалося зберегти період \"{tempPeriod}\" в базу даних";
                             return js.Serialize(responseToClient);
                         }
+
                         responseToClient.responseType = ResponseType.Good;
                         responseToClient.responseText = $"Запис для коєфіцента - {coef} успішно збережено до бази даних";
+                        return js.Serialize(responseToClient);
                     }
-                    break;
                 case "BM":
                     {
                         string tempCarZone = dataParsed.data.CarZoneOfRegistration;
@@ -887,38 +915,54 @@ namespace InsuranceServicesAdminLight.Controllers
                         else
                         {
                             responseToClient.responseType = ResponseType.Bad;
-                            responseToClient.responseText = $"Запис з параметрами: {tempCarZone}, {tempIsLegalEntity}, {tempInsuranceType}, {tempFranchise} не знайдено в базі даних";
+                            responseToClient.responseText = $"Запис з параметрами: {tempCarZone}, {tempIsLegalEntity}, {tempInsuranceType}, {tempFranchise} не вдалося зберегти в базі даних";
                             return js.Serialize(responseToClient);
                         }
                         responseToClient.responseType = ResponseType.Good;
                         responseToClient.responseText = $"Запис для коєфіцента - {coef} успішно збережено до бази даних";
+                        return js.Serialize(responseToClient);
                     }
-                    break;
                 case "KPark":
                     {
                         bool tempIsLegalEntity = dataParsed.data.IsLegalEntity == "Юр" ? true : false;
                         int tempTransportCountFrom = dataParsed.data.TransportCountFrom;
                         int tempTransportCountTo = dataParsed.data.TransportCountTo;
 
-                        var recordForChange = db.DiscountByQuantities.Where(k => k.IsLegalEntity == tempIsLegalEntity
+                        DiscountByQuantity recordForChange = new DiscountByQuantity();
+                        try
+                        {
+                            recordForChange = db.DiscountByQuantities.Where(k => k.IsLegalEntity == tempIsLegalEntity
                                                                             && k.TransportCountFrom == tempTransportCountFrom
                                                                             && k.TransportCountTo == tempTransportCountTo).First();
+                        }
+                        catch
+                        {
+                            recordForChange.IsLegalEntity = tempIsLegalEntity;
+                            recordForChange.TransportCountFrom = tempTransportCountFrom;
+                            recordForChange.TransportCountTo = tempTransportCountTo;
+                            recordForChange.Value = dataParsed.data.Value;
+                            db.DiscountByQuantities.Add(recordForChange);
+                            db.SaveChanges();
+                            responseToClient.responseType = ResponseType.Good;
+                            responseToClient.responseText = $"Запис для коєфіцента - {coef} успішно збережено до бази даних";
+                        }
 
-                        if (recordForChange != null)
+                        try
                         {
                             recordForChange.Value = dataParsed.data.Value;
                             db.SaveChanges();
                         }
-                        else
+                        catch
                         {
                             responseToClient.responseType = ResponseType.Bad;
-                            responseToClient.responseText = $"Запис з параметрами: {tempIsLegalEntity}, {tempTransportCountFrom} - {tempTransportCountTo} не знайдено в базі даних";
+                            responseToClient.responseText = $"Запис з параметрами: {tempIsLegalEntity}, {tempTransportCountFrom} - {tempTransportCountTo} не вдалося зберегти в базі даних";
                             return js.Serialize(responseToClient);
                         }
+
                         responseToClient.responseType = ResponseType.Good;
                         responseToClient.responseText = $"Запис для коєфіцента - {coef} успішно збережено до бази даних";
+                        return js.Serialize(responseToClient);
                     }
-                    break;
                 case "KPilg":
                     {
                         int countNewRecords = 0;
@@ -988,8 +1032,8 @@ namespace InsuranceServicesAdminLight.Controllers
                         }
                         responseToClient.responseType = ResponseType.Good;
                         responseToClient.responseText = $"Записи для коєфіцента - {coef} у кількості {countNewRecords} успішно збережені до бази даних";
+                        return js.Serialize(responseToClient);
                     }
-                    break;
                 case "K2":
                     {
                         int countNewRecords = 0;
@@ -1029,8 +1073,8 @@ namespace InsuranceServicesAdminLight.Controllers
                         }
                         responseToClient.responseType = ResponseType.Good;
                         responseToClient.responseText = $"Записи для коєфіцента - {coef} у кількості {countNewRecords} успішно збережені до бази даних";
+                        return js.Serialize(responseToClient);
                     }
-                    break;
                 case "K3":
                     {
                         int countNewRecords = 0;
@@ -1067,8 +1111,8 @@ namespace InsuranceServicesAdminLight.Controllers
                         }
                         responseToClient.responseType = ResponseType.Good;
                         responseToClient.responseText = $"Записи для коєфіцента - {coef} у кількості {countNewRecords} успішно збережені до бази даних";
+                        return js.Serialize(responseToClient);
                     }
-                    break;
                 case "K4":
                     {
                         int countNewRecords = 0;
@@ -1105,8 +1149,8 @@ namespace InsuranceServicesAdminLight.Controllers
                         }
                         responseToClient.responseType = ResponseType.Good;
                         responseToClient.responseText = $"Записи для коєфіцента - {coef} у кількості {countNewRecords} успішно збережені до бази даних";
+                        return js.Serialize(responseToClient);
                     }
-                    break;
                 case "K5":
                     {
                         int countNewRecords = 0;
@@ -1116,9 +1160,22 @@ namespace InsuranceServicesAdminLight.Controllers
                         {
                             tempPeriod = dt.Period;
 
-                            var recordForChange = db.K5.Where(k => k.Period == tempPeriod).First();
+                            K5 recordForChange = new K5();
+                            try
+                            {
+                                recordForChange = db.K5.Where(k => k.Period == tempPeriod).First();
+                            }
+                            catch
+                            {
+                                recordForChange.Period = tempPeriod;
+                                recordForChange.Value = dataParsed.data.Value;
+                                db.K5.Add(recordForChange);
+                                db.SaveChanges();
+                                responseToClient.responseType = ResponseType.Good;
+                                responseToClient.responseText = $"Запис для коєфіцента - {coef} успішно збережено до бази даних";
+                            }
 
-                            if (recordForChange != null)
+                            try
                             {
                                 if (recordForChange.Value != Convert.ToDouble(dt.Value))
                                 {
@@ -1127,17 +1184,17 @@ namespace InsuranceServicesAdminLight.Controllers
                                     countNewRecords++;
                                 }
                             }
-                            else
+                            catch
                             {
                                 responseToClient.responseType = ResponseType.Bad;
-                                responseToClient.responseText = $"Запис з параметром {tempPeriod} не знайдено в базі даних";
+                                responseToClient.responseText = $"Не вдалося зберегти період \"{tempPeriod}\" в базу даних";
                                 return js.Serialize(responseToClient);
                             }
                         }
                         responseToClient.responseType = ResponseType.Good;
                         responseToClient.responseText = $"Записи для коєфіцента - {coef} у кількості {countNewRecords} успішно збережені до бази даних";
+                        return js.Serialize(responseToClient);
                     }
-                    break;
                 case "K6":
                     {
                         int countNewRecords = 0;
@@ -1168,8 +1225,8 @@ namespace InsuranceServicesAdminLight.Controllers
                         }
                         responseToClient.responseType = ResponseType.Good;
                         responseToClient.responseText = $"Записи для коєфіцента - {coef} у кількості {countNewRecords} успішно збережені до бази даних";
+                        return js.Serialize(responseToClient);
                     }
-                    break;
                 case "K7":
                     {
                         int countNewRecords = 0;
@@ -1180,9 +1237,34 @@ namespace InsuranceServicesAdminLight.Controllers
                         {
                             tempPeriod = dt.Period;
 
-                            var recordForChange = db.K7.Where(k => k.Period == tempPeriod).First();
+                            K7 recordForChange = new K7();
+                            try
+                            {
+                                recordForChange = db.K7.Where(k => k.Period == tempPeriod).First();
+                            }
+                            catch
+                            {
+                                recordForChange.Period = tempPeriod;
+                                recordForChange.Value = dataParsed.data.Value;
+                                db.K7.Add(recordForChange);
+                                db.SaveChanges();
+                                responseToClient.responseType = ResponseType.Good;
+                                responseToClient.responseText = $"Запис для коєфіцента - {coef} успішно збережено до бази даних";
+                            }
 
-                            if (recordForChange != null)
+                            try
+                            {
+                                recordForChange.Value = dt.Value;
+                                db.SaveChanges();
+                            }
+                            catch
+                            {
+                                responseToClient.responseType = ResponseType.Bad;
+                                responseToClient.responseText = $"Не вдалося зберегти період \"{tempPeriod}\" в базу даних";
+                                return js.Serialize(responseToClient);
+                            }
+
+                            try
                             {
                                 if (recordForChange.Value != Convert.ToDouble(dt.Value))
                                 {
@@ -1191,17 +1273,17 @@ namespace InsuranceServicesAdminLight.Controllers
                                     countNewRecords++;
                                 }
                             }
-                            else
+                            catch
                             {
                                 responseToClient.responseType = ResponseType.Bad;
-                                responseToClient.responseText = $"Запис з параметром {tempPeriod} не знайдено в базі даних";
+                                responseToClient.responseText = $"Не вдалося зберегти період \"{tempPeriod}\" в базу даних";
                                 return js.Serialize(responseToClient);
                             }
                         }
                         responseToClient.responseType = ResponseType.Good;
                         responseToClient.responseText = $"Записи для коєфіцента - {coef} у кількості {countNewRecords} успішно збережені до бази даних";
+                        return js.Serialize(responseToClient);
                     }
-                    break;
                 case "BM":
                     {
                         int countNewRecords = 0;
@@ -1242,8 +1324,8 @@ namespace InsuranceServicesAdminLight.Controllers
                         }
                         responseToClient.responseType = ResponseType.Good;
                         responseToClient.responseText = $"Записи для коєфіцента - {coef} у кількості {countNewRecords} успішно збережені до бази даних";
+                        return js.Serialize(responseToClient);
                     }
-                    break;
                 case "KPark":
                     {
                         int countNewRecords = 0;
@@ -1252,17 +1334,33 @@ namespace InsuranceServicesAdminLight.Controllers
                         int tempTransportCountFrom;
                         int tempTransportCountTo;
 
+
                         foreach (var dt in dataParsed.data)
                         {
                             tempIsLegalEntity = dt.IsLegalEntity == "Юр" ? true : false;
                             tempTransportCountFrom = dt.TransportCountFrom;
                             tempTransportCountTo = dt.TransportCountTo;
 
-                            var recordForChange = db.DiscountByQuantities.Where(k => k.IsLegalEntity == tempIsLegalEntity
+                            DiscountByQuantity recordForChange = new DiscountByQuantity();
+                            try
+                            {
+                                recordForChange = db.DiscountByQuantities.Where(k => k.IsLegalEntity == tempIsLegalEntity
                                                                                 && k.TransportCountFrom == tempTransportCountFrom
                                                                                 && k.TransportCountTo == tempTransportCountTo).First();
+                            }
+                            catch
+                            {
+                                recordForChange.IsLegalEntity = tempIsLegalEntity;
+                                recordForChange.TransportCountFrom = tempTransportCountFrom;
+                                recordForChange.TransportCountTo = tempTransportCountTo;
+                                recordForChange.Value = dataParsed.data.Value;
+                                db.DiscountByQuantities.Add(recordForChange);
+                                db.SaveChanges();
+                                responseToClient.responseType = ResponseType.Good;
+                                responseToClient.responseText = $"Запис для коєфіцента - {coef} успішно збережено до бази даних";
+                            }
 
-                            if (recordForChange != null)
+                            try
                             {
                                 if (recordForChange.Value != Convert.ToDouble(dt.Value))
                                 {
@@ -1271,31 +1369,32 @@ namespace InsuranceServicesAdminLight.Controllers
                                     countNewRecords++;
                                 }
                             }
-                            else
+                            catch
                             {
                                 responseToClient.responseType = ResponseType.Bad;
-                                responseToClient.responseText = $"Запис з параметрами: {tempIsLegalEntity}, {tempTransportCountFrom} - {tempTransportCountTo} не знайдено в базі даних";
+                                responseToClient.responseText = $"Запис з параметрами: {tempIsLegalEntity}, {tempTransportCountFrom} - {tempTransportCountTo} не вдалося зберегти в базі даних";
                                 return js.Serialize(responseToClient);
                             }
                         }
                         responseToClient.responseType = ResponseType.Good;
                         responseToClient.responseText = $"Записи для коєфіцента - {coef} у кількості {countNewRecords} успішно збережені до бази даних";
+
+                        return js.Serialize(responseToClient);
                     }
-                    break;
                 case "KPilg":
                     {
                         int countNewRecords = 0;
 
                         responseToClient.responseType = ResponseType.Good;
                         responseToClient.responseText = $"Записи для коєфіцента - {coef} у кількості {countNewRecords} успішно збережені до бази даних";
+                        return "";
                     }
-                    break;
                 default:
                     {
                         responseToClient.responseType = ResponseType.Bad;
                         responseToClient.responseText = "Невірно вказана назва коефіцієнту або коефіцієнт відсутній в базі даних";
+                        return js.Serialize(responseToClient);
                     }
-                    break;
             }
 
             return js.Serialize(responseToClient);
@@ -1667,7 +1766,6 @@ namespace InsuranceServicesAdminLight.Controllers
         [HttpPost]
         public string AddNewRecordToCoef()
         {
-
             int idCompany = 0, idMiddleman = 0, idCompanyMiddleman = 0;
 
             dynamic dataParsed = GetPotsRequestBody();
@@ -1779,22 +1877,267 @@ namespace InsuranceServicesAdminLight.Controllers
                             return js.Serialize(responseToClient);
                         }
 
-
                         K2 newK2Record = new K2();
-                        newK2Record.IdCarInsuranceType = db.CarInsuranceTypes.Where(c => c.Type == insuranceTypeOfCar).Select(c => c.Id).First();
-                        newK2Record.IsLegalEntity = isLegalEntity == "Юр" ? true : false;
-                        newK2Record.IdInsuranceZoneOfReg = db.InsuranceZoneOfRegistrations.Where(i => i.Name == carZoneOfRegistration).Select(i => i.Id).First();
-                        newK2Record.IdContractFranchise = db.ContractFranchises.Where(c => c.Franchise.Sum.ToString() == franchise).Select(c => c.Id).First();
-                        newK2Record.Value = dataParsed.data.Value;
+                        try
+                        {
+                            newK2Record.IdCarInsuranceType = db.CarInsuranceTypes.Where(c => c.Type == insuranceTypeOfCar).Select(c => c.Id).First();
+                            newK2Record.IsLegalEntity = isLegalEntity == "Юр" ? true : false;
+                            newK2Record.IdInsuranceZoneOfReg = db.InsuranceZoneOfRegistrations.Where(i => i.Name == carZoneOfRegistration).Select(i => i.Id).First();
+                            newK2Record.IdContractFranchise = db.ContractFranchises.Where(c => c.Franchise.Sum.ToString() == franchise).Select(c => c.Id).First();
+                            newK2Record.Value = dataParsed.data.Value;
+                        }
+                        catch
+                        {
+                            responseToClient.responseType = ResponseType.Bad;
+                            responseToClient.responseText = "Виникли проблеми з отриманням даних з бази даних.";
+                            return js.Serialize(responseToClient);
+                        }
 
-                        db.K2.Add(newK2Record);
-                        db.SaveChanges();
+                        var checkExist = db.K2.Where(k => k.IdCarInsuranceType == newK2Record.IdCarInsuranceType
+                                                       && k.IsLegalEntity == newK2Record.IsLegalEntity
+                                                       && k.IdInsuranceZoneOfReg == newK2Record.IdInsuranceZoneOfReg
+                                                       && k.IdContractFranchise == newK2Record.IdContractFranchise                                                       
+                                                       && k.IdCompanyMiddleman == idCompanyMiddleman
+                                                       && k.Value == newK2Record.Value);
+
+                        if (checkExist.Any())
+                        {
+                            responseToClient.responseType = ResponseType.Bad;
+                            responseToClient.responseText = "Запис з такою умовою вже існує.";
+                        }
+
+                        var checkExistSimilar = db.K2.Where(k => k.IdCarInsuranceType == newK2Record.IdCarInsuranceType
+                                                              && k.IsLegalEntity == newK2Record.IsLegalEntity
+                                                              && k.IdInsuranceZoneOfReg == newK2Record.IdInsuranceZoneOfReg
+                                                              && k.IdContractFranchise == newK2Record.IdContractFranchise
+                                                              && k.IdCompanyMiddleman == idCompanyMiddleman
+                                                              && k.Value != newK2Record.Value);
+
+                        if (checkExistSimilar.Any())
+                        {
+                            responseToClient.responseType = ResponseType.Bad;
+                            responseToClient.responseText = "Ми знайшли схожий запис з іншим значенням поля \"Значення\". Будь ласка оновіть значення в існуючому записі.";
+                            return js.Serialize(responseToClient);
+                        }
+
+                        try
+                        {
+                            db.K2.Add(newK2Record);
+                            db.SaveChanges();
+                        }
+                        catch
+                        {
+                            responseToClient.responseType = ResponseType.Bad;
+                            responseToClient.responseText = "Виникла проблема з записом нового значення до бази даних.";
+                        }
 
                         responseToClient.responseType = ResponseType.Good;
                         responseToClient.responseText = $"Запис для коефіцієнту {dataParsed.coef} успішно збережений в базі даних";
                         return js.Serialize(responseToClient);
                     }
+                case "K3":
+                    {
+                        string insuranceTypeOfCar, isLegalEntity, carZoneOfRegistration;
+                        try
+                        {
+                            insuranceTypeOfCar = Convert.ToString(dataParsed.data.InsuranceTypeOfCar);
+                            isLegalEntity = Convert.ToString(dataParsed.data.IsLegalEntity);
+                            carZoneOfRegistration = Convert.ToString(dataParsed.data.CarZoneOfRegistration);
+                        }
+                        catch
+                        {
+                            responseToClient.responseType = ResponseType.Bad;
+                            responseToClient.responseText = "Помилка отримання даних. Спробуйте ще";
+                            return js.Serialize(responseToClient);
+                        }
 
+                        K3 newK3Record = new K3();
+                        try
+                        {
+                            newK3Record.IdCarInsuranceType = db.CarInsuranceTypes.Where(c => c.Type == insuranceTypeOfCar).Select(c => c.Id).First();
+                            newK3Record.IsLegalEntity = isLegalEntity == "Юр" ? true : false;
+                            newK3Record.IdInsuranceZoneOfReg = db.InsuranceZoneOfRegistrations.Where(i => i.Name == carZoneOfRegistration).Select(i => i.Id).First();
+                            newK3Record.Value = dataParsed.data.Value;
+                        }
+                        catch
+                        {
+                            responseToClient.responseType = ResponseType.Bad;
+                            responseToClient.responseText = "Виникли проблеми з отриманням даних з бази даних.";
+                            return js.Serialize(responseToClient);
+                        }
+
+                        var checkExist = db.K3.Where(k => k.IdCarInsuranceType == newK3Record.IdCarInsuranceType
+                                                       && k.IsLegalEntity == newK3Record.IsLegalEntity
+                                                       && k.IdInsuranceZoneOfReg == newK3Record.IdInsuranceZoneOfReg
+                                                       && k.IdCompanyMiddleman == idCompanyMiddleman
+                                                       && k.Value == newK3Record.Value);
+
+                        if (checkExist.Any())
+                        {
+                            responseToClient.responseType = ResponseType.Bad;
+                            responseToClient.responseText = "Запис з такою умовою вже існує.";
+                        }
+
+                        var checkExistSimilar = db.K3.Where(k => k.IdCarInsuranceType == newK3Record.IdCarInsuranceType
+                                                              && k.IsLegalEntity == newK3Record.IsLegalEntity
+                                                              && k.IdInsuranceZoneOfReg == newK3Record.IdInsuranceZoneOfReg
+                                                              && k.IdCompanyMiddleman == idCompanyMiddleman
+                                                              && k.Value != newK3Record.Value);
+
+                        if (checkExistSimilar.Any())
+                        {
+                            responseToClient.responseType = ResponseType.Bad;
+                            responseToClient.responseText = "Ми знайшли схожий запис з іншим значенням поля \"Значення\". Будь ласка оновіть значення в існуючому записі.";
+                            return js.Serialize(responseToClient);
+                        }
+
+                        try
+                        {
+                            db.K3.Add(newK3Record);
+                            db.SaveChanges();
+                        }
+                        catch
+                        {
+                            responseToClient.responseType = ResponseType.Bad;
+                            responseToClient.responseText = "Виникла проблема з записом нового значення до бази даних.";
+                        }
+
+                        responseToClient.responseType = ResponseType.Good;
+                        responseToClient.responseText = $"Запис для коефіцієнту {dataParsed.coef} успішно збережений в базі даних";
+                        return js.Serialize(responseToClient);
+                    }
+                case "K4":
+                    {
+                        string carZoneOfRegistration, isLegalEntity, franchise;
+                        try
+                        {
+                            carZoneOfRegistration = Convert.ToString(dataParsed.data.CarZoneOfRegistration);
+                            isLegalEntity = Convert.ToString(dataParsed.data.IsLegalEntity);                            
+                            franchise = Convert.ToString(dataParsed.data.Franchise);
+                        }
+                        catch
+                        {
+                            responseToClient.responseType = ResponseType.Bad;
+                            responseToClient.responseText = "Помилка отримання даних. Спробуйте ще";
+                            return js.Serialize(responseToClient);
+                        }
+
+                        K4 newK4Record = new K4();
+                        try
+                        {
+                            newK4Record.IdInsuranceZoneOfReg = db.InsuranceZoneOfRegistrations.Where(i => i.Name == carZoneOfRegistration).Select(i => i.Id).First();
+                            newK4Record.IsLegalEntity = isLegalEntity == "Юр" ? true : false;
+                            newK4Record.IdContractFranchise = db.ContractFranchises.Where(c => c.Franchise.Sum.ToString() == franchise).Select(c => c.Id).First();
+                            newK4Record.Value = dataParsed.data.Value;
+                        }
+                        catch
+                        {
+                            responseToClient.responseType = ResponseType.Bad;
+                            responseToClient.responseText = "Виникли проблеми з отриманням даних з бази даних.";
+                            return js.Serialize(responseToClient);
+                        }
+
+                        var checkExist = db.K2.Where(k => k.IdInsuranceZoneOfReg == newK4Record.IdInsuranceZoneOfReg
+                                                       && k.IsLegalEntity == newK4Record.IsLegalEntity
+                                                       && k.IdContractFranchise == newK4Record.IdContractFranchise
+                                                       && k.IdCompanyMiddleman == idCompanyMiddleman
+                                                       && k.Value == newK4Record.Value);
+
+                        if (checkExist.Any())
+                        {
+                            responseToClient.responseType = ResponseType.Bad;
+                            responseToClient.responseText = "Запис з такою умовою вже існує.";
+                        }
+
+                        var checkExistSimilar = db.K2.Where(k => k.IdInsuranceZoneOfReg == newK4Record.IdInsuranceZoneOfReg
+                                                              && k.IsLegalEntity == newK4Record.IsLegalEntity
+                                                              && k.IdContractFranchise == newK4Record.IdContractFranchise
+                                                              && k.IdCompanyMiddleman == idCompanyMiddleman
+                                                              && k.Value != newK4Record.Value);
+
+                        if (checkExistSimilar.Any())
+                        {
+                            responseToClient.responseType = ResponseType.Bad;
+                            responseToClient.responseText = "Ми знайшли схожий запис з іншим значенням поля \"Значення\". Будь ласка оновіть значення в існуючому записі.";
+                            return js.Serialize(responseToClient);
+                        }
+
+                        try
+                        {
+                            db.K4.Add(newK4Record);
+                            db.SaveChanges();
+                        }
+                        catch
+                        {
+                            responseToClient.responseType = ResponseType.Bad;
+                            responseToClient.responseText = "Виникла проблема з записом нового значення до бази даних.";
+                        }
+
+                        responseToClient.responseType = ResponseType.Good;
+                        responseToClient.responseText = $"Запис для коефіцієнту {dataParsed.coef} успішно збережений в базі даних";
+                        return js.Serialize(responseToClient);
+                    }
+                case "K5":
+                    {
+                        int period;
+                        try
+                        {
+                            period = Convert.ToInt32(dataParsed.data.period);
+                        }
+                        catch
+                        {
+                            responseToClient.responseType = ResponseType.Bad;
+                            responseToClient.responseText = "Помилка отримання даних. Спробуйте ще";
+                            return js.Serialize(responseToClient);
+                        }
+
+                        K5 newK5Record = new K5();
+                        try
+                        {
+                            newK5Record.Period = period;
+                            newK5Record.Value = dataParsed.data.Value;
+                        }
+                        catch
+                        {
+                            responseToClient.responseType = ResponseType.Bad;
+                            responseToClient.responseText = "Виникли проблеми з отриманням даних з бази даних.";
+                            return js.Serialize(responseToClient);
+                        }
+
+                        var checkExist = db.K5.Where(k => k.Period == newK5Record.Period
+                                                       && k.Value == newK5Record.Value);
+
+                        if (checkExist.Any())
+                        {
+                            responseToClient.responseType = ResponseType.Bad;
+                            responseToClient.responseText = "Запис з такою умовою вже існує.";
+                        }
+
+                        var checkExistSimilar = db.K5.Where(k => k.Period == newK5Record.Period
+                                                       && k.Value != newK5Record.Value);
+
+                        if (checkExistSimilar.Any())
+                        {
+                            responseToClient.responseType = ResponseType.Bad;
+                            responseToClient.responseText = "Ми знайшли схожий запис з іншим значенням поля \"Значення\". Будь ласка оновіть значення в існуючому записі.";
+                            return js.Serialize(responseToClient);
+                        }
+
+                        try
+                        {
+                            db.K5.Add(newK5Record);
+                            db.SaveChanges();
+                        }
+                        catch
+                        {
+                            responseToClient.responseType = ResponseType.Bad;
+                            responseToClient.responseText = "Виникла проблема з записом нового значення до бази даних.";
+                        }
+
+                        responseToClient.responseType = ResponseType.Good;
+                        responseToClient.responseText = $"Запис для коефіцієнту {dataParsed.coef} успішно збережений в базі даних";
+                        return js.Serialize(responseToClient);
+                    }
             }
 
             responseToClient.responseType = ResponseType.Bad;
@@ -1869,7 +2212,6 @@ namespace InsuranceServicesAdminLight.Controllers
 
             List<string> carInsuranceZoneOfReg = db.InsuranceZoneOfRegistrations.Select(n => n.Name).ToList();
             List<string> isLegalEntity = new List<string>() { "Юр", "Фіз" };
-            List<string> carInsuranceTypes = db.CarInsuranceTypes.Select(t => t.Type).ToList();
 
             int idCompany = 0, idMiddleman = 0, idCompanyMiddleman = 0;
 
@@ -1894,7 +2236,11 @@ namespace InsuranceServicesAdminLight.Controllers
         {
             Dictionary<string, List<string>> dataToSend = new Dictionary<string, List<string>>();
 
-            List<string> period = db.K5.Select(p => p.Period.ToString()).ToList();
+            //List<string> period = db.K5.Select(p => p.Period.ToString()).ToList();
+            List<string> period = new List<string>()
+            {
+                "6", "7", "8", "9", "10", "11", "12"
+            };
 
             dataToSend.Add("Period", period);
 
@@ -1918,7 +2264,11 @@ namespace InsuranceServicesAdminLight.Controllers
         {
             Dictionary<string, List<string>> dataToSend = new Dictionary<string, List<string>>();
 
-            List<string> period = db.K7.Select(p => p.Period.ToString()).ToList();
+            //List<string> period = db.K7.Select(p => p.Period.ToString()).ToList();
+            List<string> period = new List<string>()
+            {
+               "0,5", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"
+            };
 
             dataToSend.Add("Period", period);
 
