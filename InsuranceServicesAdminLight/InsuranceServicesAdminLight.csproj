@@ -34,6 +34,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -155,6 +156,30 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Business\Conditions\ConditionGeneration.cs" />
+    <Compile Include="Business\Conditions\GetConditions.cs" />
+    <Compile Include="Business\DataManipulation\CarInsuranceTypeDataManipulation.cs" />
+    <Compile Include="Business\DataManipulation\CompanyContractTypeDataManipulation.cs" />
+    <Compile Include="Business\DataManipulation\CompanyDataManipulation.cs" />
+    <Compile Include="Business\DataManipulation\CompanyMiddlemanDataManipulation.cs" />
+    <Compile Include="Business\DataManipulation\ContractFranchiseDataManipulation.cs" />
+    <Compile Include="Business\DataManipulation\ContractTypeDataManipulation.cs" />
+    <Compile Include="Business\DataManipulation\FranchiseDataManipulation.cs" />
+    <Compile Include="Business\DataManipulation\InsuranceZoneOfRegistrationDataManipulation.cs" />
+    <Compile Include="Business\DataManipulation\K1DataManipulation.cs" />
+    <Compile Include="Business\DataManipulation\K2DataManipulation.cs" />
+    <Compile Include="Business\DataManipulation\MiddlemanDataManipulation.cs" />
+    <Compile Include="Business\DataToSend\TableBMToSend.cs" />
+    <Compile Include="Business\DataToSend\TableK1ToSend.cs" />
+    <Compile Include="Business\DataToSend\TableK2ToSend.cs" />
+    <Compile Include="Business\DataToSend\TableK3ToSend.cs" />
+    <Compile Include="Business\DataToSend\TableK4ToSend.cs" />
+    <Compile Include="Business\DataToSend\TableK5ToSend.cs" />
+    <Compile Include="Business\DataToSend\TableK6ToSend.cs" />
+    <Compile Include="Business\DataToSend\TableK7ToSend.cs" />
+    <Compile Include="Business\DataToSend\TableKParkToSend.cs" />
+    <Compile Include="Business\DataToSend\TitlesToSend.cs" />
+    <Compile Include="Business\ResponseToClient.cs" />
     <Compile Include="Controllers\ContractsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">

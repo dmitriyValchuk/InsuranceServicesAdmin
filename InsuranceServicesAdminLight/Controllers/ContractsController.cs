@@ -7,108 +7,106 @@ using InsuranceServicesAdminLight.Models;
 using System.Web.Script.Serialization;
 using Newtonsoft.Json;
 using System.IO;
+using InsuranceServicesAdminLight.Business;
+using InsuranceServicesAdminLight.Business.DataManipulation;
+using InsuranceServicesAdminLight.Business.Conditions;
+using InsuranceServicesAdminLight.Business.DataToSend;
 
 namespace InsuranceServicesAdminLight.Controllers
 {
     public class ContractsController : Controller
     {
         InsuranceServicesContext db = new InsuranceServicesContext();
-        
-        enum ResponseType
+
+        [HttpPost]
+        public string GetAllCompanies()
         {
-            Bad,
-            Good            
+            //List<string> companiesNames = db.Companies.Select(c => c.Name).ToList();
+            List<string> companiesNames = CompanyDataManipulation.GetCompaniesName();
+            JavaScriptSerializer js = new JavaScriptSerializer();
+            return js.Serialize(companiesNames);
         }
 
-        class ResponseToClient
-        {
-            public ResponseType responseType { get; set; }
-            public string responseText { get; set; }
-        }
-        
         public string GetCheckedCompany(string companyChecked)
         {
             ResponseToClient responseToClient = new ResponseToClient();
 
-            var company = db.Companies.Where(c => c.Name == companyChecked).FirstOrDefault();
+            Company company = CompanyDataManipulation.GetSingle(companyChecked);//db.Companies.Where(c => c.Name == companyChecked).FirstOrDefault();
 
             JavaScriptSerializer js = new JavaScriptSerializer();
 
             if (company == null)
             {
                 responseToClient.responseType = ResponseType.Bad;
-                responseToClient.responseText = "Error! Company not found!";
+                responseToClient.responseText = "Не вдалося знайти компанію в базі даних";
                 return js.Serialize(responseToClient);
             }
-            else
+
+            //var companyMiddleMan = db.CompanyMiddlemen.Where(ci => ci.IdCompany == company.Id);
+            List<string> middlemen = CompanyDataManipulation.GetCompanyMiddlemenName(company);//new List<string>();
+
+            if (middlemen == null)
             {
-                var companyMiddleMan = db.CompanyMiddlemen.Where(ci => ci.IdCompany == company.Id);
-                List<string> middlemen = new List<string>();
-
-                if (companyMiddleMan == null)
-                {
-                    responseToClient.responseType = ResponseType.Bad;
-                    responseToClient.responseText = "Error! Company hasn`t any middleman!";
-                    return js.Serialize(responseToClient);
-                }
-
-                foreach (var cm in companyMiddleMan)
-                {
-                    var currentMiddleman = db.Middlemen.Where(m => m.Id == cm.IdMiddleman).FirstOrDefault();
-                    middlemen.Add(currentMiddleman.FullName);
-                }
-                
-                return js.Serialize(middlemen);
+                responseToClient.responseType = ResponseType.Bad;
+                responseToClient.responseText =  $"Для компанії {company.Name} відсутні посередники";
+                return js.Serialize(responseToClient);
             }
+
+            //foreach (var cm in companyMiddleMan)
+            //{
+            //    var currentMiddleman = db.Middlemen.Where(m => m.Id == cm.IdMiddleman).FirstOrDefault();
+            //    middlemen.Add(currentMiddleman.FullName);
+            //}
+                
+            return js.Serialize(middlemen);
+
         }
 
-        [HttpPost]
-        public string GetAllCompanies()
-        {
-            List<string> companiesNames = db.Companies.Select(c => c.Name).ToList();
-            JavaScriptSerializer js = new JavaScriptSerializer();
-            return js.Serialize(companiesNames);            
-        }
+        //public string GetConditionsForCoefK1(string companyName, string middlemanName)
+        //{
+        //    JavaScriptSerializer js = new JavaScriptSerializer();
+
+        //    int idCompany = 0, idMiddleman = 0, idCompanyMiddleman = 0;
+
+        //    ResponseToClient resultOfChekingCompanyMiddleman = GetCompanyMiddlemanData(companyName, middlemanName, ref idCompany, ref idMiddleman, ref idCompanyMiddleman);
+        //    if (resultOfChekingCompanyMiddleman.responseType != ResponseType.Good)
+        //        return js.Serialize(resultOfChekingCompanyMiddleman);
+
+
+        //    var K1 = db.K1.Where(i => i.IdCompanyMiddleman == idCompanyMiddleman);
+        //    List<TableK1ToSend> K1Table = new List<TableK1ToSend>();
+
+        //    var resultOfChekingExistingRows = InsertDataForK1(companyName, middlemanName, idCompanyMiddleman);
+        //    if (resultOfChekingExistingRows != "Success!")
+        //        return resultOfChekingExistingRows;
+
+        //    K1 = db.K1.Where(i => i.IdCompanyMiddleman == idCompanyMiddleman)
+        //              .OrderBy(k => k.CarInsuranceType.Type);
+
+            
+        //    foreach (var k in K1)
+        //    {
+        //        TableK1ToSend tempTableRow = new TableK1ToSend();
+        //        tempTableRow.InsuranceTypeOfCar = db.CarInsuranceTypes.Where(cit => cit.Id == k.IdCarInsuranceType).Select(cit => cit.Type).FirstOrDefault();
+        //        tempTableRow.Value = k.Value;
+        //        K1Table.Add(tempTableRow);
+        //    }
+
+        //    List<TitlesToSend> titles = new List<TitlesToSend>();
+        //    titles.Add(FillTitleToSend(name: "InsuranceTypeOfCar", titleUkr: "Тип транспорту", titleRus: "Тип транспорта"));
+        //    titles.Add(FillTitleToSend(name: "Value", titleUkr: "Значення", titleRus: "Значение"));
+
+        //    Dictionary<string, object> dataToSend = new Dictionary<string, object>();
+
+        //    dataToSend.Add("titles", titles);
+        //    dataToSend.Add("data", K1Table);
+
+        //    return js.Serialize(dataToSend);
+        //}
 
         public string GetConditionsForCoefK1(string companyName, string middlemanName)
         {
-            JavaScriptSerializer js = new JavaScriptSerializer();
-
-            int idCompany = 0, idMiddleman = 0, idCompanyMiddleman = 0;
-
-            ResponseToClient resultOfChekingCompanyMiddleman = GetCompanyMiddlemanData(companyName, middlemanName, ref idCompany, ref idMiddleman, ref idCompanyMiddleman);
-            if (resultOfChekingCompanyMiddleman.responseType != ResponseType.Good)
-                return js.Serialize(resultOfChekingCompanyMiddleman);
-
-            var K1 = db.K1.Where(i => i.IdCompanyMiddleman == idCompanyMiddleman);
-            List<TableK1ToSend> K1Table = new List<TableK1ToSend>();
-
-            var resultOfChekingExistingRows = InsertDataForK1(companyName, middlemanName, idCompanyMiddleman);
-            if (resultOfChekingExistingRows != "Success!")
-                return resultOfChekingExistingRows;
-
-            K1 = db.K1.Where(i => i.IdCompanyMiddleman == idCompanyMiddleman)
-                      .OrderBy(k => k.CarInsuranceType.Type);
-
-            
-            foreach (var k in K1)
-            {
-                TableK1ToSend tempTableRow = new TableK1ToSend();
-                tempTableRow.InsuranceTypeOfCar = db.CarInsuranceTypes.Where(cit => cit.Id == k.IdCarInsuranceType).Select(cit => cit.Type).FirstOrDefault();
-                tempTableRow.Value = k.Value;
-                K1Table.Add(tempTableRow);
-            }
-
-            List<TitlesToSend> titles = new List<TitlesToSend>();
-            titles.Add(FillTitleToSend(name: "InsuranceTypeOfCar", titleUkr: "Тип транспорту", titleRus: "Тип транспорта"));
-            titles.Add(FillTitleToSend(name: "Value", titleUkr: "Значення", titleRus: "Значение"));
-
-            Dictionary<string, object> dataToSend = new Dictionary<string, object>();
-
-            dataToSend.Add("titles", titles);
-            dataToSend.Add("data", K1Table);
-
-            return js.Serialize(dataToSend);
+            return GetConditions.K1(companyName, middlemanName);
         }
 
         public string GetConditionsForCoefK2(string companyName, string middlemanName)
@@ -1453,6 +1451,7 @@ namespace InsuranceServicesAdminLight.Controllers
             var isLegal = new List<bool> { true, false };
             var insuranceTypeOfCar = db.CarInsuranceTypes.ToList();
 
+            //
             List<InsCarType> ict = new List<InsCarType>();
             List<InsZoneOfReg> izor = new List<InsZoneOfReg>();
             List<bool> isLegalBool = new List<bool>();
@@ -1482,6 +1481,7 @@ namespace InsuranceServicesAdminLight.Controllers
                 curFran.sum = i.Sum;
                 fran.Add(curFran);
             }
+            //
 
             foreach (var i in insuranceZoneOfReg)
             {
@@ -2145,9 +2145,6 @@ namespace InsuranceServicesAdminLight.Controllers
             return js.Serialize(responseToClient);
         }
 
-            
-
-
         private int GetIdInsuranceTypeOfCar(string insuranceTypeOfCar)
         {
             return db.CarInsuranceTypes.Where(c => c.Type == insuranceTypeOfCar).Select(c => c.Id).First();
@@ -2420,77 +2417,77 @@ namespace InsuranceServicesAdminLight.Controllers
         public double sum { get; set; }
     }
 
-    public class TableK1ToSend
-    {
-        public string InsuranceTypeOfCar { get; set; }
-        public double Value { get; set; }
-    }
+    //public class TableK1ToSend
+    //{
+    //    public string InsuranceTypeOfCar { get; set; }
+    //    public double Value { get; set; }
+    //}
 
-    public class TableK2ToSend
-    {
-        public string CarZoneOfRegistration { get; set; }
-        public string IsLegalEntity { get; set; }
-        public string InsuranceTypeOfCar { get; set; }
-        public double Franchise { get; set; }
-        public double Value { get; set; }
-    }
+    //public class TableK2ToSend
+    //{
+    //    public string CarZoneOfRegistration { get; set; }
+    //    public string IsLegalEntity { get; set; }
+    //    public string InsuranceTypeOfCar { get; set; }
+    //    public double Franchise { get; set; }
+    //    public double Value { get; set; }
+    //}
 
-    public class TableK3ToSend
-    {
-        public string CarZoneOfRegistration { get; set; }
-        public string IsLegalEntity { get; set; }
-        public string InsuranceTypeOfCar { get; set; }
-        public double Value { get; set; }
-    }
+    //public class TableK3ToSend
+    //{
+    //    public string CarZoneOfRegistration { get; set; }
+    //    public string IsLegalEntity { get; set; }
+    //    public string InsuranceTypeOfCar { get; set; }
+    //    public double Value { get; set; }
+    //}
 
-    public class TableK4ToSend
-    {
-        public string CarZoneOfRegistration { get; set; }
-        public string IsLegalEntity { get; set; }
-        public double Franchise { get; set; }
-        public double Value { get; set; }
-    }
+    //public class TableK4ToSend
+    //{
+    //    public string CarZoneOfRegistration { get; set; }
+    //    public string IsLegalEntity { get; set; }
+    //    public double Franchise { get; set; }
+    //    public double Value { get; set; }
+    //}
 
-    public class TableK5ToSend
-    {
-        public int Period { get; set; }
-        public double Value { get; set; }
-    }
+    //public class TableK5ToSend
+    //{
+    //    public int Period { get; set; }
+    //    public double Value { get; set; }
+    //}
 
-    public class TableK6ToSend
-    {
-        public string IsCheater { get; set; }
-        public double? Value { get; set; }
-    }
+    //public class TableK6ToSend
+    //{
+    //    public string IsCheater { get; set; }
+    //    public double? Value { get; set; }
+    //}
 
-    public class TableK7ToSend
-    {
-        public double Period { get; set; }
-        public double Value { get; set; }
-    }
+    //public class TableK7ToSend
+    //{
+    //    public double Period { get; set; }
+    //    public double Value { get; set; }
+    //}
 
-    public class TableBMToSend
-    {
-        public string CarZoneOfRegistration { get; set; }
-        public string IsLegalEntity { get; set; }
-        public string InsuranceTypeOfCar { get; set; }
-        public double Franchise { get; set; }
-        public double Value { get; set; }
-    }
+    //public class TableBMToSend
+    //{
+    //    public string CarZoneOfRegistration { get; set; }
+    //    public string IsLegalEntity { get; set; }
+    //    public string InsuranceTypeOfCar { get; set; }
+    //    public double Franchise { get; set; }
+    //    public double Value { get; set; }
+    //}
 
-    public class TableKParkToSend
-    {
-        public string IsLegalEntity { get; set; }
-        public int TransportCountFrom { get; set; }
-        public int TransportCountTo { get; set; }
-        public double Value { get; set; }
-    }
+    //public class TableKParkToSend
+    //{
+    //    public string IsLegalEntity { get; set; }
+    //    public int TransportCountFrom { get; set; }
+    //    public int TransportCountTo { get; set; }
+    //    public double Value { get; set; }
+    //}
 
-    public class TitlesToSend
-    {
-        public string Name { get; set; }
-        public string TitleUkr { get; set; }
-        public string TitleRus { get; set; }
-    }
+    //public class TitlesToSend
+    //{
+    //    public string Name { get; set; }
+    //    public string TitleUkr { get; set; }
+    //    public string TitleRus { get; set; }
+    //}
     
 }
