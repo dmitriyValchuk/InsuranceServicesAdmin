@@ -70,15 +70,16 @@ namespace InsuranceServicesAdminLight.Business.Conditions
                     {
                         foreach (var f in franchise)
                         {
+                            var idContractFranchise = ContractFranchiseDataManipulation.GetId(idCompanyContractType, f.Id);
 
-                            if (K2DataManipulation.IsConditionExist(izor.Id, il, itoc.Id, ContractFranchiseDataManipulation.GetId(idCompanyContractType, f.Id), idCompanyContractType, idCompanyMiddleman))
+                            if (K2DataManipulation.IsConditionExist(izor.Id, il, itoc.Id, idContractFranchise, idCompanyContractType, idCompanyMiddleman))
                             {
                                 var newRowK2 = new K2()
                                 {
                                     IdInsuranceZoneOfReg = izor.Id,
                                     IsLegalEntity = il,
                                     IdCarInsuranceType = itoc.Id,
-                                    IdContractFranchise = ContractFranchiseDataManipulation.GetId(idCompanyContractType, f.Id),
+                                    IdContractFranchise = idContractFranchise,
                                     Value = 0,
                                     IdCompanyMiddleman = idCompanyMiddleman,
                                 };

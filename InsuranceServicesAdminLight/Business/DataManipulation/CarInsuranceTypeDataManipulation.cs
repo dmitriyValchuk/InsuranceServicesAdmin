@@ -14,5 +14,13 @@ namespace InsuranceServicesAdminLight.Business.DataManipulation
         {
             return db.CarInsuranceTypes.ToList();
         }
+
+        static public string GetCarInsuranceTypeStr(int idCarInsuranceType)
+        {
+            return db.CarInsuranceTypes
+                     .Where(cit => cit.Id == idCarInsuranceType)
+                     .Select(cit => cit.Type)
+                     .FirstOrDefault();
+        }
     }
 }

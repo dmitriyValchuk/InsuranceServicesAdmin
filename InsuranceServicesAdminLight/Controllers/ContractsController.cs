@@ -111,59 +111,64 @@ namespace InsuranceServicesAdminLight.Controllers
 
         public string GetConditionsForCoefK2(string companyName, string middlemanName)
         {
-            JavaScriptSerializer js = new JavaScriptSerializer();
-
-            int idCompany = 0, idMiddleman = 0, idCompanyMiddleman = 0;
-
-            ResponseToClient resultOfChekingCompanyMiddleman = GetCompanyMiddlemanData(companyName, middlemanName, ref idCompany, ref idMiddleman, ref idCompanyMiddleman);
-            if (resultOfChekingCompanyMiddleman.responseType != ResponseType.Good)
-                return js.Serialize(resultOfChekingCompanyMiddleman);
-
-            var K2 = db.K2.Where(i => i.IdCompanyMiddleman == idCompanyMiddleman);
-            List<TableK2ToSend> K2Table = new List<TableK2ToSend>();
-
-            var resultOfChekingExistingRows = InsertDataForK2(companyName, middlemanName, idCompanyMiddleman);
-            if (resultOfChekingExistingRows != "Success!")
-                return resultOfChekingExistingRows;
-
-            K2 = db.K2.Where(i => i.IdCompanyMiddleman == idCompanyMiddleman)
-                      .OrderBy(k => k.InsuranceZoneOfRegistration.Name)
-                      .ThenBy(k => k.IsLegalEntity)
-                      .ThenBy(k => k.CarInsuranceType.Type)
-                      .ThenBy(k => k.ContractFranchise.Franchise.Sum);
-
-            foreach (var k in K2)
-            {
-                TableK2ToSend tempTableRow = new TableK2ToSend();
-                tempTableRow.CarZoneOfRegistration = db.InsuranceZoneOfRegistrations
-                                                        .Where(czor => czor.Id == k.IdInsuranceZoneOfReg)
-                                                        .Select(czor => czor.Name)
-                                                        .FirstOrDefault();
-                tempTableRow.IsLegalEntity = k.IsLegalEntity ? "Юр" : "Фіз";
-                tempTableRow.InsuranceTypeOfCar = db.CarInsuranceTypes
-                                                    .Where(cit => cit.Id == k.IdCarInsuranceType)
-                                                    .Select(cit => cit.Type)
-                                                    .FirstOrDefault();
-                tempTableRow.Franchise = db.Franchises.Where(i => i.Id == k.ContractFranchise.IdFranchise).Select(i => i.Sum).FirstOrDefault();
-                //tempTableRow.Franchise = db.Franchises.Where(i => i.Id == k.ContractFranchise.IdFranchise && k.ContractFranchise.IdCompanyContractType == idContractType).Select(i => i.Sum).FirstOrDefault();
-                tempTableRow.Value = k.Value;
-                K2Table.Add(tempTableRow);
-            }
-
-            List<TitlesToSend> titles = new List<TitlesToSend>();
-            titles.Add(FillTitleToSend(name: "CarZoneOfRegistration", titleUkr: "Зона регестрації", titleRus: "Зона регистрации"));
-            titles.Add(FillTitleToSend(name: "IsLegalEntity", titleUkr: "Юр / Фіз", titleRus: "Юр / Физ"));
-            titles.Add(FillTitleToSend(name: "InsuranceTypeOfCar", titleUkr: "Тип транспорту", titleRus: "Тип транспорта"));
-            titles.Add(FillTitleToSend(name: "Franchise", titleUkr: "Франшиза", titleRus: "Франшиза"));
-            titles.Add(FillTitleToSend(name: "Value", titleUkr: "Значення", titleRus: "Значение"));
-
-            Dictionary<string, object> dataToSend = new Dictionary<string, object>();
-
-            dataToSend.Add("titles", titles);
-            dataToSend.Add("data", K2Table);
-
-            return js.Serialize(dataToSend);
+            return GetConditions.K2(companyName, middlemanName);
         }
+
+        //public string GetConditionsForCoefK2(string companyName, string middlemanName)
+        //{
+        //    JavaScriptSerializer js = new JavaScriptSerializer();
+
+        //    int idCompany = 0, idMiddleman = 0, idCompanyMiddleman = 0;
+
+        //    ResponseToClient resultOfChekingCompanyMiddleman = GetCompanyMiddlemanData(companyName, middlemanName, ref idCompany, ref idMiddleman, ref idCompanyMiddleman);
+        //    if (resultOfChekingCompanyMiddleman.responseType != ResponseType.Good)
+        //        return js.Serialize(resultOfChekingCompanyMiddleman);
+
+        //    var K2 = db.K2.Where(i => i.IdCompanyMiddleman == idCompanyMiddleman);
+        //    List<TableK2ToSend> K2Table = new List<TableK2ToSend>();
+
+        //    var resultOfChekingExistingRows = InsertDataForK2(companyName, middlemanName, idCompanyMiddleman);
+        //    if (resultOfChekingExistingRows != "Success!")
+        //        return resultOfChekingExistingRows;
+
+        //    K2 = db.K2.Where(i => i.IdCompanyMiddleman == idCompanyMiddleman)
+        //              .OrderBy(k => k.InsuranceZoneOfRegistration.Name)
+        //              .ThenBy(k => k.IsLegalEntity)
+        //              .ThenBy(k => k.CarInsuranceType.Type)
+        //              .ThenBy(k => k.ContractFranchise.Franchise.Sum);
+
+        //    foreach (var k in K2)
+        //    {
+        //        TableK2ToSend tempTableRow = new TableK2ToSend();
+        //        tempTableRow.CarZoneOfRegistration = db.InsuranceZoneOfRegistrations
+        //                                                .Where(czor => czor.Id == k.IdInsuranceZoneOfReg)
+        //                                                .Select(czor => czor.Name)
+        //                                                .FirstOrDefault();
+        //        tempTableRow.IsLegalEntity = k.IsLegalEntity ? "Юр" : "Фіз";
+        //        tempTableRow.InsuranceTypeOfCar = db.CarInsuranceTypes
+        //                                            .Where(cit => cit.Id == k.IdCarInsuranceType)
+        //                                            .Select(cit => cit.Type)
+        //                                            .FirstOrDefault();
+        //        tempTableRow.Franchise = db.Franchises.Where(i => i.Id == k.ContractFranchise.IdFranchise).Select(i => i.Sum).FirstOrDefault();
+        //        //tempTableRow.Franchise = db.Franchises.Where(i => i.Id == k.ContractFranchise.IdFranchise && k.ContractFranchise.IdCompanyContractType == idContractType).Select(i => i.Sum).FirstOrDefault();
+        //        tempTableRow.Value = k.Value;
+        //        K2Table.Add(tempTableRow);
+        //    }
+
+        //    List<TitlesToSend> titles = new List<TitlesToSend>();
+        //    titles.Add(FillTitleToSend(name: "CarZoneOfRegistration", titleUkr: "Зона регестрації", titleRus: "Зона регистрации"));
+        //    titles.Add(FillTitleToSend(name: "IsLegalEntity", titleUkr: "Юр / Фіз", titleRus: "Юр / Физ"));
+        //    titles.Add(FillTitleToSend(name: "InsuranceTypeOfCar", titleUkr: "Тип транспорту", titleRus: "Тип транспорта"));
+        //    titles.Add(FillTitleToSend(name: "Franchise", titleUkr: "Франшиза", titleRus: "Франшиза"));
+        //    titles.Add(FillTitleToSend(name: "Value", titleUkr: "Значення", titleRus: "Значение"));
+
+        //    Dictionary<string, object> dataToSend = new Dictionary<string, object>();
+
+        //    dataToSend.Add("titles", titles);
+        //    dataToSend.Add("data", K2Table);
+
+        //    return js.Serialize(dataToSend);
+        //}
 
         public string GetConditionsForCoefK3(string companyName, string middlemanName)
         {

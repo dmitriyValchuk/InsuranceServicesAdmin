@@ -14,5 +14,13 @@ namespace InsuranceServicesAdminLight.Business.DataManipulation
         {
             return db.InsuranceZoneOfRegistrations.ToList();
         }
+
+        static public string GetInsuranceZoneOfRegistrationStr(int idInsuranceZoneOfReg)
+        {
+            return db.InsuranceZoneOfRegistrations
+                     .Where(czor => czor.Id == idInsuranceZoneOfReg)
+                     .Select(czor => czor.Name)
+                     .FirstOrDefault();
+        }
     }
 }
