@@ -21,11 +21,6 @@ namespace InsuranceServicesAdminLight.Business.DataManipulation
 
         static public bool IsConditionExist(int idInsuranceZoneOfReg, bool isLegalEntity, int idCarInsuranceType, int idContractFranchise, int idCompanyContractType, int idCompanyMiddleman)
         {
-            var a = db.K2.Where(k => k.IdInsuranceZoneOfReg == idInsuranceZoneOfReg
-                                                        && k.IsLegalEntity == isLegalEntity
-                                                        && k.IdCarInsuranceType == idCarInsuranceType
-                                                        && k.IdContractFranchise == idContractFranchise
-                                                        && k.IdCompanyMiddleman == idCompanyMiddleman).Count() == 0;
             return db.K2.Where(k => k.IdInsuranceZoneOfReg == idInsuranceZoneOfReg
                                                         && k.IsLegalEntity == isLegalEntity
                                                         && k.IdCarInsuranceType == idCarInsuranceType

@@ -158,6 +158,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Business\Conditions\ConditionGeneration.cs" />
     <Compile Include="Business\Conditions\GetConditions.cs" />
+    <Compile Include="Business\DataManipulation\BonusMalusDataManipulation.cs" />
     <Compile Include="Business\DataManipulation\CarInsuranceTypeDataManipulation.cs" />
     <Compile Include="Business\DataManipulation\CompanyContractTypeDataManipulation.cs" />
     <Compile Include="Business\DataManipulation\CompanyDataManipulation.cs" />
@@ -168,6 +169,12 @@
     <Compile Include="Business\DataManipulation\InsuranceZoneOfRegistrationDataManipulation.cs" />
     <Compile Include="Business\DataManipulation\K1DataManipulation.cs" />
     <Compile Include="Business\DataManipulation\K2DataManipulation.cs" />
+    <Compile Include="Business\DataManipulation\K3DataManipulation.cs" />
+    <Compile Include="Business\DataManipulation\K4DataManipulation.cs" />
+    <Compile Include="Business\DataManipulation\K5DataManipulation.cs" />
+    <Compile Include="Business\DataManipulation\K6DataManipulation.cs" />
+    <Compile Include="Business\DataManipulation\K7DataManipulation.cs" />
+    <Compile Include="Business\DataManipulation\KParkDataManipulation.cs" />
     <Compile Include="Business\DataManipulation\MiddlemanDataManipulation.cs" />
     <Compile Include="Business\DataToSend\TableBMToSend.cs" />
     <Compile Include="Business\DataToSend\TableK1ToSend.cs" />

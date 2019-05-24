@@ -55,12 +55,27 @@ namespace InsuranceServicesAdminLight.Business.Conditions
 
         static public string K2(int idCompanyMiddleman)
         {
-            int idContractType = ContractTypeDataManipulation.GetId("ГО");
-            int idCompanyContractType = CompanyContractTypeDataManipulation.GetId(idCompanyMiddleman, idContractType);
-            List<Franchise> franchise = FranchiseDataManipulation.GetFranchises(ContractFranchiseDataManipulation.GetFranchiseIds(idCompanyContractType));
-            List<InsuranceZoneOfRegistration> insuranceZoneOfReg = InsuranceZoneOfRegistrationDataManipulation.GetInsuranceZoneOfRegistrations();
-            List<bool> isLegal = new List<bool> { true, false };
-            List<CarInsuranceType> insuranceTypeOfCar = CarInsuranceTypeDataManipulation.GetMulti();
+            int idContractType = 0, idCompanyContractType = 0;
+            List<Franchise> franchise = new List<Franchise>();
+            List<InsuranceZoneOfRegistration> insuranceZoneOfReg = new List<InsuranceZoneOfRegistration>();
+            List<bool> isLegal = new List<bool>();
+            List<CarInsuranceType> insuranceTypeOfCar = new List<CarInsuranceType>();
+
+            try
+            {
+                idContractType = ContractTypeDataManipulation.GetId("ГО");
+                idCompanyContractType = CompanyContractTypeDataManipulation.GetId(idCompanyMiddleman, idContractType);
+                franchise = FranchiseDataManipulation.GetFranchises(ContractFranchiseDataManipulation.GetFranchiseIds(idCompanyContractType));
+                insuranceZoneOfReg = InsuranceZoneOfRegistrationDataManipulation.GetMulti();
+                isLegal = new List<bool> { true, false };
+                insuranceTypeOfCar = CarInsuranceTypeDataManipulation.GetMulti();
+            }
+            catch
+            {
+                responseToClient.responseType = ResponseType.Bad;
+                responseToClient.responseText = "Виникла помилка при генерації умов.";
+                return js.Serialize(responseToClient);
+            }
 
             foreach (var izor in insuranceZoneOfReg)
             {
@@ -87,6 +102,199 @@ namespace InsuranceServicesAdminLight.Business.Conditions
                                 try
                                 {
                                     K2DataManipulation.Insert(newRowK2);
+                                }
+                                catch
+                                {
+                                    responseToClient.responseType = ResponseType.Bad;
+                                    responseToClient.responseText = $"Виникла помилка при генерації запису для умов: \"{izor.Name}\"; \"{il}\"; \"{itoc.Type}\"; \"{f.Sum}\".";
+                                    return js.Serialize(responseToClient);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            responseToClient.responseType = ResponseType.Good;
+            responseToClient.responseText = "Генерація даних пройшла успішно.";
+            return js.Serialize(responseToClient);
+        }
+
+        static public string K3(int idCompanyMiddleman)
+        {
+            List<InsuranceZoneOfRegistration> insuranceZoneOfReg = new List<InsuranceZoneOfRegistration>();
+            List<bool> isLegal = new List<bool>();
+            List<CarInsuranceType> insuranceTypeOfCar = new List<CarInsuranceType>();
+
+            try
+            {
+                insuranceZoneOfReg = InsuranceZoneOfRegistrationDataManipulation.GetMulti();
+                isLegal = new List<bool> { true, false };
+                insuranceTypeOfCar = CarInsuranceTypeDataManipulation.GetMulti();
+            }
+            catch
+            {
+                responseToClient.responseType = ResponseType.Bad;
+                responseToClient.responseText = "Виникла помилка при генерації умов.";
+                return js.Serialize(responseToClient);
+            }
+
+            foreach (var izor in insuranceZoneOfReg)
+            {
+                foreach (var il in isLegal)
+                {
+                    foreach (var itoc in insuranceTypeOfCar)
+                    {
+                        if (K3DataManipulation.IsConditionExist(izor.Id, il, itoc.Id, idCompanyMiddleman))
+                        {
+                            var newRowK3 = new K3()
+                            {
+                                IdInsuranceZoneOfReg = izor.Id,
+                                IsLegalEntity = il,
+                                IdCarInsuranceType = itoc.Id,
+                                Value = 0,
+                                IdCompanyMiddleman = idCompanyMiddleman,
+                            };
+
+                            try
+                            {
+                                K3DataManipulation.Insert(newRowK3);
+                            }
+                            catch
+                            {
+                                responseToClient.responseType = ResponseType.Bad;
+                                responseToClient.responseText = $"Виникла помилка при генерації запису для умов: \"{izor.Name}\"; \"{il}\"; \"{itoc.Type}\".";
+                                return js.Serialize(responseToClient);
+                            }
+                        }
+                    }
+                }
+            }
+
+            responseToClient.responseType = ResponseType.Good;
+            responseToClient.responseText = "Генерація даних пройшла успішно.";
+            return js.Serialize(responseToClient);
+        }
+
+        static public string K4(int idCompanyMiddleman)
+        {
+            int idContractType = 0, idCompanyContractType = 0;
+            List<Franchise> franchise = new List<Franchise>();
+            List<InsuranceZoneOfRegistration> insuranceZoneOfReg = new List<InsuranceZoneOfRegistration>();
+            List<bool> isLegal = new List<bool>();
+
+            try
+            {
+                idContractType = ContractTypeDataManipulation.GetId("ГО");
+                idCompanyContractType = CompanyContractTypeDataManipulation.GetId(idCompanyMiddleman, idContractType);
+                franchise = FranchiseDataManipulation.GetFranchises(ContractFranchiseDataManipulation.GetFranchiseIds(idCompanyContractType));
+                insuranceZoneOfReg = InsuranceZoneOfRegistrationDataManipulation.GetMulti();
+                isLegal = new List<bool> { true, false };
+            }
+            catch
+            {
+                responseToClient.responseType = ResponseType.Bad;
+                responseToClient.responseText = "Виникла помилка при генерації умов.";
+                return js.Serialize(responseToClient);
+            }
+
+            foreach (var izor in insuranceZoneOfReg)
+            {
+                foreach (var il in isLegal)
+                {
+                    foreach (var f in franchise)
+                    {
+                        var idContractFranchise = ContractFranchiseDataManipulation.GetId(idCompanyContractType, f.Id);
+
+                        try
+                        {
+                            if (K4DataManipulation.IsConditionExist(izor.Id, il, idContractFranchise, idCompanyMiddleman))
+                            {
+                                var newRowK4 = new K4()
+                                {
+                                    IdInsuranceZoneOfReg = izor.Id,
+                                    IsLegalEntity = il,
+                                    IdContractFranchise = idContractFranchise,
+                                    Value = 0,
+                                    IdCompanyMiddleman = idCompanyMiddleman,
+                                };
+
+                                try
+                                {
+                                    K4DataManipulation.Insert(newRowK4);
+                                }
+                                catch
+                                {
+                                    responseToClient.responseType = ResponseType.Bad;
+                                    responseToClient.responseText = $"Виникла помилка при генерації запису для умов: \"{izor.Name}\"; \"{il}\"; \"{f.Sum}\".";
+                                    return js.Serialize(responseToClient);
+                                }
+                            }
+                        }
+                        catch
+                        {
+                            responseToClient.responseType = ResponseType.Bad;
+                            responseToClient.responseText = $"Виникла помилка при генерації запису.";
+                            return js.Serialize(responseToClient);
+                        }
+                    }
+                }
+            }
+
+            responseToClient.responseType = ResponseType.Good;
+            responseToClient.responseText = "Генерація даних пройшла успішно.";
+            return js.Serialize(responseToClient);
+        }
+
+        public static string BM(int idCompanyMiddleman)
+        {
+            int idContractType = 0, idCompanyContractType = 0;
+            List<Franchise> franchise = new List<Franchise>();
+            List<InsuranceZoneOfRegistration> insuranceZoneOfReg = new List<InsuranceZoneOfRegistration>();
+            List<bool> isLegal = new List<bool>();
+            List<CarInsuranceType> insuranceTypeOfCar = new List<CarInsuranceType>();
+
+            try
+            {
+                idContractType = ContractTypeDataManipulation.GetId("ГО");
+                idCompanyContractType = CompanyContractTypeDataManipulation.GetId(idCompanyMiddleman, idContractType);
+                franchise = FranchiseDataManipulation.GetFranchises(ContractFranchiseDataManipulation.GetFranchiseIds(idCompanyContractType));
+                insuranceZoneOfReg = InsuranceZoneOfRegistrationDataManipulation.GetMulti();
+                isLegal = new List<bool> { true, false };
+                insuranceTypeOfCar = CarInsuranceTypeDataManipulation.GetMulti();
+            }
+            catch
+            {
+                responseToClient.responseType = ResponseType.Bad;
+                responseToClient.responseText = "Виникла помилка при генерації умов.";
+                return js.Serialize(responseToClient);
+            }
+
+            foreach (var izor in insuranceZoneOfReg)
+            {
+                foreach (var il in isLegal)
+                {
+                    foreach (var itoc in insuranceTypeOfCar)
+                    {
+                        foreach (var f in franchise)
+                        {
+                            var idContractFranchise = ContractFranchiseDataManipulation.GetId(idCompanyContractType, f.Id);
+
+                            if (BonusMalusDataManipulation.IsConditionExist(izor.Id, il, itoc.Id, idContractFranchise, idCompanyContractType, idCompanyMiddleman))
+                            {
+                                var newRowBM = new BonusMalus()
+                                {
+                                    IdInsuranceZoneOfReg = izor.Id,
+                                    IsLegalEntity = il,
+                                    IdCarInsuranceType = itoc.Id,
+                                    IdContractFranchise = idContractFranchise,
+                                    Value = 0,
+                                    IdCompanyMiddleman = idCompanyMiddleman,
+                                };
+
+                                try
+                                {
+                                    BonusMalusDataManipulation.Insert(newRowBM);
                                 }
                                 catch
                                 {

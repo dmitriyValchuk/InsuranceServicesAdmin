@@ -10,7 +10,7 @@ namespace InsuranceServicesAdminLight.Business.DataManipulation
     {
         static InsuranceServicesContext db = new InsuranceServicesContext();
 
-        static public List<InsuranceZoneOfRegistration> GetInsuranceZoneOfRegistrations()
+        static public List<InsuranceZoneOfRegistration> GetMulti()
         {
             return db.InsuranceZoneOfRegistrations.ToList();
         }
